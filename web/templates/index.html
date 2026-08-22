@@ -496,6 +496,10 @@
       document.getElementById(`tab-${tabId}`).classList.remove('hidden');
       document.getElementById(`tab-btn-${tabId}`).className = 'py-3 font-semibold text-sm border-b-2 border-cyan-400 text-cyan-400 flex items-center space-x-2';
       lucide.createIcons();
+
+      if (tabId === 'batch' && (!cachedBatchData || cachedBatchData.length === 0)) {
+        runBatchEnrichment();
+      }
     }
 
     function loadPreset(idx) {
@@ -613,19 +617,25 @@
 
     async function runBatchEnrichment() {
       const btn = document.getElementById('btn-run-batch');
-      btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Processing 1,000 Items...</span>';
+      const tbody = document.getElementById('batch-tbody');
+      
+      btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Loading Catalog...</span>';
+      tbody.innerHTML = '<tr><td colspan="7" class="py-12 text-center text-cyan-400"><div class="flex flex-col items-center justify-center space-y-2"><div class="w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div><span class="text-xs">Loading 252-Column Enriched Catalog Data...</span></div></td></tr>';
       lucide.createIcons();
 
       try {
         const resp = await fetch('/api/process-full-batch');
+        if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
         const data = await resp.json();
-        cachedBatchData = data.preview;
+        cachedBatchData = data.preview || [];
         renderBatchTable(cachedBatchData);
-        document.getElementById('batch-count-label').innerText = `Processed 1,000 records across ${data.columns_count} columns`;
+        document.getElementById('batch-count-label').innerText = `Showing ${cachedBatchData.length} of ${data.total_processed || 1000} processed items (${data.columns_count || 252} columns)`;
+        btn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Processing Complete!</span>';
       } catch (err) {
-        console.error(err);
+        console.error('Batch load error:', err);
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-rose-400 font-semibold">Failed to load catalog data: ${err.message}. Please click "Process All 1,000 Rows" to retry.</td></tr>`;
+        btn.innerHTML = '<i data-lucide="refresh-cw" class="w-4 h-4"></i><span>Retry Process</span>';
       } finally {
-        btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i><span>Processing Complete!</span>';
         lucide.createIcons();
       }
     }
@@ -633,17 +643,21 @@
     function renderBatchTable(items) {
       const tbody = document.getElementById('batch-tbody');
       tbody.innerHTML = '';
+      if (!items || items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-slate-500">No matching records found.</td></tr>';
+        return;
+      }
       items.forEach(row => {
         const tr = document.createElement('tr');
-        tr.className = 'hover:bg-slate-800/80 transition-colors';
+        tr.className = 'hover:bg-slate-800/80 transition-colors border-b border-slate-800/60';
         tr.innerHTML = `
-          <td class="py-2 px-3 mono font-bold text-cyan-300">${row.Mfg_Part_Num || '-'}</td>
-          <td class="py-2 px-3 font-semibold text-slate-200">${row['Product Name'] || '-'}</td>
-          <td class="py-2 px-3 font-semibold text-white">${row.BRAND_NAME || '-'}</td>
-          <td class="py-2 px-3 text-slate-400 truncate max-w-xs">${row.Classpath || '-'}</td>
-          <td class="py-2 px-3 mono font-bold text-amber-300">${row.INVOICE_DESC || '-'}</td>
-          <td class="py-2 px-3 text-slate-300 truncate max-w-xs">${row.MOBILE_DESC || '-'}</td>
-          <td class="py-2 px-3 text-slate-300 truncate max-w-sm">${row.SHORT_DESC || '-'}</td>
+          <td class="py-2.5 px-3 mono font-bold text-cyan-300 text-xs">${row.Mfg_Part_Num || row.PART_NUMBER || '-'}</td>
+          <td class="py-2.5 px-3 font-semibold text-slate-200 text-xs">${row['Product Name'] || '-'}</td>
+          <td class="py-2.5 px-3 font-semibold text-white text-xs">${row.BRAND_NAME || '-'}</td>
+          <td class="py-2.5 px-3 text-slate-400 truncate max-w-xs text-xs" title="${row.Classpath || ''}">${row.Classpath || '-'}</td>
+          <td class="py-2.5 px-3 mono font-bold text-amber-300 text-xs">${row.INVOICE_DESC || '-'}</td>
+          <td class="py-2.5 px-3 text-slate-300 truncate max-w-xs text-xs" title="${row.MOBILE_DESC || ''}">${row.MOBILE_DESC || '-'}</td>
+          <td class="py-2.5 px-3 text-slate-300 truncate max-w-sm text-xs" title="${row.SHORT_DESC || ''}">${row.SHORT_DESC || '-'}</td>
         `;
         tbody.appendChild(tr);
       });

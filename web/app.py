@@ -23,6 +23,14 @@ DATA_DIR = os.path.join(os.path.dirname(BASE_DIR), 'data')
 
 # Cache for batch enriched dataframe
 ENRICHED_CACHE = None
+DELIVERY_CSV = os.path.join(DATA_DIR, 'UniEnrich_Delivered_Catalog_252_Cols.csv')
+if os.path.exists(DELIVERY_CSV):
+    try:
+        ENRICHED_CACHE = pd.read_csv(DELIVERY_CSV)
+    except Exception:
+        ENRICHED_CACHE = None
+
+BENCHMARK_CACHE = None
 
 @app.get("/", response_class=HTMLResponse)
 async def index_page(request: Request):
@@ -71,22 +79,26 @@ async def api_enrich_single(request: Request):
 @app.get("/api/benchmark-stats")
 async def api_benchmark_stats():
     """Returns real-time benchmark evaluation and quality compliance statistics."""
-    report = run_benchmark_tests()
-    return JSONResponse(content=report)
+    global BENCHMARK_CACHE
+    if BENCHMARK_CACHE is None:
+        BENCHMARK_CACHE = run_benchmark_tests()
+    return JSONResponse(content=BENCHMARK_CACHE)
 
 @app.get("/api/process-full-batch")
 async def api_process_full_batch():
-    """Processes the full 1,000-item sample catalog and caches the result."""
+    """Processes or returns the full 1,000-item sample catalog."""
     global ENRICHED_CACHE
-    sample_file = os.path.join(DATA_DIR, 'sample_input.csv')
-    df_sample = pd.read_csv(sample_file)
-    df_enriched, audits = enrich_dataset(df_sample)
-    ENRICHED_CACHE = df_enriched
+    if ENRICHED_CACHE is None:
+        sample_file = os.path.join(DATA_DIR, 'sample_input.csv')
+        df_sample = pd.read_csv(sample_file)
+        df_enriched, audits = enrich_dataset(df_sample)
+        ENRICHED_CACHE = df_enriched
     
-    preview_data = df_enriched.head(50).to_dict(orient="records")
+    # Return first 50 rows for snappy UI preview
+    preview_data = ENRICHED_CACHE.head(50).fillna("").to_dict(orient="records")
     return JSONResponse(content={
-        "total_processed": len(df_enriched),
-        "columns_count": len(df_enriched.columns),
+        "total_processed": len(ENRICHED_CACHE),
+        "columns_count": len(ENRICHED_CACHE.columns),
         "preview": preview_data
     })
 
