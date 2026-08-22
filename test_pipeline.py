@@ -1,44 +1,168 @@
 """
-Quick test script to run UniEnrich on sample input and verify ground truth consistency.
+UniEnrich Comprehensive Pipeline Regression & Standards Test Suite
+Executes end-to-end assertions verifying schema integrity, Unilog channel constraints,
+dynamic grit parsing, color-noise isolation, and calibrated audit traces.
+Compatible with both `pytest` and direct execution via `python test_pipeline.py`.
 """
 import os
 import pandas as pd
-from engine.pipeline import enrich_single_record, enrich_dataset
+from engine.pipeline import enrich_single_record, enrich_dataset, DELIVERY_HEADERS
 
-data_dir = os.path.join(os.path.dirname(__file__), 'data')
-sample_file = os.path.join(data_dir, 'sample_input.csv')
+DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
+SAMPLE_FILE = os.path.join(DATA_DIR, 'sample_input.csv')
 
-df_sample = pd.read_csv(sample_file)
-print(f"Loaded {len(df_sample)} sample rows.")
 
-# Test single item 0
-item0 = df_sample.iloc[0].to_dict()
-rec0, audit0 = enrich_single_record(item0)
+def test_schema_column_invariance():
+    """Verifies that every enriched record adheres strictly to the 252-column schema."""
+    item = {
+        "Mfg_Part_Num": "DCB518ASTS06G",
+        "Part_Desc": "1/2\"x18\" Sanding Belt 6pc Assorted 80/120 Grit",
+        "Part_Manuf": "Freud America, Inc.",
+        "E1_Brand": "Diablo"
+    }
+    rec, audit = enrich_single_record(item)
+    
+    assert len(rec.keys()) == 252, f"Expected 252 columns, got {len(rec.keys())}"
+    assert list(rec.keys()) == DELIVERY_HEADERS, "Output column headers must match standard schema exactly"
+    assert rec["BRAND_NAME"] == "Diablo®"
+    assert rec["MANUFACTURER_NAME"] == "Freud America, Inc."
+    assert rec["Classpath"] == "Abrasives>Sanding & Finishing>Sanding Belts"
+    assert rec["Product Name"] == "Sanding Belt"
 
-print("\n--- Single Item 0 Test (Diablo Sanding Belt) ---")
-print("Input:", item0)
-print("\nEnriched Fields:")
-print("BRAND_NAME:", rec0["BRAND_NAME"])
-print("MANUFACTURER_NAME:", rec0["MANUFACTURER_NAME"])
-print("Classpath:", rec0["Classpath"])
-print("INVOICE_DESC (len={}): {}".format(len(rec0["INVOICE_DESC"]), rec0["INVOICE_DESC"]))
-print("MOBILE_DESC (len={}): {}".format(len(rec0["MOBILE_DESC"]), rec0["MOBILE_DESC"]))
-print("SHORT_DESC:", rec0["SHORT_DESC"])
-print("LONG_DESC1:", rec0["LONG_DESC1"])
-print("Product Image:", rec0["Product Image"])
-print("Confidence:", audit0["overall_confidence"])
-print("Status:", audit0["status"])
 
-# Test batch enrichment on first 50 rows
-print("\n--- Running Batch Enrichment on 50 rows ---")
-df_sub = df_sample.head(50)
-df_enriched, audits = enrich_dataset(df_sub)
-print("Output Shape:", df_enriched.shape)
+def test_channel_description_constraints():
+    """Asserts that channel descriptions strictly adhere to length ceilings and uppercase rules."""
+    item = {
+        "Mfg_Part_Num": "PDSH4816AF",
+        "Part_Desc": "PDSH4816AF Built-In Dishwasher Stainless Steel 24in 120V 10A 41 dBA",
+        "Part_Manuf": "Appliance Dealers Cooperative (APPDE)",
+        "E1_Brand": "Frigidaire"
+    }
+    rec, audit = enrich_single_record(item)
+    
+    # Invoice Description: <= 40 chars and 100% uppercase
+    assert len(rec["INVOICE_DESC"]) <= 40, f"Invoice desc exceeds 40 chars: '{rec['INVOICE_DESC']}'"
+    assert rec["INVOICE_DESC"].isupper(), f"Invoice desc must be uppercase: '{rec['INVOICE_DESC']}'"
+    
+    # Mobile Description: <= 80 chars
+    assert len(rec["MOBILE_DESC"]) <= 80, f"Mobile desc exceeds 80 chars: '{rec['MOBILE_DESC']}'"
+    
+    # Short Description (Title): Starts with Brand and contains MPN
+    assert rec["SHORT_DESC"].startswith("FRIGIDAIRE®"), f"Title must start with Brand: '{rec['SHORT_DESC']}'"
+    assert "PDSH4816AF" in rec["SHORT_DESC"], "Title must contain MPN"
+    
+    # Long Description: Must be a non-empty grammatical narrative
+    assert len(rec["LONG_DESC1"]) > 20, "Long description should be a complete sentence"
+    assert rec["LONG_DESC1"].endswith("."), "Long description must end with a period"
 
-invoice_lens = df_enriched['INVOICE_DESC'].apply(len)
-print(f"Max Invoice Desc Length: {invoice_lens.max()} (All <=40? {invoice_lens.max() <= 40})")
-print(f"All Invoice Upper? {all(df_enriched['INVOICE_DESC'].str.isupper())}")
 
-mobile_lens = df_enriched['MOBILE_DESC'].apply(len)
-print(f"Mobile Desc Avg Length: {mobile_lens.mean():.1f} chars (Min: {mobile_lens.min()}, Max: {mobile_lens.max()})")
-print("Test completed successfully.")
+def test_tightened_grit_parsing_no_false_positives():
+    """Asserts that numbers in MPN or dimensions are NOT mislabeled as Grit without P-prefix or 'grit'."""
+    # Case A: MPN has '180' but no P-prefix or grit word -> Should NOT extract grit
+    item_false = {
+        "Mfg_Part_Num": "MRK-ABR-5IN-180",
+        "Part_Desc": "Mirka 5in Sanding Disc Hook and Loop",
+        "Part_Manuf": "Mirka USA Inc.",
+        "E1_Brand": "Mirka"
+    }
+    rec_false, _ = enrich_single_record(item_false)
+    extracted_labels = [rec_false[f"ATTRIBUTE_LABEL {i}"] for i in range(1, 10) if rec_false[f"ATTRIBUTE_LABEL {i}"]]
+    assert "Grit" not in extracted_labels, "MPN digit '180' must not be falsely parsed as Grit"
+
+    # Case B: Explicit P-prefix 'P180' -> MUST extract Grit P180
+    item_p = {
+        "Mfg_Part_Num": "9A-232-180",
+        "Part_Desc": "Mirka Abranet 5in Mesh Grip Disc P180 50/Box",
+        "Part_Manuf": "Mirka USA Inc.",
+        "E1_Brand": "Mirka"
+    }
+    rec_p, _ = enrich_single_record(item_p)
+    assert any(rec_p[f"ATTRIBUTE_LABEL {i}"] == "Grit" and rec_p[f"ATTRIBUTE_VALUE {i}"] == "P180" for i in range(1, 10)), "Explicit P180 must be extracted as Grit P180"
+
+    # Case C: Explicit word '80 Grit' -> MUST extract Grit P80
+    item_word = {
+        "Mfg_Part_Num": "DCB518-80",
+        "Part_Desc": "Diablo 1/2x18 80 Grit Sanding Belt",
+        "Part_Manuf": "Freud America, Inc.",
+        "E1_Brand": "Diablo"
+    }
+    rec_word, _ = enrich_single_record(item_word)
+    assert any(rec_word[f"ATTRIBUTE_LABEL {i}"] == "Grit" and rec_word[f"ATTRIBUTE_VALUE {i}"] == "P80" for i in range(1, 10)), "Explicit '80 Grit' must be extracted as Grit P80"
+
+
+def test_color_and_mortar_taxonomy_isolation():
+    """Asserts that color modifiers (e.g. Dark Chocolate) do not contaminate product names."""
+    item = {
+        "Mfg_Part_Num": "38-E",
+        "Part_Desc": "Dark Chocolate 38-E Mortar - Type N 50lb",
+        "Part_Manuf": "Commercial Mortar Supply",
+        "E1_Brand": "-- Unbranded --"
+    }
+    rec, audit = enrich_single_record(item)
+    
+    assert rec["Product Name"] == "Masonry Mortar Mix", f"Expected 'Masonry Mortar Mix', got '{rec['Product Name']}'"
+    assert rec["Product Name"] != "Chocolate Mortar", "Color prefix must not contaminate product name"
+    assert rec["Classpath"] == "Building Materials>Masonry>Mortar Mixes"
+    assert audit["status"] == "NEEDS_HUMAN_REVIEW", "Unbranded items must be routed to human review"
+    assert audit["overall_confidence"] < 0.80, "Unbranded confidence must be penalized"
+
+
+def test_explainability_and_audit_provenance():
+    """Asserts that confidence is empirical and provenance trail is populated."""
+    item = {
+        "Mfg_Part_Num": "DW088CG",
+        "Part_Desc": "DEWALT DW088CG Green Cross Line Self Leveling Laser Level",
+        "Part_Manuf": "Black & Decker / DEWALT",
+        "E1_Brand": "DEWALT"
+    }
+    rec, audit = enrich_single_record(item)
+    
+    assert 0.80 <= audit["overall_confidence"] <= 1.0, f"High-confidence verified item expected, got {audit['overall_confidence']}"
+    assert audit["status"] == "VERIFIED"
+    assert "provenance_trail" in audit
+    assert audit["provenance_trail"]["brand_resolution"]["source"] in ["EXACT_BRAND_ALIAS", "MANUF_ALIAS_RESOLVED", "NGRAM_CATALOG_MATCH"]
+    assert audit["provenance_trail"]["taxonomy_classification"]["product_type"] == "Cross Line Laser"
+
+
+def test_batch_enrichment_regression_100_rows():
+    """Runs batch enrichment on 100 sample catalog rows and verifies 100% compliance across all assertions."""
+    df_raw = pd.read_csv(SAMPLE_FILE).head(100)
+    df_out, audits = enrich_dataset(df_raw)
+    
+    assert len(df_out) == 100
+    assert len(df_out.columns) == 252
+    assert len(audits) == 100
+    
+    # 1. 100% Invoice <= 40 chars
+    invoice_lens = df_out["INVOICE_DESC"].astype(str).str.len()
+    assert (invoice_lens <= 40).all(), f"Invoice length violation detected: max {invoice_lens.max()}"
+    
+    # 2. 100% Invoice uppercase
+    invoice_uppers = [s.isupper() or s == "" for s in df_out["INVOICE_DESC"].astype(str)]
+    assert all(invoice_uppers), "All invoice descriptions must be strictly uppercase"
+    
+    # 3. 100% Mobile <= 80 chars
+    mobile_lens = df_out["MOBILE_DESC"].astype(str).str.len()
+    assert (mobile_lens <= 80).all(), f"Mobile length violation detected: max {mobile_lens.max()}"
+    
+    # 4. Valid confidence bounds
+    for a in audits:
+        assert 0.0 <= a["overall_confidence"] <= 1.0, f"Confidence out of bounds: {a['overall_confidence']}"
+        assert a["status"] in ["VERIFIED", "NEEDS_HUMAN_REVIEW"]
+
+
+if __name__ == "__main__":
+    print("Running UniEnrich Pipeline Test Suite with Hard Assertions...\n")
+    test_schema_column_invariance()
+    print("[PASS] test_schema_column_invariance")
+    test_channel_description_constraints()
+    print("[PASS] test_channel_description_constraints")
+    test_tightened_grit_parsing_no_false_positives()
+    print("[PASS] test_tightened_grit_parsing_no_false_positives")
+    test_color_and_mortar_taxonomy_isolation()
+    print("[PASS] test_color_and_mortar_taxonomy_isolation")
+    test_explainability_and_audit_provenance()
+    print("[PASS] test_explainability_and_audit_provenance")
+    test_batch_enrichment_regression_100_rows()
+    print("[PASS] test_batch_enrichment_regression_100_rows")
+    print("\nALL 6 HARD REGRESSION TEST SUITES PASSED SUCCESSFULLY.")

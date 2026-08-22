@@ -35,10 +35,11 @@ def infer_deep_specifications(text: str, mpn: str, cat_key: str, basic_attrs: di
     if teeth_match and "Tooth Count" not in grounded_specs:
         grounded_specs["Tooth Count"] = teeth_match.group(1)
 
-    # Grit
-    grit_match = re.search(r'\bp?(\d{2,4})\s*(?:grit)?\b', text_lower)
-    if grit_match and any(w in text_lower for w in ["sanding", "belt", "disc", "sheet", "film", "abranet"]):
-        grounded_specs["Grit"] = f"P{grit_match.group(1)}"
+    # Grit (Strictly requires explicit P-prefix or adjacent word 'grit')
+    grit_match = re.search(r'\b(?:p(\d{2,4})|(\d{2,4})\s*[- ]?grit)\b', text_lower)
+    if grit_match and any(w in text_lower for w in ["sanding", "belt", "disc", "sheet", "film", "abranet", "grit"]):
+        g_val = grit_match.group(1) or grit_match.group(2)
+        grounded_specs["Grit"] = f"P{g_val}"
 
     # Convert to Attribute Triplets
     triplets = []

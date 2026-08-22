@@ -118,10 +118,11 @@ def extract_attributes(part_desc: str, mfg_part_num: str, tax_res: dict) -> dict
     if dim_match:
         res['dimensions'] = parse_dimension_string(dim_match.group(1))
 
-    # 9. Grit & Teeth
-    grit_match = re.search(r'\bP?(\d{2,4})\s*(?:Grit|P\d+)?\b', text, re.IGNORECASE)
-    if grit_match and any(term in text.lower() for term in ['film', 'hiolit', 'abranet', 'sponge', 'sanding', 'disc', 'belt']):
-        res['grit'] = f"P{grit_match.group(1)}"
+    # 9. Grit & Teeth (Strictly requires explicit P-prefix or adjacent word 'grit')
+    grit_match = re.search(r'\b(?:P(\d{2,4})|(\d{2,4})\s*[- ]?grit)\b', text, re.IGNORECASE)
+    if grit_match and any(term in text.lower() for term in ['film', 'hiolit', 'abranet', 'sponge', 'sanding', 'disc', 'belt', 'grit']):
+        g_val = grit_match.group(1) or grit_match.group(2)
+        res['grit'] = f"P{g_val}"
 
     teeth_match = re.search(r'\b(\d{1,3})\s*(?:T|Teeth|Tooth|TPI)\b', text, re.IGNORECASE)
     if teeth_match:
