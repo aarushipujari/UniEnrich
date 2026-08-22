@@ -1,7 +1,7 @@
 """
 UniEnrich Master Pipeline Orchestrator
 Transforms raw messy input rows into complete 252-column commerce-ready delivery records,
-with automated external manufacturer web intelligence for sparse items.
+with deep hybrid technical inference and live external manufacturer sourcing.
 """
 import os
 import pandas as pd
@@ -10,6 +10,7 @@ from .brand_resolver import resolve_brand
 from .taxonomy_classifier import classify_product
 from .attribute_extractor import extract_attributes
 from .web_enricher import query_external_mfr_data
+from .inference_engine import infer_deep_specifications
 from .copy_synthesizer import (
     build_invoice_desc, build_mobile_desc, build_short_desc,
     build_long_desc, build_retail_desc
@@ -29,7 +30,14 @@ else:
 def enrich_single_record(raw: dict, enable_web_sourcing: bool = True) -> tuple[dict, dict]:
     """
     Enriches a single input dictionary into a 252-column delivery format record + audit trace.
-    Supports dynamic live web sourcing for sparse industrial rows.
+    Executes:
+    1. Hygiene & Entity Resolution
+    2. Taxonomy Classification
+    3. Explicit Attribute Extraction
+    4. Live MFR Web Sourcing (if sparse)
+    5. Deep Industrial Physics & Engineering Imputation
+    6. 5-Tier Multi-Channel Copy Synthesis
+    7. Digital Asset Mapping & Provenance Auditing
     """
     mfg_part_num = sanitize_text(str(raw.get('Mfg_Part_Num', raw.get('MANUFACTURER_PART_NUMBER', ''))))
     part_desc = sanitize_text(str(raw.get('Part_Desc', '')))
@@ -48,7 +56,7 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True) -> tuple[d
     mfg_name = brand_res.get('MANUFACTURER_NAME', '')
     brand_name = brand_res.get('BRAND_NAME', '')
 
-    # 2. External Web Intelligence Query (if enabled and row is sparse)
+    # 2. External Web Intelligence Query (for sparse rows)
     web_data = {"enriched_via_web": False}
     if enable_web_sourcing:
         web_data = query_external_mfr_data(mfg_part_num, part_desc, brand_name)
@@ -59,33 +67,30 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True) -> tuple[d
     # 4. Extract Attributes & UOMs
     attrs = extract_attributes(part_desc, mfg_part_num, tax_res)
 
-    # Merge web-extracted specs into attrs if present
-    if web_data.get("enriched_via_web"):
-        for spec_k, spec_v in web_data.get("extracted_specs", {}).items():
-            if spec_k == "Voltage" and not attrs['voltage'][0]:
-                attrs['voltage'] = (spec_v.replace('V', '').strip(), 'V')
-            elif spec_k == "Wattage" and not attrs['wattage'][0]:
-                attrs['wattage'] = (spec_v.replace('W', '').strip(), 'W')
-            elif spec_k == "Application":
-                attrs['additional_info'] = f"Application: {spec_v}"
-            # Add to attribute triplets
-            attrs['attribute_triplets'].append({
-                'label': spec_k,
-                'value': spec_v.split()[0] if ' ' in spec_v else spec_v,
-                'uom': spec_v.split()[-1] if ' ' in spec_v and len(spec_v.split()) > 1 else ''
-            })
+    # 5. Deep Technical Dependency & Physics Imputation
+    deep_inf = infer_deep_specifications(part_desc, mfg_part_num, tax_res['cat_key'], attrs, web_data)
+    
+    # Merge inferred specs into attribute triplets
+    existing_labels = {t['label'] for t in attrs.get('attribute_triplets', [])}
+    for inf_trip in deep_inf.get('inferred_triplets', []):
+        if inf_trip['label'] not in existing_labels:
+            attrs['attribute_triplets'].append(inf_trip)
+            existing_labels.add(inf_trip['label'])
+            # Add to features bullet list
+            if len(attrs.get('features', [])) < 10:
+                attrs['features'].append(f"{inf_trip['label']}: {inf_trip['value']} {inf_trip['uom']}".strip())
 
-    # 5. Synthesize 5-Tier Descriptions
+    # 6. Synthesize 5-Tier Descriptions
     invoice_desc = build_invoice_desc(tax_res['Product Name'], mfg_part_num, attrs)
     mobile_desc = build_mobile_desc(mfg_name, brand_name, tax_res['Product Name'], attrs['series'], mfg_part_num, attrs)
     short_desc = build_short_desc(brand_name, attrs['series'], mfg_part_num, tax_res['Product Name'], attrs['with_modifier'], attrs)
     long_desc = build_long_desc(brand_name, tax_res['Product Name'], attrs['with_modifier'], attrs['series'], mfg_part_num, attrs)
     retail_desc = build_retail_desc(attrs['series'], tax_res['Product Name'], attrs)
 
-    # 6. Map Digital Assets
+    # 7. Map Digital Assets
     assets = map_digital_assets(brand_name, mfg_part_num)
 
-    # 7. Generate Explainability Trace
+    # 8. Generate Explainability Trace
     descs = {
         'INVOICE_DESC': invoice_desc,
         'MOBILE_DESC': mobile_desc,
@@ -94,6 +99,13 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True) -> tuple[d
     }
     audit = generate_audit_trace(raw, brand_res, tax_res, attrs, descs)
     
+    # Tag deep inference provenance
+    audit["provenance_trail"]["deep_technical_inference"] = {
+        "strategy": deep_inf.get("provenance", "DOMAIN_DEPENDENCY_INFERENCE"),
+        "inferred_specs_count": len(deep_inf.get("inferred_specs", {})),
+        "inferred_specs": deep_inf.get("inferred_specs", {})
+    }
+
     # Inject Web Provenance into Audit Trace if retrieved
     if web_data.get("enriched_via_web"):
         audit["overall_confidence"] = min(1.0, audit["overall_confidence"] + 0.05)
@@ -105,7 +117,7 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True) -> tuple[d
         }
         audit["status"] = "VERIFIED"
 
-    # 8. Assemble Complete 252-Column Dictionary
+    # 9. Assemble Complete 252-Column Dictionary
     record = {h: "" for h in DELIVERY_HEADERS}
 
     # Populate direct metadata & URLs

@@ -1,9 +1,9 @@
-"""
-UniEnrich Web Governance Studio - FastAPI Application
-Provides interactive endpoints for real-time single-item enrichment, batch processing,
-downloadable XLSX/CSV generation, and benchmark scorecards.
-"""
+import sys
 import os
+
+# Ensure project root is on sys.path for direct execution via `python web/app.py`
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import io
 import pandas as pd
 from fastapi import FastAPI, Request
@@ -38,9 +38,7 @@ async def api_enrich_single(request: Request):
 @app.get("/api/benchmark-stats")
 async def api_benchmark_stats():
     """Returns real-time benchmark evaluation and quality compliance statistics."""
-    sample_file = os.path.join(DATA_DIR, 'sample_input.csv')
-    df_sample = pd.read_csv(sample_file)
-    _, report = run_benchmark_tests()
+    report = run_benchmark_tests()
     return JSONResponse(content=report)
 
 @app.get("/api/process-full-batch")
@@ -90,4 +88,5 @@ async def api_download_export(format: str = "csv"):
 
 if __name__ == "__main__":
     import uvicorn
+    print("Starting UniEnrich Governance Studio on http://127.0.0.1:8000 ...")
     uvicorn.run(app, host="127.0.0.1", port=8000)

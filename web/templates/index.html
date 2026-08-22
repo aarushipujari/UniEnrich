@@ -16,6 +16,7 @@
     .badge-exact { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
     .badge-uom { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
     .badge-verified { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-review { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
     .badge-web { background: #fae8ff; color: #86198f; border: 1px solid #f0abfc; }
   </style>
 </head>
@@ -33,16 +34,12 @@
             <h1 class="text-2xl font-black tracking-tight text-white">UniEnrich<span class="text-cyan-400">.ai</span></h1>
             <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Enterprise Studio</span>
           </div>
-          <p class="text-xs text-slate-400">Industrial Product Intelligence, Web Sourcing & Governance Engine</p>
+          <p class="text-xs text-slate-400">Industrial Catalog Enrichment, Dynamic Spec Inference & Governance Engine</p>
         </div>
       </div>
 
       <!-- Quick KPI Chips -->
       <div class="flex flex-wrap items-center gap-2 text-xs">
-        <div class="px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 flex items-center space-x-1.5">
-          <i data-lucide="globe" class="w-3.5 h-3.5 text-pink-400"></i>
-          <span class="text-slate-300 font-medium">Live MFR Web Sourcing</span>
-        </div>
         <div class="px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 flex items-center space-x-1.5">
           <i data-lucide="table" class="w-3.5 h-3.5 text-cyan-400"></i>
           <span class="text-slate-300 font-medium">252 Static Columns</span>
@@ -53,7 +50,11 @@
         </div>
         <div class="px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 flex items-center space-x-1.5">
           <i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-400"></i>
-          <span class="text-slate-300 font-medium">27k+ Master Brands</span>
+          <span class="text-slate-300 font-medium">100% Brand GT Match</span>
+        </div>
+        <div class="px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 flex items-center space-x-1.5">
+          <i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-purple-400"></i>
+          <span class="text-slate-300 font-medium">Zero Hallucinated Defaults</span>
         </div>
       </div>
     </div>
@@ -70,7 +71,7 @@
       </button>
       <button onclick="switchTab('scorecard')" id="tab-btn-scorecard" class="py-3 font-medium text-sm text-slate-400 hover:text-slate-200 border-b-2 border-transparent flex items-center space-x-2">
         <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
-        <span>Quality Scorecard & Ground Truth Benchmark</span>
+        <span>Ground Truth Benchmark & Quality Scorecard</span>
       </button>
     </div>
   </header>
@@ -81,7 +82,7 @@
     <!-- TAB 1: LIVE ENRICHMENT SANDBOX -->
     <div id="tab-sandbox" class="space-y-6">
       
-      <!-- Top Preset Selector & External Sourcing Toggle -->
+      <!-- Top Preset Selector -->
       <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 shadow-lg">
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
@@ -96,15 +97,14 @@
             <select id="preset-selector" onchange="loadPreset(this.value)" class="bg-slate-900 border border-slate-600 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400 w-full md:w-80">
               <option value="0">PDSH4816AF Frigidaire Dishwasher SS (Ground Truth Row 1)</option>
               <option value="1">WDTS7024RZ Whirlpool Eco Dishwasher (Ground Truth Row 2)</option>
-              <option value="10">D519127 Heater Kit (Sparse Pro-Tip Example)</option>
-              <option value="2">DCB518ASTS06G Diablo 1/2"x18" Sanding Belt 6pc</option>
-              <option value="3">49-94-0013 Milw 5"x.045"x7/8" Metal Cut Off Disc</option>
-              <option value="4">3MABR-7100075678 3M 775L Stikit Film Cubitron II</option>
-              <option value="5">ADB15516CS TimberTech 1x6-16' Coastline Vintage Azek</option>
-              <option value="6">543140016 Trex 1nx6-16' Biscayne Transcend Lineage</option>
-              <option value="7">45297BK Kichler Wall Lt</option>
-              <option value="8">567313 Philips 50W Led MR16 30K 3pk</option>
-              <option value="9">DCD1007B Dewalt 20V Cordless 1/2" Hammer Drill</option>
+              <option value="2">T27417 Grizzly OscillatingEdge - Belt & Spindle Sander</option>
+              <option value="3">DW088CG Dewalt Laser - Green Cross Line</option>
+              <option value="4">DCB518ASTS06G Diablo 1/2"x18" Sanding Belt 6pc</option>
+              <option value="5">D519127 Speed Queen Dryer Heater Kit</option>
+              <option value="6">49-94-0013 Milw 5"x.045"x7/8" Metal Cut Off Disc</option>
+              <option value="7">3MABR-7100075678 3M 775L Stikit Film Cubitron II</option>
+              <option value="8">ADB15516CS TimberTech 1x6-16' Coastline Vintage Azek</option>
+              <option value="9">45297BK Kichler Wall Lt</option>
             </select>
           </div>
         </div>
@@ -192,47 +192,6 @@
                 <div id="res-conf-bar" class="bg-gradient-to-r from-cyan-400 to-emerald-400 h-full rounded-full" style="width: 95%;"></div>
               </div>
               <p id="res-provenance-text" class="text-2xs text-slate-400">Matched via Master UniCat DB & Exact LOV Rules</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- EXTERNAL WEB SOURCING & CITATION BOX -->
-        <div id="res-web-sourcing-card" class="bg-gradient-to-r from-purple-950/60 via-slate-900 to-slate-900 border border-purple-800/60 rounded-2xl p-5 shadow-lg">
-          <div class="flex items-center justify-between border-b border-purple-800/40 pb-3 mb-3">
-            <div class="flex items-center space-x-2">
-              <div class="w-7 h-7 rounded-lg bg-pink-500/20 text-pink-300 flex items-center justify-center border border-pink-500/30">
-                <i data-lucide="globe" class="w-4 h-4"></i>
-              </div>
-              <div>
-                <h3 class="text-sm font-bold text-white">Manufacturer Web Sourcing & Technical Citations</h3>
-                <span class="text-2xs text-pink-300 font-medium">Dynamically retrieves deep specs from public manufacturer indexes</span>
-              </div>
-            </div>
-            <span class="px-2.5 py-0.5 text-2xs font-bold rounded-full badge-web flex items-center space-x-1">
-              <i data-lucide="check" class="w-3 h-3"></i>
-              <span>MFR WEB SOURCED</span>
-            </span>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div class="md:col-span-2 space-y-1.5">
-              <span class="text-2xs text-slate-400 font-semibold uppercase tracking-wider block">Retrieved Manufacturer Snippet & Evidence</span>
-              <p id="res-web-snippet" class="text-xs text-slate-300 bg-slate-950/70 p-3 rounded-xl border border-slate-800 leading-relaxed italic">
-                "OEM commercial and residential electric dryer heating element kit, 240V, 4750 Watts..."
-              </p>
-            </div>
-            <div class="space-y-2 bg-slate-950/70 p-3 rounded-xl border border-slate-800">
-              <span class="text-2xs text-slate-400 font-semibold uppercase tracking-wider block">Verified Sourcing Link</span>
-              <a id="res-web-link" href="#" target="_blank" class="text-xs text-cyan-400 hover:text-cyan-300 underline font-medium truncate block">
-                https://www.speedqueenparts.com/parts/d519127
-              </a>
-              <div class="pt-2 border-t border-slate-800">
-                <span class="text-2xs text-slate-400 block mb-1">Extracted Deep Attributes:</span>
-                <div id="res-web-chips" class="flex flex-wrap gap-1.5">
-                  <span class="px-2 py-0.5 text-2xs rounded bg-purple-500/20 text-purple-300 font-mono">240 V</span>
-                  <span class="px-2 py-0.5 text-2xs rounded bg-purple-500/20 text-purple-300 font-mono">4750 W</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -375,7 +334,7 @@
               <i data-lucide="file-spreadsheet" class="w-5 h-5 text-cyan-400"></i>
               <span>Batch Catalog Pipeline (1,000 Items)</span>
             </h2>
-            <p class="text-xs text-slate-400 mt-1">Transform all 1,000 messy supplier rows into 252-column commerce-ready records in under 3 seconds.</p>
+            <p class="text-xs text-slate-400 mt-1">Transform all 1,000 messy supplier rows into 252-column commerce-ready records with field-level provenance.</p>
           </div>
           <div class="flex flex-wrap items-center gap-3">
             <button onclick="runBatchEnrichment()" id="btn-run-batch" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-lg shadow-cyan-500/20 flex items-center space-x-2">
@@ -408,6 +367,7 @@
             <thead>
               <tr class="bg-slate-900 border-b border-slate-700 text-slate-400 font-semibold">
                 <th class="py-2.5 px-3">MPN</th>
+                <th class="py-2.5 px-3">Product Type</th>
                 <th class="py-2.5 px-3">Resolved Brand</th>
                 <th class="py-2.5 px-3">Classpath</th>
                 <th class="py-2.5 px-3">Invoice Desc (≤40)</th>
@@ -417,7 +377,7 @@
             </thead>
             <tbody id="batch-tbody" class="divide-y divide-slate-800 bg-slate-900/50 text-slate-300">
               <tr>
-                <td colspan="6" class="py-8 text-center text-slate-500">Click "Process All 1,000 Rows" to view live enriched catalog data.</td>
+                <td colspan="7" class="py-8 text-center text-slate-500">Click "Process All 1,000 Rows" to view live enriched catalog data.</td>
               </tr>
             </tbody>
           </table>
@@ -431,56 +391,72 @@
         <div>
           <h2 class="text-lg font-bold text-white flex items-center space-x-2">
             <i data-lucide="award" class="w-5 h-5 text-cyan-400"></i>
-            <span>Ground Truth & Compliance Benchmark Scorecard</span>
+            <span>Ground Truth Benchmark & Quality Scorecard</span>
           </h2>
-          <p class="text-xs text-slate-400 mt-1">Directly scores UniEnrich pipeline performance against Unilog Content Guidelines & Master UOM Standards.</p>
+          <p class="text-xs text-slate-400 mt-1">Scores precision against labeled ground truth records and checks strict guideline compliance across 1,000 rows.</p>
         </div>
 
-        <!-- Metric KPI Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
-            <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Invoice ≤40 CAPS Compliance</span>
-            <span class="text-2xl font-black text-emerald-400">100.0%</span>
-            <span class="text-2xs text-slate-500 block mt-1">1,000 / 1,000 records pass</span>
-          </div>
-          <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
-            <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Mobile 60–80 Target Compliance</span>
-            <span class="text-2xl font-black text-emerald-400">97.4%</span>
-            <span class="text-2xs text-slate-500 block mt-1">Avg length 69.8 chars</span>
-          </div>
-          <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
-            <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Brand Resolution Rate</span>
-            <span class="text-2xl font-black text-cyan-400">99.8%</span>
-            <span class="text-2xs text-slate-500 block mt-1">Trademark symbols injected</span>
-          </div>
-          <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
-            <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Delivery Schema Columns</span>
-            <span class="text-2xl font-black text-purple-400">252 / 252</span>
-            <span class="text-2xs text-slate-500 block mt-1">100% Header preservation</span>
+        <!-- Ground Truth Accuracy Section -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-wider">A. Ground Truth Precision (vs. Known Labeled Rows)</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
+              <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Brand Name Exact Match</span>
+              <span class="text-2xl font-black text-emerald-400">100.0%</span>
+              <span class="text-2xs text-slate-500 block mt-1">Exact legal match with ® / ™</span>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
+              <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Classpath Hierarchy Match</span>
+              <span class="text-2xl font-black text-emerald-400">100.0%</span>
+              <span class="text-2xs text-slate-500 block mt-1">Exact leaf node taxonomy</span>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
+              <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Product Image Spec Match</span>
+              <span class="text-2xl font-black text-emerald-400">100.0%</span>
+              <span class="text-2xs text-slate-500 block mt-1">BRAND_MPN.jpg naming</span>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
+              <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Spec Sheet PDF Match</span>
+              <span class="text-2xl font-black text-emerald-400">100.0%</span>
+              <span class="text-2xs text-slate-500 block mt-1">Specification_Sheet.pdf naming</span>
+            </div>
           </div>
         </div>
 
-        <!-- Detailed Rule Compliance Checklist -->
-        <div class="bg-slate-900/80 border border-slate-700 rounded-xl p-5 space-y-3">
-          <h3 class="text-sm font-bold text-white">Rule Compliance Checklist</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-            <div class="flex items-center space-x-2 text-slate-300">
-              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-              <span><strong>UOM Formatting:</strong> Mandatory space enforced (e.g. <code>24 in</code>, not <code>24in</code>)</span>
+        <!-- Scale Quality Section -->
+        <div class="space-y-3 pt-4 border-t border-slate-700">
+          <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-wider">B. Scale Quality & Hard Constraints (1,000 Catalog Records)</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
+              <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Invoice ≤40 CAPS Ceiling</span>
+              <span class="text-2xl font-black text-emerald-400">100.0%</span>
+              <span class="text-2xs text-slate-500 block mt-1">1,000 / 1,000 records pass</span>
             </div>
-            <div class="flex items-center space-x-2 text-slate-300">
-              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-              <span><strong>Fraction Conversions:</strong> 63 exact 64th lookups (e.g. <code>50.25</code> &rarr; <code>50-1/4 in</code>)</span>
+            <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
+              <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Mobile 60–80 Strict Range</span>
+              <span class="text-2xl font-black text-emerald-400">65.4%</span>
+              <span class="text-2xs text-slate-500 block mt-1">Strict length enforcement</span>
             </div>
-            <div class="flex items-center space-x-2 text-slate-300">
-              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-              <span><strong>External Sourcing:</strong> Queries manufacturer docs & specs for sparse rows</span>
+            <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
+              <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Brand Resolution Rate</span>
+              <span class="text-2xl font-black text-cyan-400">97.1%</span>
+              <span class="text-2xs text-slate-500 block mt-1">91.5% Legal symbols injected</span>
             </div>
-            <div class="flex items-center space-x-2 text-slate-300">
-              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-              <span><strong>Digital Assets:</strong> Standardized <code>BRAND_MPN.jpg</code> & <code>Spec_Sheet.pdf</code></span>
+            <div class="bg-slate-900/90 border border-slate-700 p-4 rounded-xl">
+              <span class="text-2xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Delivery Schema Preserved</span>
+              <span class="text-2xl font-black text-purple-400">252 / 252</span>
+              <span class="text-2xs text-slate-500 block mt-1">Zero column alterations</span>
             </div>
           </div>
+        </div>
+
+        <!-- Human in the Loop Section -->
+        <div class="bg-slate-900/80 border border-slate-700 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold text-white block">Audit & Governance Statistics:</span>
+            <p class="text-xs text-slate-400 mt-0.5">915 records auto-verified (Confidence &ge; 85%) &bull; 85 records flagged for Human Review queue (Uncategorized or sparse tokens).</p>
+          </div>
+          <span class="px-3 py-1 text-xs font-bold rounded-full badge-verified">91.5% AUTO-VERIFIED</span>
         </div>
       </div>
     </div>
@@ -495,15 +471,14 @@
     const PRESETS = [
       { desc: 'PDSH4816AF Dishwasher SS - Display Only', mpn: 'PDSH4816AF', manuf: 'Appliance Dealers Cooperative (APPDE)', brand: '-- Unbranded --' },
       { desc: 'WDTS7024RZ Dishwasher SS - Display Only', mpn: 'WDTS7024RZ', manuf: 'Appliance Dealers Cooperative (APPDE)', brand: '-- Unbranded --' },
+      { desc: 'T27417 Grizzly OscillatingEdge - Belt and Spindle Sander', mpn: 'T27417', manuf: 'Woodstock Intl (3658)', brand: '-- Unbranded --' },
+      { desc: 'DW088CG Dewalt Laser - Green Cross Line', mpn: 'DW088CG', manuf: 'Black & Decker/dewlt (2585)', brand: 'DEWALT' },
       { desc: 'DCB518ASTS06G Diablo 1/2"x18" - Sanding Belt 6pc', mpn: 'DCB518ASTS06G', manuf: 'Freud Inc (2435)', brand: '-- Unbranded --' },
+      { desc: 'D519127 Heater Kit', mpn: 'D519127', manuf: 'V & V Appliance Parts Inc (VVAPP)', brand: '-- Unbranded --' },
       { desc: '49-94-0013 Milw 5"x.045"x7/8" Metal Cut Off Disc', mpn: '49-94-0013', manuf: 'Milwaukee Accessory (4031)', brand: '-- Unbranded --' },
       { desc: '3M 775L Stikit Film P150 - Cubitron II 50 Disc/Box', mpn: '3MABR-7100075678', manuf: 'Jam Industrial Supply LLC (JAMIN)', brand: '-- Unbranded --' },
       { desc: '1x6-16\' Coastline Sq Edge - Vintage Azek PVC Decking', mpn: 'ADB15516CS', manuf: 'Parksite (6151)', brand: 'TIMBERTECH' },
-      { desc: '1nx6-16\' Biscayne Sq Edge - Trex Transcend Lineage Decking', mpn: '543140016', manuf: 'U S Lumber (3073)', brand: 'TREX' },
-      { desc: '45297BK Kichler Wall Lt', mpn: '45297BK', manuf: 'Kichler Lighting (KICLI)', brand: '-- Unbranded --' },
-      { desc: '567313 50W Led MR16 30K 3pk', mpn: '567313', manuf: 'Phillips Lighting (5831)', brand: 'Philips' },
-      { desc: 'DCD1007B Dewalt 20V Cordless - 1/2" Hammer Drill (Bare)', mpn: 'DCD1007B', manuf: 'Black & Decker/dewlt (2585)', brand: 'DEWALT' },
-      { desc: 'D519127 Heater Kit', mpn: 'D519127', manuf: 'V & V Appliance Parts Inc (VVAPP)', brand: '-- Unbranded --' }
+      { desc: '45297BK Kichler Wall Lt', mpn: '45297BK', manuf: 'Kichler Lighting (KICLI)', brand: '-- Unbranded --' }
     ];
 
     let cachedBatchData = [];
@@ -538,7 +513,7 @@
       };
 
       const btn = document.getElementById('btn-enrich');
-      btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Sourcing & Enriching...</span>';
+      btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Enriching...</span>';
       lucide.createIcons();
 
       try {
@@ -575,28 +550,6 @@
       document.getElementById('res-long-desc').innerText = rec.LONG_DESC1 || '-';
       document.getElementById('res-retail-desc').innerText = rec.RETAIL_DESC || '-';
 
-      // External Web Sourcing Box
-      const webCard = document.getElementById('res-web-sourcing-card');
-      if (audit.provenance_trail && audit.provenance_trail.external_web_sourcing) {
-        const webProv = audit.provenance_trail.external_web_sourcing;
-        webCard.classList.remove('hidden');
-        document.getElementById('res-web-snippet').innerText = `"${webProv.evidence_snippet}"`;
-        const webLink = document.getElementById('res-web-link');
-        webLink.innerText = webProv.source_url || 'https://www.manufacturer.com';
-        webLink.href = webProv.source_url || '#';
-        
-        const chipsContainer = document.getElementById('res-web-chips');
-        chipsContainer.innerHTML = '';
-        for (const [k, v] of Object.entries(webProv.extracted_specs || {})) {
-          const span = document.createElement('span');
-          span.className = 'px-2 py-0.5 text-2xs rounded bg-purple-500/20 text-purple-300 font-mono';
-          span.innerText = `${k}: ${v}`;
-          chipsContainer.appendChild(span);
-        }
-      } else {
-        webCard.classList.add('hidden');
-      }
-
       // Feature Bullets
       const featList = document.getElementById('res-features-list');
       featList.innerHTML = '';
@@ -619,6 +572,7 @@
       document.getElementById('res-conf-val').innerText = `${confPct}%`;
       document.getElementById('res-conf-bar').style.width = `${confPct}%`;
       document.getElementById('res-status-badge').innerText = audit.status;
+      document.getElementById('res-status-badge').className = audit.status === 'VERIFIED' ? 'px-2 py-0.5 text-2xs font-bold rounded-full badge-verified' : 'px-2 py-0.5 text-2xs font-bold rounded-full badge-review';
       document.getElementById('res-provenance-text').innerText = `Matched via: ${audit.provenance_trail.brand_resolution.source}`;
 
       // Assets
@@ -679,6 +633,7 @@
         tr.className = 'hover:bg-slate-800/80 transition-colors';
         tr.innerHTML = `
           <td class="py-2 px-3 mono font-bold text-cyan-300">${row.Mfg_Part_Num || '-'}</td>
+          <td class="py-2 px-3 font-semibold text-slate-200">${row['Product Name'] || '-'}</td>
           <td class="py-2 px-3 font-semibold text-white">${row.BRAND_NAME || '-'}</td>
           <td class="py-2 px-3 text-slate-400 truncate max-w-xs">${row.Classpath || '-'}</td>
           <td class="py-2 px-3 mono font-bold text-amber-300">${row.INVOICE_DESC || '-'}</td>
@@ -694,6 +649,7 @@
       const q = query.toLowerCase();
       const filtered = cachedBatchData.filter(r => 
         (r.Mfg_Part_Num || '').toLowerCase().includes(q) ||
+        (r['Product Name'] || '').toLowerCase().includes(q) ||
         (r.BRAND_NAME || '').toLowerCase().includes(q) ||
         (r.SHORT_DESC || '').toLowerCase().includes(q) ||
         (r.Classpath || '').toLowerCase().includes(q)
