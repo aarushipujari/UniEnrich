@@ -130,5 +130,12 @@
       "Amperage": "20 A",
       "Standards/Approvals": "UL Listed, CSA Certified"
     }
+  },
+  "appliance dealers cooperative:pdsh4816af": {
+    "enriched_via_web": true,
+    "source_url": "https://www.us-appliance.com/content/pdf/usa/PDSH4816AF_Specs.pdf",
+    "external_title": "Dishwasher Available Products: PDSH4816AF Available Colors: Stainless Steel Version: 08/23",
+    "raw_snippet": "Dishwasher Available Products: PDSH4816AF Available Colors: Stainless Steel Version: 08/23",
+    "extracted_specs": {}
   }
 }
