@@ -9,7 +9,6 @@ Architecture:
 import os
 import json
 import re
-from .ai_classifier import semantic_zero_shot_classify
 from .ai_agent import predict_ml_taxonomy
 
 # Dynamic Product Type Extractors (Pattern, Product Type, Priority Score)

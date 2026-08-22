@@ -151,6 +151,42 @@ def test_batch_enrichment_regression_100_rows():
         assert a["status"] in ["VERIFIED", "NEEDS_HUMAN_REVIEW"]
 
 
+def test_amperage_and_with_modifier_guardrails():
+    """Asserts that Type 1A does not trigger amperage, and With X modifier is capped."""
+    # Case A: "Type 1A" code should NOT extract Amperage: 1 A
+    item_grade = {
+        "Mfg_Part_Num": "5000",
+        "Part_Desc": "Quikrete 5000 Concrete Mix Type 1A 50lb",
+        "Part_Manuf": "Quikrete Companies",
+        "E1_Brand": "Quikrete"
+    }
+    rec_grade, _ = enrich_single_record(item_grade)
+    extracted_labels = [rec_grade[f"ATTRIBUTE_LABEL {i}"] for i in range(1, 10) if rec_grade[f"ATTRIBUTE_LABEL {i}"]]
+    assert "Amperage Rating" not in extracted_labels, "Type 1A code must not be extracted as Amperage"
+
+    # Case B: Real electrical amperage (e.g. 120V 10A) MUST be extracted
+    item_elec = {
+        "Mfg_Part_Num": "PDSH4816AF",
+        "Part_Desc": "Built-In Dishwasher 120V 10A Stainless Steel",
+        "Part_Manuf": "Frigidaire",
+        "E1_Brand": "Frigidaire"
+    }
+    rec_elec, _ = enrich_single_record(item_elec)
+    assert any(rec_elec[f"ATTRIBUTE_LABEL {i}"] == "Amperage Rating" and rec_elec[f"ATTRIBUTE_VALUE {i}"] == "10" for i in range(1, 10)), "10A electrical draw must be extracted"
+
+    # Case C: Overlong 'With' clause should be capped to <= 25 characters
+    item_with = {
+        "Mfg_Part_Num": "DW088CG",
+        "Part_Desc": "Cross Line Laser Level with ultra durable rubber overmolded housing and magnetic pivoting base for commercial jobsites",
+        "Part_Manuf": "DEWALT",
+        "E1_Brand": "DEWALT"
+    }
+    rec_with, _ = enrich_single_record(item_with)
+    # With modifier in short desc must be concise
+    assert len(rec_with["INVOICE_DESC"]) <= 40
+    assert len(rec_with["MOBILE_DESC"]) <= 80
+
+
 if __name__ == "__main__":
     print("Running UniEnrich Pipeline Test Suite with Hard Assertions...\n")
     test_schema_column_invariance()
@@ -165,4 +201,6 @@ if __name__ == "__main__":
     print("[PASS] test_explainability_and_audit_provenance")
     test_batch_enrichment_regression_100_rows()
     print("[PASS] test_batch_enrichment_regression_100_rows")
-    print("\nALL 6 HARD REGRESSION TEST SUITES PASSED SUCCESSFULLY.")
+    test_amperage_and_with_modifier_guardrails()
+    print("[PASS] test_amperage_and_with_modifier_guardrails")
+    print("\nALL 7 HARD REGRESSION TEST SUITES PASSED SUCCESSFULLY.")

@@ -18,7 +18,7 @@ def run_ground_truth_evaluation() -> dict:
         return {"error": "Ground truth dataset not found."}
         
     df_gt = pd.read_csv(GROUND_TRUTH_FILE)
-    df_pred, audits = enrich_dataset(df_gt, enable_web_sourcing=False, enable_ai_reasoning=True)
+    df_pred, audits = enrich_dataset(df_gt, enable_web_sourcing=True, enable_ai_reasoning=True)
     
     total = len(df_gt)
     brand_matches = 0
@@ -74,7 +74,7 @@ def run_ground_truth_evaluation() -> dict:
 
 def run_full_benchmark() -> dict:
     df_raw = pd.read_csv(SAMPLE_INPUT)
-    df_out, audits = enrich_dataset(df_raw, enable_web_sourcing=False, enable_ai_reasoning=True)
+    df_out, audits = enrich_dataset(df_raw, enable_web_sourcing=True, enable_ai_reasoning=True)
 
     gt_metrics = run_ground_truth_evaluation()
 

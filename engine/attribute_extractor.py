@@ -75,10 +75,20 @@ def extract_attributes(part_desc: str, mfg_part_num: str, tax_res: dict) -> dict
     if volt_match:
         res['voltage'] = (volt_match.group(1), 'V')
 
-    # 3. Amperage
-    amp_match = re.search(r'\b(\d+(?:\.\d+)?)\s*(?:A|Amp|Amps|Amperes)\b', text, re.IGNORECASE)
-    if amp_match:
-        res['amperage'] = (amp_match.group(1), 'A')
+    # 3. Amperage (Requires explicit Amp/Amps/Amperes, or number + 'A' with electrical unit context)
+    amp_word_match = re.search(r'\b(\d+(?:\.\d+)?)\s*(?:Amp|Amps|Ampere|Amperes)\b', text, re.IGNORECASE)
+    if amp_word_match:
+        res['amperage'] = (amp_word_match.group(1), 'A')
+    else:
+        # Check for standalone 'A' avoiding "Type 1A", "Grade 2A", "Class 3A"
+        for m in re.finditer(r'\b(\d+(?:\.\d+)?)\s*A\b(?!\s*[-/A-Za-z])', text):
+            start_idx = m.start()
+            prefix = text[:start_idx].strip().lower()
+            prev_word = prefix.split()[-1] if prefix.split() else ""
+            if prev_word not in ['type', 'grade', 'class', 'cat', 'category', 'series', 'group', 'model', 'sch']:
+                if any(elec in text.lower() for elec in ['v', 'volt', 'watt', 'w', 'motor', 'electric', 'breaker', 'cord', 'power', 'draw', 'rating', 'current', 'phase', 'hz', 'dishwasher', 'dryer', 'tool', 'drill', 'saw']):
+                    res['amperage'] = (m.group(1), 'A')
+                    break
 
     # 4. Wattage
     watt_match = re.search(r'\b(\d+)\s*(?:W|Watt|Watts)\b', text, re.IGNORECASE)
@@ -133,10 +143,14 @@ def extract_attributes(part_desc: str, mfg_part_num: str, tax_res: dict) -> dict
     if pack_match:
         res['pack_qty'] = pack_match.group(1)
 
-    # 11. Generalized "With <X>" Modifier Extractor
-    with_match = re.search(r'\bwith\s+([A-Za-z0-9™®\s\-]+?)(?:,|$|\.|\b(?:for|in|at)\b)', text, re.IGNORECASE)
+    # 11. Generalized "With <X>" Modifier Extractor (Strictly capped to <= 25 chars and <= 4 words)
+    with_match = re.search(r'\bwith\s+([A-Za-z0-9™®\s\-]+?)(?:,|$|\.|\b(?:for|in|at|and|by)\b)', text, re.IGNORECASE)
     if with_match:
-        res['with_modifier'] = f"With {with_match.group(1).strip()}"
+        raw_with = with_match.group(1).strip()
+        with_words = raw_with.split()[:4]
+        capped_with = " ".join(with_words)[:25].strip()
+        if len(capped_with) >= 3 and not re.match(r'^(?:the|a|an|its|and)$', capped_with, re.IGNORECASE):
+            res['with_modifier'] = f"With {capped_with.title()}"
 
     # Features (Strictly grounded factual features, zero "Fuel line" nonsense)
     if res['dimensions']:

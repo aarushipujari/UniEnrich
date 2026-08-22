@@ -184,7 +184,7 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_
 
     return record, audit
 
-def enrich_dataset(df_input: pd.DataFrame, enable_web_sourcing: bool = False, enable_ai_reasoning: bool = True) -> tuple[pd.DataFrame, list[dict]]:
+def enrich_dataset(df_input: pd.DataFrame, enable_web_sourcing: bool = True, enable_ai_reasoning: bool = True) -> tuple[pd.DataFrame, list[dict]]:
     rows_out = []
     audits = []
     
