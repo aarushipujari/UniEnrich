@@ -160,7 +160,7 @@
       "brand_code": "MIRK"
     },
     "Festool": {
-      "mfg_name": "Festool USA LLC",
+      "mfg_name": "Festool USA",
       "brand_name": "Festool®",
       "mfg_code": "FESTO",
       "brand_code": "FEST"
@@ -172,7 +172,7 @@
       "brand_code": "TREX"
     },
     "TimberTech": {
-      "mfg_name": "The AZEK Company Inc.",
+      "mfg_name": "The AZEK Company LLC",
       "brand_name": "TimberTech®",
       "mfg_code": "6151",
       "brand_code": "TIMB"
@@ -274,7 +274,7 @@
       "brand_code": "ELEM"
     },
     "First Alert": {
-      "mfg_name": "Resideo Technologies, Inc. / BRK Brands",
+      "mfg_name": "Resideo Technologies, Inc.",
       "brand_name": "First Alert®",
       "mfg_code": "2754",
       "brand_code": "FSTA"
@@ -286,7 +286,7 @@
       "brand_code": "BRKB"
     },
     "Wera": {
-      "mfg_name": "Wera Tools NA Inc.",
+      "mfg_name": "Wera Werkzeuge GmbH",
       "brand_name": "Wera®",
       "mfg_code": "WERTO",
       "brand_code": "WERA"
@@ -358,7 +358,7 @@
       "brand_code": "SQRD"
     },
     "Southwire": {
-      "mfg_name": "Southwire Company, LLC",
+      "mfg_name": "Southwire Company LLC",
       "brand_name": "Southwire®",
       "mfg_code": "6603",
       "brand_code": "SOUT"
@@ -388,7 +388,7 @@
       "brand_code": "LPSC"
     },
     "CertainTeed": {
-      "mfg_name": "CertainTeed Gypsum, Inc.",
+      "mfg_name": "CertainTeed LLC",
       "brand_name": "CertainTeed®",
       "mfg_code": "2765",
       "brand_code": "CERT"
