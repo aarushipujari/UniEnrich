@@ -11,7 +11,7 @@ flowchart TD
     Raw["Raw Sparse Industrial Row<br/>MPN / Unbranded Desc / Cryptic Text"] --> Hybrid["UniEnrich Multi-Stage Pipeline"]
     
     subgraph Sourcing["Sourcing & Disambiguation"]
-        Hybrid --> Web["Live Technical Web Sourcing<br/>Official Manufacturer Specs & Documentation"]
+        Hybrid --> Web["Auxiliary Web Sourcing Adapter - Optional<br/>Public Specs & Documentation Sourcing"]
         Hybrid --> Brand["General Dynamic N-Gram Entity Resolver<br/>Token Hygiene, RapidFuzz, Curated Master Brand Catalog"]
     end
     
@@ -41,7 +41,7 @@ flowchart TD
    - Supports Cloud LLM inference (`google-generativeai`, `openai`) when API keys are configured in the environment.
 
 3. **Grounded Spec Extraction & Physical Guardrails (`engine/inference_engine.py`)**:
-   - Extracts and normalizes factual dimensional, electrical, and physical specifications directly grounded in input text or official web documentation.
+   - Extracts and normalizes factual dimensional, electrical, and physical specifications directly grounded in input text or official documentation.
    - **Zero Factual Guessing**: Does not fabricate arbitrary numeric ratings (e.g. RPM or kerf) into catalog columns.
 
 4. **Multi-Channel Copywriting Synthesizer (`engine/copy_synthesizer.py`)**:
@@ -53,6 +53,9 @@ flowchart TD
 5. **Explainability & Human-in-the-Loop Governance (`engine/explainability.py` & `web/app.py`)**:
    - Multi-factor empirical confidence scoring ($0.0 - 1.0$) combining brand certainty, taxonomy specificity, and grounded attribute volume with cell-level provenance logging (`EXACT_ALIAS`, `GROUNDED_TEXT_EXTRACTION`, `WEB_SOURCING`, `TFIDF_VECTOR`).
    - Automatically routes unbranded, ambiguous, or low-confidence rows ($\le 0.80$) to a dedicated `NEEDS_HUMAN_REVIEW` queue.
+
+6. **Auxiliary Web Sourcing Adapter (`engine/web_enricher.py`)**:
+   - Best-effort external search adapter that retrieves auxiliary public documentation and extracts electrical, physical, and safety certification attributes (`UL`, `CSA`, `Energy Star`) when connectivity is available, with graceful zero-error degradation to offline ML when unavailable.
 
 ---
 
