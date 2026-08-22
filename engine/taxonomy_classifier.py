@@ -1,16 +1,42 @@
 """
 UniEnrich Universal Industrial Taxonomy & Product Type Classifier
-Classifies products across 40+ industrial categories and dynamically derives true product types.
-Never hallucinates fallbacks; marks ambiguous records as NEEDS_HUMAN_REVIEW.
+Combines high-speed deterministic regex with AI zero-shot semantic matching across 50+ categories.
+Never fabricates fallbacks; marks truly ambiguous records as NEEDS_HUMAN_REVIEW.
 """
 import os
 import json
 import re
-
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
+from .ai_classifier import semantic_zero_shot_classify
 
 # Dynamic Product Type Token Extractors
 PRODUCT_TYPE_EXTRACTORS = [
+    # Lighting & Bulbs (including BR40, PAR38, MR16, A19)
+    (r"\bbr40\b|\bbr30\b|\bbr20\b", "LED BR Reflector Bulb"),
+    (r"\bpar38\b|\bpar30\b|\bpar20\b|\bpar16\b", "LED PAR Flood Bulb"),
+    (r"\bmr16\b|\bmr11\b|\bgu10\b", "LED MR16 Spotlight Bulb"),
+    (r"\ba19\b|\ba21\b|\bst19\b|\bedison\b|\bcandle\b|\bcand\b|\bg25\b", "LED General Purpose Bulb"),
+    (r"\bt8\b|\bt5\b|\bt12\b|\blinear\s*tube\b", "LED Linear Tube"),
+    (r"led\s*bulb|incan|halogen|lamp|\bbulb\b", "LED Light Bulb"),
+    (r"wall\s*lt|wall\s*light|wall\s*sconce|sconce|vanity", "Wall Light Fixture"),
+    (r"bath\s*light", "Bath Light Fixture"),
+    (r"ceiling\s*lt|ceiling\s*light|flushmount", "Ceiling Light Fixture"),
+    (r"pendant\s*lt|pendant\s*light", "Pendant Light Fixture"),
+    (r"chandelier", "Chandelier Light Fixture"),
+    (r"down\s*light|downlight", "Recessed Downlight"),
+    (r"highbay|shop\s*light|strip\s*light|wrap\s*lt|flat\s*panel", "Commercial / Shop Light Fixture"),
+    (r"flash\s*light|headlight|work\s*light|clip\s*light", "Work Flashlight"),
+
+    # Pipe Fittings & Plumbing
+    (r"\bcplg\b|coupling", "Pipe Coupling"),
+    (r"elbow|90\s*deg\s*ell", "Pipe Elbow"),
+    (r"bushing|reducer\s*bushing", "Reducer Bushing"),
+    (r"pipe\s*nipple|\bnipple\b", "Pipe Nipple"),
+    (r"union|flange|pipe\s*tee", "Pipe Fitting"),
+
+    # Wire & Cable
+    (r"so\s*cord|soow|sjoow|portable\s*cord", "Portable SOOW Cord"),
+    (r"romex|nm-b|thhn|uf-b|triplex", "Electrical Wire / Cable"),
+
     # Sanders & Planers
     (r"belt\s*(?:and|&)\s*spindle\s*sander", "Belt & Spindle Sander"),
     (r"oscillating(?:edge)?\s*sander", "Oscillating Spindle Sander"),
@@ -95,17 +121,6 @@ PRODUCT_TYPE_EXTRACTORS = [
     (r"baluster", "Balusters"),
     (r"deck\s*joist\s*tape|joist\s*tape", "Deck Joist Flashing Tape"),
 
-    # Lighting & Bulbs
-    (r"led\s*bulb|incan|halogen|lamp|\bbulb\b", "LED Light Bulb"),
-    (r"wall\s*lt|wall\s*light|wall\s*sconce|sconce", "Wall Light Fixture"),
-    (r"bath\s*light", "Bath Light Fixture"),
-    (r"ceiling\s*lt|ceiling\s*light|flushmount", "Ceiling Light Fixture"),
-    (r"pendant\s*lt|pendant\s*light", "Pendant Light Fixture"),
-    (r"chandelier", "Chandelier Light Fixture"),
-    (r"down\s*light|downlight", "Recessed Downlight"),
-    (r"highbay|shop\s*light|strip\s*light|wrap\s*lt|flat\s*panel", "Commercial / Shop Light Fixture"),
-    (r"flash\s*light|headlight|work\s*light|clip\s*light", "Work Flashlight"),
-
     # Electrical Wiring & Power Distribution
     (r"outlet|receptacle|wall\s*tap", "Receptacle Outlet"),
     (r"dimmer", "Dimmer Switch"),
@@ -114,7 +129,7 @@ PRODUCT_TYPE_EXTRACTORS = [
     (r"wallplate|box\s*cover", "Wallplate / Box Cover"),
     (r"oct\s*box|square\s*box", "Electrical Junction Box"),
     (r"load\s*cntr|load\s*center", "Electrical Load Center / Panel"),
-    (r"cable|wire|triplex|so\s*cord", "Electrical Wire / Cable"),
+    (r"circuit\s*breaker|breaker", "Circuit Breaker"),
 
     # Appliances & Replacement Parts
     (r"dishwasher", "Dishwasher"),
@@ -152,6 +167,34 @@ PRODUCT_TYPE_EXTRACTORS = [
 
 # Taxonomy Category Mappings
 TAXONOMY_MAP = {
+    # Bulbs & Lighting
+    "LED BR Reflector Bulb": ("Electrical", "Lamps & Bulbs", "LED Bulbs", "Electrical>Lamps & Bulbs>LED Bulbs>Directional & Reflector Bulbs", "39101628"),
+    "LED PAR Flood Bulb": ("Electrical", "Lamps & Bulbs", "LED Bulbs", "Electrical>Lamps & Bulbs>LED Bulbs>PAR Flood Bulbs", "39101628"),
+    "LED MR16 Spotlight Bulb": ("Electrical", "Lamps & Bulbs", "LED Bulbs", "Electrical>Lamps & Bulbs>LED Bulbs>MR16 Spotlights", "39101628"),
+    "LED General Purpose Bulb": ("Electrical", "Lamps & Bulbs", "LED Bulbs", "Electrical>Lamps & Bulbs>LED Bulbs>Standard Bulbs", "39101628"),
+    "LED Linear Tube": ("Electrical", "Lamps & Bulbs", "Linear Tubes", "Electrical>Lamps & Bulbs>Linear Tubes", "39101605"),
+    "LED Light Bulb": ("Electrical", "Lamps & Bulbs", "LED Bulbs", "Electrical>Lamps & Bulbs>LED Bulbs", "39101628"),
+    "Wall Light Fixture": ("Electrical", "Lighting Fixtures", "Wall Sconces", "Electrical>Lighting Fixtures>Wall Lights", "39111500"),
+    "Bath Light Fixture": ("Electrical", "Lighting Fixtures", "Bath Vanity", "Electrical>Lighting Fixtures>Bath Vanity Lights", "39111500"),
+    "Ceiling Light Fixture": ("Electrical", "Lighting Fixtures", "Flush Mounts", "Electrical>Lighting Fixtures>Ceiling Lights", "39111500"),
+    "Pendant Light Fixture": ("Electrical", "Lighting Fixtures", "Pendants", "Electrical>Lighting Fixtures>Pendant Lights", "39111500"),
+    "Chandelier Light Fixture": ("Electrical", "Lighting Fixtures", "Chandeliers", "Electrical>Lighting Fixtures>Chandeliers", "39111500"),
+    "Recessed Downlight": ("Electrical", "Lighting Fixtures", "Downlights", "Electrical>Lighting Fixtures>Recessed Downlights", "39111500"),
+    "Commercial / Shop Light Fixture": ("Electrical", "Lighting Fixtures", "Commercial", "Electrical>Lighting Fixtures>Commercial Lighting", "39111500"),
+    "Work Flashlight": ("Electrical", "Portable Lighting", "Flashlights", "Electrical>Portable Lighting>Work Lights", "39111610"),
+    
+    # Pipe Fittings
+    "Pipe Coupling": ("Plumbing & Pumps", "Pipe, Tube & Hose Fittings", "Fittings", "Plumbing & Pumps>Pipe, Tube & Hose Fittings>Couplings", "40142315"),
+    "Pipe Elbow": ("Plumbing & Pumps", "Pipe, Tube & Hose Fittings", "Fittings", "Plumbing & Pumps>Pipe, Tube & Hose Fittings>Elbows", "40142315"),
+    "Reducer Bushing": ("Plumbing & Pumps", "Pipe, Tube & Hose Fittings", "Fittings", "Plumbing & Pumps>Pipe, Tube & Hose Fittings>Bushings", "40142315"),
+    "Pipe Nipple": ("Plumbing & Pumps", "Pipe, Tube & Hose Fittings", "Fittings", "Plumbing & Pumps>Pipe, Tube & Hose Fittings>Nipples", "40142315"),
+    "Pipe Fitting": ("Plumbing & Pumps", "Pipe, Tube & Hose Fittings", "Fittings", "Plumbing & Pumps>Pipe, Tube & Hose Fittings>Metallic Fittings", "40142315"),
+
+    # Wire & Cable
+    "Portable SOOW Cord": ("Electrical", "Wire & Cable", "Portable Cord", "Electrical>Wire & Cable>Portable Cords", "26121629"),
+    "Electrical Wire / Cable": ("Electrical", "Wire & Cable", "Building Wire", "Electrical>Wire & Cable>Electrical Cable", "26121600"),
+    "Circuit Breaker": ("Electrical", "Power Distribution", "Circuit Breakers", "Electrical>Power Distribution>Circuit Breakers", "39121601"),
+
     # Power Tools
     "Belt & Spindle Sander": ("Tools & Hardware", "Power Tools", "Sanders & Polishers", "Tools & Hardware>Power Tools>Sanders & Polishers>Spindle Sanders", "27112708"),
     "Oscillating Spindle Sander": ("Tools & Hardware", "Power Tools", "Sanders & Polishers", "Tools & Hardware>Power Tools>Sanders & Polishers>Spindle Sanders", "27112708"),
@@ -237,25 +280,6 @@ TAXONOMY_MAP = {
     "Masonry Mortar Mix": ("Building Materials", "Masonry & Concrete", "Mortar", "Building Materials>Masonry>Mortar Mixes", "30111500"),
     "Rainscreen Flashing": ("Building Materials", "Building Envelope", "Rainscreen", "Building Materials>Moisture Management>Rainscreen", "30151600"),
 
-    # Lighting & Electrical
-    "LED Light Bulb": ("Electrical", "Lamps & Bulbs", "LED Bulbs", "Electrical>Lamps & Bulbs>LED Bulbs", "39101628"),
-    "Wall Light Fixture": ("Electrical", "Lighting Fixtures", "Wall Sconces", "Electrical>Lighting Fixtures>Wall Lights", "39111500"),
-    "Bath Light Fixture": ("Electrical", "Lighting Fixtures", "Bath Vanity", "Electrical>Lighting Fixtures>Bath Vanity Lights", "39111500"),
-    "Ceiling Light Fixture": ("Electrical", "Lighting Fixtures", "Flush Mounts", "Electrical>Lighting Fixtures>Ceiling Lights", "39111500"),
-    "Pendant Light Fixture": ("Electrical", "Lighting Fixtures", "Pendants", "Electrical>Lighting Fixtures>Pendant Lights", "39111500"),
-    "Chandelier Light Fixture": ("Electrical", "Lighting Fixtures", "Chandeliers", "Electrical>Lighting Fixtures>Chandeliers", "39111500"),
-    "Recessed Downlight": ("Electrical", "Lighting Fixtures", "Downlights", "Electrical>Lighting Fixtures>Recessed Downlights", "39111500"),
-    "Commercial / Shop Light Fixture": ("Electrical", "Lighting Fixtures", "Commercial", "Electrical>Lighting Fixtures>Commercial Lighting", "39111500"),
-    "Work Flashlight": ("Electrical", "Portable Lighting", "Flashlights", "Electrical>Portable Lighting>Work Lights", "39111610"),
-    "Receptacle Outlet": ("Electrical", "Wiring Devices", "Outlets & Receptacles", "Electrical>Wiring Devices>Receptacles", "39121406"),
-    "Dimmer Switch": ("Electrical", "Wiring Devices", "Dimmers", "Electrical>Wiring Devices>Dimmers", "39122200"),
-    "Programmable Timer": ("Electrical", "Wiring Devices", "Timers", "Electrical>Wiring Devices>Timers", "39122200"),
-    "Wall Switch": ("Electrical", "Wiring Devices", "Switches", "Electrical>Wiring Devices>Wall Switches", "39122200"),
-    "Wallplate / Box Cover": ("Electrical", "Wiring Devices", "Wallplates", "Electrical>Wiring Devices>Wallplates", "39121300"),
-    "Electrical Junction Box": ("Electrical", "Enclosures & Boxes", "Junction Boxes", "Electrical>Enclosures & Boxes>Outlet Boxes", "39121300"),
-    "Electrical Load Center / Panel": ("Electrical", "Power Distribution", "Load Centers", "Electrical>Power Distribution>Load Centers", "39121101"),
-    "Electrical Wire / Cable": ("Electrical", "Wire & Cable", "Building Wire", "Electrical>Wire & Cable>Electrical Cable", "26121600"),
-
     # Appliances
     "Dishwasher": ("Appliances", "Large Appliances", "Dishwashers", "Appliances & Consumer Electronics>Kitchen Appliances>Built-In Dishwashers", "52141505"),
     "Dryer Heater Kit": ("Appliances", "Laundry Accessories", "Dryer Heating Elements", "Appliances & Consumer Electronics>Laundry Appliances>Dryer Replacement Parts", "52141602"),
@@ -281,18 +305,21 @@ TAXONOMY_MAP = {
 
 def classify_product(part_desc: str, mfg_part_num: str = "", raw_dept: str = "", raw_class: str = "", raw_fine: str = "") -> dict:
     """
-    Dynamically identifies product type and classifies into proper category taxonomy without hardcoded fallbacks.
+    Dynamically identifies product type and classifies into proper category taxonomy.
+    Executes:
+    1. Direct regular expression token extraction
+    2. Zero-shot AI semantic classification for long-tail industrial items
+    3. Strict fallback with is_fallback=True (marked for human review)
     """
     text = f"{part_desc} {mfg_part_num}".strip()
     
-    # 1. Match dynamic product type
+    # 1. Primary Regex Pattern Matching
     matched_type = None
     for pattern, p_type in PRODUCT_TYPE_EXTRACTORS:
         if re.search(pattern, text, re.IGNORECASE):
             matched_type = p_type
             break
 
-    # 2. Look up taxonomy for matched product type
     if matched_type and matched_type in TAXONOMY_MAP:
         dept, cls, fine, classpath, unspsc = TAXONOMY_MAP[matched_type]
         return {
@@ -303,23 +330,30 @@ def classify_product(part_desc: str, mfg_part_num: str = "", raw_dept: str = "",
             "Classpath": classpath,
             "UNSPSC": unspsc,
             "Product Name": matched_type,
-            "is_fallback": False
+            "is_fallback": False,
+            "provenance": "REGEX_PRODUCT_TYPE_MATCH"
         }
 
-    # 3. Honest, clean fallback for truly uncategorized items (NO dishwasher fabrication!)
-    clean_pname = "Hardware Product"
+    # 2. AI Semantic Zero-Shot Classification
+    ai_res = semantic_zero_shot_classify(part_desc, mfg_part_num)
+    if ai_res:
+        return ai_res
+
+    # 3. Honest fallback for truly uncategorized items (NO dishwasher fabrication!)
+    clean_pname = "Industrial Product"
     if text:
         tokens = text.split()
         if len(tokens) >= 2:
             clean_pname = f"{tokens[-2]} {tokens[-1]}".title()
 
     return {
-        "cat_key": "general_hardware",
-        "Dept": raw_dept or "Industrial & Commercial Supplies",
-        "Class": raw_class or "General Hardware",
-        "Fine": raw_fine or "Hardware Supplies",
-        "Classpath": "Industrial & Commercial Supplies>General Hardware>Hardware Supplies",
-        "UNSPSC": "31160000",
+        "cat_key": "uncategorized",
+        "Dept": raw_dept or "Uncategorized Supplies",
+        "Class": raw_class or "General Industrial",
+        "Fine": raw_fine or "Pending Review",
+        "Classpath": "Uncategorized Supplies>General Industrial>Pending Review",
+        "UNSPSC": "",
         "Product Name": clean_pname,
-        "is_fallback": True
+        "is_fallback": True,
+        "provenance": "FALLBACK_UNCATEGORIZED"
     }
