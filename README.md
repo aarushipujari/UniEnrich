@@ -12,7 +12,7 @@ flowchart TD
     
     subgraph Sourcing["Sourcing & Disambiguation"]
         Hybrid --> Web["Live Technical Web Sourcing<br/>Official Manufacturer Specs & Documentation"]
-        Hybrid --> Brand["General Multi-Stage Brand Resolver<br/>Token Hygiene, RapidFuzz, 27k Canonical Catalog"]
+        Hybrid --> Brand["General Dynamic N-Gram Entity Resolver<br/>Token Hygiene, RapidFuzz, 27k Canonical Catalog"]
     end
     
     subgraph NLP["Classification & NLP"]
@@ -30,10 +30,10 @@ flowchart TD
 ```
 
 ### Key Engineering Modules:
-1. **Multi-Stage Entity & Brand Resolver (`engine/brand_resolver.py`)**:
-   - Matches raw text, supplier tokens, and brand aliases against a 27,000+ brand dictionary using Jaro-Winkler and RapidFuzz token-set matching.
+1. **Dynamic N-Gram Entity & Brand Resolver (`engine/brand_resolver.py`)**:
+   - Extracts 1-gram, 2-gram, and 3-gram phrases dynamically across supplier descriptions and manufacturer names, matching them against the 27,000+ Master Brand index.
+   - **Zero Hardcoded Brand Lists**: Completely purged static brand lists; uses dynamic dictionary lookups and RapidFuzz token-set scoring.
    - Strips distributor trailing codes (e.g. `(APPDE)`, `(3658)`, `(VVAPP)`) and guarantees official legal trademark symbols (`®`, `™`) across 100% of resolved brands.
-   - **Zero SKU Overfitting**: Contains zero memorized part-number lists.
 
 2. **Hierarchical Taxonomy Classifier (`engine/taxonomy_classifier.py` & `engine/ai_agent.py`)**:
    - Uses weighted longest-match compound noun ranking and pre-classification color/noise stripping to prevent category collisions.
@@ -63,11 +63,11 @@ flowchart TD
 
 [A. GROUND TRUTH ACCURACY (100% Disjoint Held-Out Dataset - 200 Records)]
   * Records Evaluated:                       200 (0 overlapping MPNs with sample_input.csv)
-  * Exact Brand Name Match:                  92.0%
-  * Exact Legal Manufacturer Match:          91.5%
-  * Classpath Hierarchy Match:                85.5%
-  * UNSPSC Commodity Match:                  97.0%
-  * Digital Asset Spec Naming:               84.5%
+  * Exact Brand Name Match:                  89.5%
+  * Exact Legal Manufacturer Match:          93.5%
+  * Classpath Hierarchy Match:                83.5%
+  * UNSPSC Commodity Match:                  90.0%
+  * Digital Asset Spec Naming:               82.5%
 
 [B. SCALE DATASET QUALITY & COMPLIANCE (1,000 Catalog Rows)]
   * Total Records Processed:                 1,000
@@ -76,8 +76,8 @@ flowchart TD
   * Invoice Uppercase Compliance:            100.0%
   * Mobile Ceiling Compliance (≤80):         100.0%
   * Brand Resolution Rate:                   97.1%
-  * Auto-Verified Records:                   660
-  * Human Review Queue Flagged:              340
+  * Auto-Verified Records:                   694
+  * Human Review Queue Flagged:              306
 ```
 
 ---
