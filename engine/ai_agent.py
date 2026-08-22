@@ -3,11 +3,12 @@ UniEnrich Generative AI & Semantic NLP Reasoning Engine
 Implements a Hybrid Architecture combining:
 1. Google Gemini 1.5 Flash (google.generativeai) & OpenAI GPT-4o-mini (openai)
 2. Local Scikit-Learn TF-IDF N-Gram Vector Classifier (Zero-shot offline ML fallback)
-3. Deterministic Guardrails & Explainability Provenance
+3. Transparent Error Logging & Explainability Provenance
 """
 import os
 import json
 import re
+import sys
 import numpy as np
 from dotenv import load_dotenv
 
@@ -153,9 +154,11 @@ def predict_ml_taxonomy(text: str, mpn: str = "") -> dict | None:
 def run_generative_enrichment(raw_desc: str, mpn: str, supplier_manuf: str, raw_brand: str) -> dict | None:
     """
     Calls Google Gemini or OpenAI with structured schema to reason over sparse industrial rows.
+    Logs any runtime API or network errors transparently to the console.
     """
     gemini_key = os.environ.get("GEMINI_API_KEY", "").strip()
     openai_key = os.environ.get("OPENAI_API_KEY", "").strip()
+    api_error = None
 
     prompt = f"""You are a master industrial catalog content specialist for Unilog.
 Analyze the following sparse/messy distributor product row and extract standard commerce-ready intelligence:
@@ -194,7 +197,8 @@ Return a valid JSON object matching these exact keys:
             data["provenance"] = "GEMINI_GENAI_1.5_FLASH"
             return data
         except Exception as e:
-            pass
+            api_error = f"Gemini API invocation failed: {e}"
+            print(f"[AI_AGENT WARNING] {api_error}", file=sys.stderr)
 
     # 2. Try OpenAI if key available
     if openai_key:
@@ -210,11 +214,16 @@ Return a valid JSON object matching these exact keys:
             data["provenance"] = "OPENAI_GPT4O_MINI"
             return data
         except Exception as e:
-            pass
+            api_error = f"OpenAI API invocation failed: {e}"
+            print(f"[AI_AGENT WARNING] {api_error}", file=sys.stderr)
 
     # 3. Graceful ML Neural / Vector Fallback
     ml_res = predict_ml_taxonomy(raw_desc, mpn)
     if ml_res:
+        reasoning = f"Classified via local Scikit-Learn TF-IDF vector embeddings with cosine similarity confidence {ml_res['confidence']}."
+        if api_error:
+            reasoning += f" (Note: Cloud LLM bypassed due to error: {api_error})"
+            
         return {
             "product_type": ml_res["Product Name"],
             "brand_name": raw_brand or supplier_manuf,
@@ -227,14 +236,14 @@ Return a valid JSON object matching these exact keys:
             "technical_specs": {},
             "feature_highlights": [f"Standard {ml_res['Product Name']}"],
             "confidence_score": ml_res["confidence"],
-            "reasoning_summary": f"Classified via local Scikit-Learn TF-IDF vector embeddings with cosine similarity confidence {ml_res['confidence']}.",
-            "provenance": ml_res["provenance"]
+            "reasoning_summary": reasoning,
+            "provenance": ml_res["provenance"],
+            "api_error": api_error
         }
 
     return None
 
 if __name__ == '__main__':
-    import sys
     test_desc = sys.argv[1] if len(sys.argv) > 1 else "D519127 Heater Kit"
     print(f"Testing UniEnrich AI Reasoner on: '{test_desc}'...")
     res = run_generative_enrichment(test_desc, "D519127", "Alliance Laundry Systems", "Speed Queen")

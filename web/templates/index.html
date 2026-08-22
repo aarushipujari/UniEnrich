@@ -54,8 +54,13 @@
         </div>
         <div class="px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 flex items-center space-x-1.5">
           <i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-purple-400"></i>
-          <span class="text-slate-300 font-medium">Zero Hallucinated Defaults</span>
+          <span class="text-slate-300 font-medium">Zero Speculative Guessing</span>
         </div>
+        <button onclick="openApiKeyModal()" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-900/60 to-cyan-900/60 hover:from-purple-800 hover:to-cyan-800 border border-purple-500/40 flex items-center space-x-1.5 text-white transition-all shadow-md active:scale-95">
+          <i data-lucide="key" class="w-3.5 h-3.5 text-cyan-300"></i>
+          <span id="header-engine-status" class="text-xs font-semibold text-cyan-200">AI: Local TF-IDF</span>
+          <i data-lucide="settings" class="w-3 h-3 text-slate-400"></i>
+        </button>
       </div>
     </div>
 
@@ -657,10 +662,122 @@
       renderBatchTable(filtered);
     }
 
-    // Initialize with preset 0 on load
+    // --- API Key Management ---
+    function openApiKeyModal() {
+      document.getElementById('modal-api-key').classList.remove('hidden');
+      document.getElementById('modal-api-key').classList.add('flex');
+    }
+
+    function closeApiKeyModal() {
+      document.getElementById('modal-api-key').classList.add('hidden');
+      document.getElementById('modal-api-key').classList.remove('flex');
+    }
+
+    async function checkApiKeyStatus() {
+      try {
+        const resp = await fetch('/api/get-api-key-status');
+        const data = await resp.json();
+        const headerBadge = document.getElementById('header-engine-status');
+        const modalStatus = document.getElementById('active-engine-modal-label');
+        
+        if (data.has_gemini) {
+          headerBadge.innerText = 'AI: Gemini 1.5 Flash';
+          headerBadge.className = 'text-xs font-semibold text-emerald-300';
+          if (modalStatus) modalStatus.innerHTML = '<span class="text-emerald-400 font-bold">● Active: Google Gemini 1.5 Flash</span>';
+        } else if (data.has_openai) {
+          headerBadge.innerText = 'AI: GPT-4o-mini';
+          headerBadge.className = 'text-xs font-semibold text-cyan-300';
+          if (modalStatus) modalStatus.innerHTML = '<span class="text-cyan-400 font-bold">● Active: OpenAI GPT-4o-mini</span>';
+        } else {
+          headerBadge.innerText = 'AI: Local TF-IDF';
+          headerBadge.className = 'text-xs font-semibold text-slate-300';
+          if (modalStatus) modalStatus.innerHTML = '<span class="text-amber-400 font-bold">● Active: Local Scikit-Learn TF-IDF (Offline)</span>';
+        }
+      } catch (err) {
+        console.error("Failed to fetch API key status", err);
+      }
+    }
+
+    async function saveApiKey() {
+      const provider = document.getElementById('api-provider-select').value;
+      const apiKey = document.getElementById('api-key-input').value.trim();
+      const statusMsg = document.getElementById('api-save-status');
+
+      if (!apiKey) {
+        statusMsg.innerHTML = '<span class="text-amber-400">Please enter an API key.</span>';
+        return;
+      }
+
+      statusMsg.innerHTML = '<span class="text-cyan-400">Updating runtime configuration...</span>';
+      try {
+        const resp = await fetch('/api/set-api-key', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ provider: provider, api_key: apiKey })
+        });
+        const res = await resp.json();
+        statusMsg.innerHTML = `<span class="text-emerald-400 font-semibold">${res.message}</span>`;
+        await checkApiKeyStatus();
+        setTimeout(closeApiKeyModal, 1500);
+      } catch (err) {
+        statusMsg.innerHTML = `<span class="text-rose-400">Error saving key: ${err}</span>`;
+      }
+    }
+
+    // Initialize with preset 0 on load and check API key status
     window.onload = () => {
       loadPreset(0);
+      checkApiKeyStatus();
     };
   </script>
+
+  <!-- API KEY CONFIGURATION MODAL -->
+  <div id="modal-api-key" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400">
+            <i data-lucide="key" class="w-4 h-4"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">AI Reasoner Key Configuration</h3>
+        </div>
+        <button onclick="closeApiKeyModal()" class="text-slate-400 hover:text-white transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="text-xs text-slate-300 space-y-2">
+        <p>Configure a Cloud LLM API key for zero-shot structured spec reasoning. Without an API key, UniEnrich operates offline using its local Scikit-Learn TF-IDF vector classifier.</p>
+        <div id="active-engine-modal-label" class="p-2.5 rounded-lg bg-slate-800 border border-slate-700">
+          <span class="text-slate-400">Checking active status...</span>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">AI Provider</label>
+          <select id="api-provider-select" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+            <option value="gemini">Google Gemini (Recommended - 1.5 Flash)</option>
+            <option value="openai">OpenAI (GPT-4o-mini)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">API Key</label>
+          <input type="password" id="api-key-input" placeholder="Paste your API key here (e.g. AIzaSy... or sk-...)" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white mono focus:outline-none focus:border-cyan-400">
+        </div>
+        <div id="api-save-status" class="text-xs"></div>
+      </div>
+
+      <div class="flex items-center justify-end space-x-3 pt-2">
+        <button onclick="closeApiKeyModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 transition-colors">
+          Cancel
+        </button>
+        <button onclick="saveApiKey()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-xs font-bold text-white shadow-lg shadow-cyan-500/25 transition-all">
+          Save & Activate Key
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
