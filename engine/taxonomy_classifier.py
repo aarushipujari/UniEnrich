@@ -1,16 +1,42 @@
 """
 UniEnrich Universal Industrial Taxonomy & Product Type Classifier
-Employs Longest-Match Compound-Noun Specificity Scoring so specific compound terms
-(e.g., 'Smoke & CO Alarm') always override broad feature modifiers (e.g., 'Battery').
+Employs Longest-Match Compound-Noun Specificity Scoring and Clean NLP Noun-Phrase Fallbacks.
 """
 import os
 import json
 import re
 from .ai_classifier import semantic_zero_shot_classify
+from .ai_agent import predict_ml_taxonomy
 
-# Weighted & Ordered Product Type Extractors (Pattern, Product Type, Priority Score)
+# Dynamic Product Type Extractors (Pattern, Product Type, Priority Score)
 PRODUCT_TYPE_EXTRACTORS = [
-    # Tier 1: Safety & Alarms (High Specificity)
+    # Mason Line & Layout Tools (High Priority to prevent "Line" colliding with Laser Level!)
+    (r"mason\s*line|chalk\s*line|chalk\s*reel|mason\s*twine", "Mason Line & Chalk Reel", 100),
+    (r"cross\s*line\s*laser|line\s*laser|laser\s*level|spot\s*laser", "Cross Line Laser", 95),
+    (r"rafter\s*square|t-square|framing\s*square", "Rafter Square", 95),
+    (r"tape\s*measure|measuring\s*tape", "Tape Measure", 95),
+    (r"caliper|bigcal", "Caliper Measuring Tool", 95),
+
+    # Decking & Railing (Dimension & Profile Patterns: 1x12, 1x6, 5/4x6)
+    (r"\b1x(?:8|10|12)\b.*(?:fascia|lineage|azek|trex|deck)", "Fascia Board", 98),
+    (r"\b(?:1x6|5/4x6|1x4)\b.*(?:lineage|azek|trex|transcend|enhance|decking|deck)", "Composite Deck Board", 98),
+    (r"decking|deck\s*board|vintage\s*azek|transcend|lineage", "Composite Deck Board", 90),
+    (r"fascia\s*board|fascia", "Fascia Board", 90),
+    (r"post\s*wrap", "Post Wrap", 95),
+    (r"post\s*sleeve", "Post Sleeve", 95),
+    (r"post\s*trim|post\s*cap", "Post Trim & Cap", 95),
+    (r"rail\s*kit|railing\s*panel", "Railing Kit", 95),
+    (r"baluster", "Balusters", 90),
+    (r"deck\s*joist\s*tape|joist\s*tape", "Deck Joist Flashing Tape", 95),
+
+    # Wet/Dry Vacs & Shop Machinery
+    (r"wet\s*dry\s*shop\s*vac|wet\s*dry\s*vac|shop\s*vac|dust\s*extractor", "Wet/Dry Shop Vacuum", 100),
+    (r"air\s*compressor|compressor", "Air Compressor", 95),
+    (r"pressure\s*washer", "Pressure Washer", 95),
+    (r"generator|inverter\s*generator", "Portable Generator", 95),
+    (r"welder|mig\s*welder|tig\s*welder", "Arc Welder", 95),
+
+    # Safety & Alarms
     (r"smoke\s*&\s*co\s*alarm|smoke\s*and\s*carbon\s*monoxide|smoke\s*alarm|fire\s*alarm\s*detector", "Smoke & CO Alarm", 100),
     (r"fire\s*extinguisher", "Fire Extinguisher", 100),
     (r"hearing\s*protection|earmuffs|hearing\s*protector", "Hearing Protection Earmuffs", 95),
@@ -19,25 +45,17 @@ PRODUCT_TYPE_EXTRACTORS = [
     (r"kneeling\s*pad", "Kneeling Pad", 95),
     (r"safety\s*glasses", "Safety Glasses", 90),
 
-    # Tier 2: Building Envelope, Drywall & Decking (High Specificity)
+    # Building Envelope & Drywall
     (r"gypsum\s*board|drywall|easi-lite|sheetrock", "Drywall Gypsum Board", 95),
-    (r"deck\s*joist\s*tape|joist\s*tape", "Deck Joist Flashing Tape", 95),
     (r"rainscreen|rain\s*screen\s*flashing", "Rainscreen Flashing", 95),
     (r"masonry\s*mortar|mortar\s*mix", "Masonry Mortar Mix", 95),
-    (r"post\s*wrap", "Post Wrap", 90),
-    (r"post\s*sleeve", "Post Sleeve", 90),
-    (r"post\s*trim|post\s*cap", "Post Trim & Cap", 90),
-    (r"rail\s*kit|railing\s*panel", "Railing Kit", 90),
-    (r"baluster", "Balusters", 85),
-    (r"decking|deck\s*board|vintage\s*azek|transcend", "Composite Deck Board", 85),
-    (r"fascia\s*board|fascia", "Fascia Board", 85),
     (r"smart\s*lap|hardieplank|hardiepanel|engineered\s*siding", "Siding Plank / Panel", 85),
     (r"soffit\s*panel|smart\s*vented", "Soffit Panel", 85),
     (r"skylight|skylt", "Roof Skylight", 85),
     (r"patio\s*dr|patio\s*door|access\s*door", "Patio / Access Door", 85),
     (r"threshold", "Door Threshold", 80),
 
-    # Tier 3: Sanders, Saws, Planers, Routers (Specific Compound Nouns)
+    # Sanders & Woodworking Machinery
     (r"belt\s*(?:and|&)\s*spindle\s*sander", "Belt & Spindle Sander", 95),
     (r"oscillating(?:edge)?\s*sander", "Oscillating Spindle Sander", 95),
     (r"random\s*orbit\s*sander", "Random Orbital Sander", 95),
@@ -65,7 +83,7 @@ PRODUCT_TYPE_EXTRACTORS = [
     (r"jigsaw|jig\s*saw", "Jig Saw", 90),
     (r"recip(?:rocating)?\s*saw", "Reciprocating Saw", 90),
 
-    # Drills & Drivers
+    # Drills & Accessories
     (r"hammer\s*drill", "Hammer Drill", 90),
     (r"impact\s*driver", "Impact Driver", 90),
     (r"impact\s*wrench", "Impact Wrench", 90),
@@ -100,7 +118,7 @@ PRODUCT_TYPE_EXTRACTORS = [
     (r"cut[- ]?off\s*disc|cut[- ]?off\s*wheel", "Cut-Off Disc", 90),
     (r"cut\s*and\s*grind|grinding\s*wheel", "Grinding Wheel", 90),
 
-    # Lighting & Bulbs
+    # Bulbs & Electrical
     (r"\bbr40\b|\bbr30\b|\bbr20\b", "LED BR Reflector Bulb", 95),
     (r"\bpar38\b|\bpar30\b|\bpar20\b|\bpar16\b", "LED PAR Flood Bulb", 95),
     (r"\bmr16\b|\bmr11\b|\bgu10\b", "LED MR16 Spotlight Bulb", 95),
@@ -115,8 +133,6 @@ PRODUCT_TYPE_EXTRACTORS = [
     (r"down\s*light|downlight", "Recessed Downlight", 85),
     (r"highbay|shop\s*light|strip\s*light|wrap\s*lt|flat\s*panel", "Commercial / Shop Light Fixture", 85),
     (r"flash\s*light|headlight|work\s*light|clip\s*light", "Work Flashlight", 80),
-
-    # Electrical & Plumbing
     (r"circuit\s*breaker|tandem\s*breaker", "Circuit Breaker", 95),
     (r"portable\s*so\s*cord|soow|sjoow|so\s*cord", "Portable SOOW Cord", 95),
     (r"romex|nm-b|thhn|uf-b|triplex\s*wire", "Electrical Wire / Cable", 90),
@@ -145,6 +161,38 @@ PRODUCT_TYPE_EXTRACTORS = [
 
 # Taxonomy Category Mappings
 TAXONOMY_MAP = {
+    # Layout & Measuring Tools
+    "Mason Line & Chalk Reel": ("Tools & Hardware", "Hand & Measuring Tools", "Marking & Layout Tools", "Tools & Hardware>Measuring & Layout Tools>Chalk & Mason Lines", "27111800"),
+    "Cross Line Laser": ("Tools & Hardware", "Hand & Measuring Tools", "Lasers & Levels", "Tools & Hardware>Measuring & Layout Tools>Laser Levels", "27111802"),
+    "Rafter Square": ("Tools & Hardware", "Hand & Measuring Tools", "Squares", "Tools & Hardware>Measuring & Layout Tools>Squares", "27111800"),
+    "Tape Measure": ("Tools & Hardware", "Hand & Measuring Tools", "Tape Measures", "Tools & Hardware>Measuring & Layout Tools>Tape Measures", "27111801"),
+    "Caliper Measuring Tool": ("Tools & Hardware", "Hand & Measuring Tools", "Precision Measurement", "Tools & Hardware>Measuring & Layout Tools>Calipers", "27111800"),
+
+    # Building Materials & Decking
+    "Composite Deck Board": ("Building Materials", "Decking & Railing", "Deck Boards", "Building Materials>Decking & Railing>Deck Boards", "30103600"),
+    "Fascia Board": ("Building Materials", "Decking & Railing", "Fascia", "Building Materials>Decking & Railing>Fascia Boards", "30103600"),
+    "Railing Kit": ("Building Materials", "Decking & Railing", "Railing Kits", "Building Materials>Decking & Railing>Railing Kits", "30103601"),
+    "Post Wrap": ("Building Materials", "Decking & Railing", "Post Wraps", "Building Materials>Decking & Railing>Post Wraps", "30103601"),
+    "Post Sleeve": ("Building Materials", "Decking & Railing", "Post Sleeves", "Building Materials>Decking & Railing>Post Sleeves", "30103601"),
+    "Post Trim & Cap": ("Building Materials", "Decking & Railing", "Post Accessories", "Building Materials>Decking & Railing>Post Caps & Trim", "30103601"),
+    "Balusters": ("Building Materials", "Decking & Railing", "Balusters", "Building Materials>Decking & Railing>Balusters", "30103601"),
+    "Deck Joist Flashing Tape": ("Building Materials", "Waterproofing", "Joist Tape", "Building Materials>Waterproofing>Flashing Tapes", "30151600"),
+    "Drywall Gypsum Board": ("Building Materials", "Drywall & Plaster", "Drywall Panels", "Building Materials>Drywall & Gypsum>Panels", "30161500"),
+    "Siding Plank / Panel": ("Building Materials", "Siding & Trim", "Planks", "Building Materials>Siding>Engineered Siding", "30151800"),
+    "Soffit Panel": ("Building Materials", "Siding & Trim", "Soffit", "Building Materials>Siding>Soffit Panels", "30151800"),
+    "Roof Skylight": ("Building Materials", "Doors & Windows", "Skylights", "Building Materials>Windows & Doors>Skylights", "30171600"),
+    "Patio / Access Door": ("Building Materials", "Doors & Windows", "Doors", "Building Materials>Windows & Doors>Doors", "30171500"),
+    "Door Threshold": ("Building Materials", "Doors & Windows", "Hardware", "Building Materials>Door Hardware>Thresholds", "30171500"),
+    "Masonry Mortar Mix": ("Building Materials", "Masonry & Concrete", "Mortar", "Building Materials>Masonry>Mortar Mixes", "30111500"),
+    "Rainscreen Flashing": ("Building Materials", "Building Envelope", "Rainscreen", "Building Materials>Moisture Management>Rainscreen", "30151600"),
+
+    # Vacuums & Equipment
+    "Wet/Dry Shop Vacuum": ("Tools & Hardware", "Cleaning & Janitorial Tools", "Shop Vacuums", "Tools & Hardware>Cleaning Equipment>Wet Dry Vacuums", "47121602"),
+    "Air Compressor": ("Tools & Hardware", "Pneumatic Tools", "Air Compressors", "Tools & Hardware>Pneumatic Tools>Air Compressors", "40151601"),
+    "Pressure Washer": ("Tools & Hardware", "Cleaning Equipment", "Pressure Washers", "Tools & Hardware>Cleaning Equipment>Pressure Washers", "47121800"),
+    "Portable Generator": ("Electrical", "Power Generation", "Generators", "Electrical>Generators>Portable Generators", "26111601"),
+    "Arc Welder": ("Tools & Hardware", "Welding & Soldering", "Welders", "Tools & Hardware>Welding Equipment>Arc Welders", "23271400"),
+
     # Safety
     "Smoke & CO Alarm": ("Safety & Security", "Alarms & Detectors", "Smoke Alarms", "Safety & Security>Alarms & Warnings>Smoke Detectors", "46191500"),
     "Fire Extinguisher": ("Safety & Security", "Fire Protection", "Extinguishers", "Safety & Security>Fire Protection>Fire Extinguishers", "46191601"),
@@ -154,25 +202,7 @@ TAXONOMY_MAP = {
     "Kneeling Pad": ("Safety & Security", "Ergonomics", "Kneeling Pads", "Safety & Security>Ergonomics>Kneeling Pads", "46181500"),
     "Safety Glasses": ("Safety & Security", "Personal Protective Equipment", "Eye Protection", "Safety & Security>Personal Protective Equipment>Safety Glasses", "46181802"),
 
-    # Building Materials
-    "Drywall Gypsum Board": ("Building Materials", "Drywall & Plaster", "Drywall Panels", "Building Materials>Drywall & Gypsum>Panels", "30161500"),
-    "Deck Joist Flashing Tape": ("Building Materials", "Waterproofing", "Joist Tape", "Building Materials>Waterproofing>Flashing Tapes", "30151600"),
-    "Rainscreen Flashing": ("Building Materials", "Building Envelope", "Rainscreen", "Building Materials>Moisture Management>Rainscreen", "30151600"),
-    "Masonry Mortar Mix": ("Building Materials", "Masonry & Concrete", "Mortar", "Building Materials>Masonry>Mortar Mixes", "30111500"),
-    "Post Wrap": ("Building Materials", "Decking & Railing", "Post Wraps", "Building Materials>Decking & Railing>Post Wraps", "30103601"),
-    "Post Sleeve": ("Building Materials", "Decking & Railing", "Post Sleeves", "Building Materials>Decking & Railing>Post Sleeves", "30103601"),
-    "Post Trim & Cap": ("Building Materials", "Decking & Railing", "Post Accessories", "Building Materials>Decking & Railing>Post Caps & Trim", "30103601"),
-    "Railing Kit": ("Building Materials", "Decking & Railing", "Railing Kits", "Building Materials>Decking & Railing>Railing Kits", "30103601"),
-    "Balusters": ("Building Materials", "Decking & Railing", "Balusters", "Building Materials>Decking & Railing>Balusters", "30103601"),
-    "Composite Deck Board": ("Building Materials", "Decking & Railing", "Deck Boards", "Building Materials>Decking & Railing>Deck Boards", "30103600"),
-    "Fascia Board": ("Building Materials", "Decking & Railing", "Fascia", "Building Materials>Decking & Railing>Fascia Boards", "30103600"),
-    "Siding Plank / Panel": ("Building Materials", "Siding & Trim", "Planks", "Building Materials>Siding>Engineered Siding", "30151800"),
-    "Soffit Panel": ("Building Materials", "Siding & Trim", "Soffit", "Building Materials>Siding>Soffit Panels", "30151800"),
-    "Roof Skylight": ("Building Materials", "Doors & Windows", "Skylights", "Building Materials>Windows & Doors>Skylights", "30171600"),
-    "Patio / Access Door": ("Building Materials", "Doors & Windows", "Doors", "Building Materials>Windows & Doors>Doors", "30171500"),
-    "Door Threshold": ("Building Materials", "Doors & Windows", "Hardware", "Building Materials>Door Hardware>Thresholds", "30171500"),
-
-    # Sanders & Woodworking Machinery
+    # Sanders & Saws
     "Belt & Spindle Sander": ("Tools & Hardware", "Power Tools", "Sanders & Polishers", "Tools & Hardware>Power Tools>Sanders & Polishers>Spindle Sanders", "27112708"),
     "Oscillating Spindle Sander": ("Tools & Hardware", "Power Tools", "Sanders & Polishers", "Tools & Hardware>Power Tools>Sanders & Polishers>Spindle Sanders", "27112708"),
     "Random Orbital Sander": ("Tools & Hardware", "Power Tools", "Sanders & Polishers", "Tools & Hardware>Power Tools>Sanders & Polishers>Random Orbital Sanders", "27112708"),
@@ -184,8 +214,6 @@ TAXONOMY_MAP = {
     "Router Bit": ("Tools & Hardware", "Power Tool Accessories", "Router Bits", "Tools & Hardware>Power Tool Accessories>Router Bits", "27112800"),
     "Band File": ("Tools & Hardware", "Power Tools", "Sanders & Polishers", "Tools & Hardware>Power Tools>Sanders & Polishers>Band Files", "27112708"),
     "Polisher": ("Tools & Hardware", "Power Tools", "Sanders & Polishers", "Tools & Hardware>Power Tools>Sanders & Polishers>Polishers", "27112708"),
-
-    # Saws & Blades
     "Cement Track Saw Blade": ("Tools & Hardware", "Power Tool Accessories", "Saw Blades", "Tools & Hardware>Power Tool Accessories>Saw Blades>Specialty Blades", "27112802"),
     "Track Saw Blade": ("Tools & Hardware", "Power Tool Accessories", "Saw Blades", "Tools & Hardware>Power Tool Accessories>Saw Blades>Track Saw Blades", "27112802"),
     "Diamond Tile Blade": ("Tools & Hardware", "Power Tool Accessories", "Diamond Blades", "Tools & Hardware>Power Tool Accessories>Diamond Blades", "27112802"),
@@ -200,7 +228,7 @@ TAXONOMY_MAP = {
     "Jig Saw": ("Tools & Hardware", "Power Tools", "Saws", "Tools & Hardware>Power Tools>Saws>Jig Saws", "27112700"),
     "Reciprocating Saw": ("Tools & Hardware", "Power Tools", "Saws", "Tools & Hardware>Power Tools>Saws>Reciprocating Saws", "27112700"),
 
-    # Drills & Accessories
+    # Drills & Fasteners
     "Hammer Drill": ("Tools & Hardware", "Power Tools", "Drills & Drivers", "Tools & Hardware>Power Tools>Drills & Drivers>Hammer Drills", "27112703"),
     "Impact Driver": ("Tools & Hardware", "Power Tools", "Drills & Drivers", "Tools & Hardware>Power Tools>Drills & Drivers>Impact Drivers", "27112703"),
     "Impact Wrench": ("Tools & Hardware", "Power Tools", "Drills & Drivers", "Tools & Hardware>Power Tools>Impact Wrenches", "27112703"),
@@ -276,11 +304,32 @@ TAXONOMY_MAP = {
     "Toaster": ("Appliances", "Small Appliances", "Toasters", "Appliances & Consumer Electronics>Small Appliances>Toasters", "52141527")
 }
 
+NOISE_WORDS = {
+    "model", "type", "item", "series", "version", "part", "brand", "pack", "display", 
+    "only", "box", "case", "assorted", "unit", "spec", "industrial", "standard", "heavy", "duty"
+}
+
+def clean_fallback_noun_phrase(part_desc: str, mfg_part_num: str) -> str:
+    desc = part_desc or ""
+    if mfg_part_num:
+        desc = re.sub(rf"\b{re.escape(mfg_part_num)}\b", "", desc, flags=re.IGNORECASE)
+        
+    clean = re.sub(r'\b\d+(?:[-/.]\d+)?\s*(?:in|ft|v|w|a|rpm|dba|gal|gallon|hp|amp|volt|watt|pc|pk)\b', '', desc, flags=re.IGNORECASE)
+    clean = re.sub(r'[\"\'#\-/\(\)]', ' ', clean)
+    clean = re.sub(r'\b[a-z0-9]*\d+[a-z0-9]*\b', '', clean, flags=re.IGNORECASE)
+    clean = re.sub(r'\s+', ' ', clean).strip()
+    
+    raw_tokens = clean.split()
+    tokens = [t for t in raw_tokens if t.lower() not in NOISE_WORDS and len(t) > 1]
+    
+    if len(tokens) >= 2:
+        return f"{tokens[-2]} {tokens[-1]}".title()
+    elif len(tokens) == 1:
+        return f"{tokens[0]} Equipment".title()
+        
+    return "Industrial Product"
+
 def classify_product(part_desc: str, mfg_part_num: str = "", raw_dept: str = "", raw_class: str = "", raw_fine: str = "") -> dict:
-    """
-    Dynamically identifies product type using Longest-Match Specificity Scoring.
-    Ensures compound nouns ('Smoke & CO Alarm') always win over feature words ('Battery').
-    """
     text = f"{part_desc} {mfg_part_num}".strip()
     
     # 1. Multi-Candidate Match with Specificity Ranking
@@ -292,7 +341,6 @@ def classify_product(part_desc: str, mfg_part_num: str = "", raw_dept: str = "",
         m = re.search(pattern, text, re.IGNORECASE)
         if m:
             matched_len = len(m.group(0))
-            # Rank primarily by rule priority, secondarily by matched string length
             total_rank = priority * 100 + matched_len
             if total_rank > (best_priority * 100 + best_match_len):
                 best_priority = priority
@@ -313,17 +361,13 @@ def classify_product(part_desc: str, mfg_part_num: str = "", raw_dept: str = "",
             "provenance": "REGEX_LONG_MATCH_PRIORITY"
         }
 
-    # 2. AI Semantic Zero-Shot Classification (Word-Boundary Protected)
-    ai_res = semantic_zero_shot_classify(part_desc, mfg_part_num)
-    if ai_res:
-        return ai_res
+    # 2. Local Scikit-Learn TF-IDF N-Gram Vector Classifier
+    ml_res = predict_ml_taxonomy(part_desc, mfg_part_num)
+    if ml_res:
+        return ml_res
 
-    # 3. Clean fallback for truly unknown items
-    clean_pname = "Industrial Product"
-    if text:
-        tokens = text.split()
-        if len(tokens) >= 2:
-            clean_pname = f"{tokens[-2]} {tokens[-1]}".title()
+    # 3. Clean fallback
+    clean_pname = clean_fallback_noun_phrase(part_desc, mfg_part_num)
 
     return {
         "cat_key": "uncategorized",

@@ -120,7 +120,20 @@
     "national nail corp": "National Nail",
     "cmt usa inc": "CMT",
     "jpw industries": "JET",
-    "king canada inc": "King Canada"
+    "king canada inc": "King Canada",
+    "ridgid": "RIDGID",
+    "ridge tool company": "RIDGID",
+    "robert bosch tool corporation": "Bosch",
+    "hilti": "Hilti",
+    "hilti, inc.": "Hilti",
+    "metabo": "Metabo",
+    "koki holdings america ltd.": "Metabo",
+    "klein tools": "Klein Tools",
+    "klein tools, inc.": "Klein Tools",
+    "greenlee": "Greenlee",
+    "greenlee tools, inc.": "Greenlee",
+    "stanley": "Stanley",
+    "stanley black & decker, inc.": "Stanley"
   },
   "canonical": {
     "Milwaukee": {
@@ -316,10 +329,10 @@
       "brand_code": "DREM"
     },
     "Bosch": {
-      "mfg_name": "Robert Bosch Tool Corporation",
       "brand_name": "Bosch®",
-      "mfg_code": "6564",
-      "brand_code": "BOSC"
+      "mfg_name": "Robert Bosch Tool Corporation",
+      "brand_code": "BOSC",
+      "mfg_code": "BOSCH"
     },
     "Oliver Machinery": {
       "mfg_name": "Oliver Machinery Company",
@@ -536,6 +549,42 @@
       "brand_name": "King Canada®",
       "mfg_code": "KINCA",
       "brand_code": "KING"
+    },
+    "RIDGID": {
+      "brand_name": "RIDGID®",
+      "mfg_name": "Ridge Tool Company",
+      "brand_code": "RIDG",
+      "mfg_code": "RIDGE"
+    },
+    "Hilti": {
+      "brand_name": "Hilti®",
+      "mfg_name": "Hilti, Inc.",
+      "brand_code": "HILT",
+      "mfg_code": "HILTI"
+    },
+    "Metabo": {
+      "brand_name": "Metabo HPT®",
+      "mfg_name": "Koki Holdings America Ltd.",
+      "brand_code": "META",
+      "mfg_code": "METABO"
+    },
+    "Klein Tools": {
+      "brand_name": "Klein Tools®",
+      "mfg_name": "Klein Tools, Inc.",
+      "brand_code": "KLEI",
+      "mfg_code": "KLEIN"
+    },
+    "Greenlee": {
+      "brand_name": "Greenlee®",
+      "mfg_name": "Greenlee Tools, Inc.",
+      "brand_code": "GREE",
+      "mfg_code": "GREENLEE"
+    },
+    "Stanley": {
+      "brand_name": "Stanley®",
+      "mfg_name": "Stanley Black & Decker, Inc.",
+      "brand_code": "STAN",
+      "mfg_code": "STANLEY"
     }
   }
 }
