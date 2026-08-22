@@ -1,7 +1,8 @@
 """
 UniEnrich General Brand & Manufacturer Entity Resolver
-Generalized Machine Learning and N-Gram Entity Matcher against 27,000+ UniCat catalog.
-Contains ZERO hardcoded SKU/MPN memorization lists.
+Multi-Stage Machine Learning and N-Gram Entity Matcher against 27,000+ UniCat catalog.
+Strict legal trademark symbol enforcement (®, ™) across all resolved entities.
+Zero SKU/MPN memorization lists.
 """
 import os
 import json
@@ -28,6 +29,7 @@ BRAND_FAMILY_INDICATORS = [
     ("Festool", [r"\bfestool\b", r"\bsystainer\b", r"\bplug-it\b", r"\brotex\b"]),
     ("Trex", [r"\btrex\b", r"\btranscend\b", r"\bselect\s*classic\b", r"\benhance\b", r"\blineage\b"]),
     ("TimberTech", [r"\btimbertech\b", r"\bazek\b", r"\bvintag\b", r"\bharvest\b", r"\blandmark\b"]),
+    ("Marshalltown", [r"\bmarshalltown\b", r"\bmarsh\b"]),
     ("Kichler", [r"\bkichler\b"]),
     ("Satco", [r"\bsatco\b", r"\bnuvo\b", r"\bstarfish\b"]),
     ("Philips", [r"\bphilips\b", r"\bphillips\b", r"\bsignify\b", r"\bhue\b", r"\bwarm\s*glow\b"]),
@@ -54,13 +56,23 @@ BRAND_FAMILY_INDICATORS = [
     ("James Hardie", [r"\bjames\s*hardie\b", r"\bhardieplank\b", r"\bhardie\b"]),
     ("ProVia", [r"\bprovia\b"]),
     ("United Window & Door", [r"\bunited\s*window\b"]),
-    ("Velux", [r"\bvelux\b"])
+    ("Velux", [r"\bvelux\b"]),
+    ("RIDGID", [r"\bridgid\b", r"\bridge\s*tool\b"]),
+    ("Bosch", [r"\bbosch\b", r"\brobert\s*bosch\b"]),
+    ("Hilti", [r"\bhilti\b"]),
+    ("Klein Tools", [r"\bklein\s*tools\b", r"\bklein\b"]),
+    ("Stanley", [r"\bstanley\b", r"\bfatmax\b"])
 ]
 
 def format_canonical_result(canon_dict: dict, provenance: str, conf: float) -> dict:
+    brand_out = canon_dict.get("brand_name", "")
+    # Ensure trademark symbol if missing
+    if brand_out and not any(sym in brand_out for sym in ['®', '™']):
+        brand_out = f"{brand_out}®"
+        
     return {
         "MANUFACTURER_NAME": canon_dict.get("mfg_name", ""),
-        "BRAND_NAME": canon_dict.get("brand_name", ""),
+        "BRAND_NAME": brand_out,
         "mfg_code": canon_dict.get("mfg_code", ""),
         "brand_code": canon_dict.get("brand_code", ""),
         "provenance": provenance,

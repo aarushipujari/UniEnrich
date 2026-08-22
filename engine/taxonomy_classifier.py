@@ -1,6 +1,7 @@
 """
 UniEnrich Universal Industrial Taxonomy & Product Type Classifier
-Employs Longest-Match Compound-Noun Specificity Scoring and Clean NLP Noun-Phrase Fallbacks.
+Employs Longest-Match Compound-Noun Specificity Scoring, Pre-Classification Color/Brand Hygiene,
+and Clean NLP Noun-Phrase Fallbacks.
 """
 import os
 import json
@@ -10,7 +11,11 @@ from .ai_agent import predict_ml_taxonomy
 
 # Dynamic Product Type Extractors (Pattern, Product Type, Priority Score)
 PRODUCT_TYPE_EXTRACTORS = [
-    # Mason Line & Layout Tools (High Priority to prevent "Line" colliding with Laser Level!)
+    # Masonry, Mortar & Concrete (High Priority)
+    (r"masonry\s*mortar|mortar\s*mix|\bmortar\b", "Masonry Mortar Mix", 100),
+    (r"concrete\s*mix|quikrete|portland\s*cement", "Concrete Mix", 95),
+
+    # Mason Line & Layout Tools
     (r"mason\s*line|chalk\s*line|chalk\s*reel|mason\s*twine", "Mason Line & Chalk Reel", 100),
     (r"cross\s*line\s*laser|line\s*laser|laser\s*level|spot\s*laser", "Cross Line Laser", 95),
     (r"rafter\s*square|t-square|framing\s*square", "Rafter Square", 95),
@@ -48,7 +53,6 @@ PRODUCT_TYPE_EXTRACTORS = [
     # Building Envelope & Drywall
     (r"gypsum\s*board|drywall|easi-lite|sheetrock", "Drywall Gypsum Board", 95),
     (r"rainscreen|rain\s*screen\s*flashing", "Rainscreen Flashing", 95),
-    (r"masonry\s*mortar|mortar\s*mix", "Masonry Mortar Mix", 95),
     (r"smart\s*lap|hardieplank|hardiepanel|engineered\s*siding", "Siding Plank / Panel", 85),
     (r"soffit\s*panel|smart\s*vented", "Soffit Panel", 85),
     (r"skylight|skylt", "Roof Skylight", 85),
@@ -161,6 +165,10 @@ PRODUCT_TYPE_EXTRACTORS = [
 
 # Taxonomy Category Mappings
 TAXONOMY_MAP = {
+    # Masonry & Building Materials
+    "Masonry Mortar Mix": ("Building Materials", "Masonry & Concrete", "Mortar", "Building Materials>Masonry>Mortar Mixes", "30111500"),
+    "Concrete Mix": ("Building Materials", "Masonry & Concrete", "Concrete", "Building Materials>Masonry>Concrete Mixes", "30111500"),
+
     # Layout & Measuring Tools
     "Mason Line & Chalk Reel": ("Tools & Hardware", "Hand & Measuring Tools", "Marking & Layout Tools", "Tools & Hardware>Measuring & Layout Tools>Chalk & Mason Lines", "27111800"),
     "Cross Line Laser": ("Tools & Hardware", "Hand & Measuring Tools", "Lasers & Levels", "Tools & Hardware>Measuring & Layout Tools>Laser Levels", "27111802"),
@@ -183,7 +191,6 @@ TAXONOMY_MAP = {
     "Roof Skylight": ("Building Materials", "Doors & Windows", "Skylights", "Building Materials>Windows & Doors>Skylights", "30171600"),
     "Patio / Access Door": ("Building Materials", "Doors & Windows", "Doors", "Building Materials>Windows & Doors>Doors", "30171500"),
     "Door Threshold": ("Building Materials", "Doors & Windows", "Hardware", "Building Materials>Door Hardware>Thresholds", "30171500"),
-    "Masonry Mortar Mix": ("Building Materials", "Masonry & Concrete", "Mortar", "Building Materials>Masonry>Mortar Mixes", "30111500"),
     "Rainscreen Flashing": ("Building Materials", "Building Envelope", "Rainscreen", "Building Materials>Moisture Management>Rainscreen", "30151600"),
 
     # Vacuums & Equipment
@@ -304,15 +311,26 @@ TAXONOMY_MAP = {
     "Toaster": ("Appliances", "Small Appliances", "Toasters", "Appliances & Consumer Electronics>Small Appliances>Toasters", "52141527")
 }
 
+KNOWN_COLOR_NOISE = {
+    "dark chocolate", "chocolate", "white", "black", "matte black", "matte white",
+    "stainless steel", "brushed nickel", "chrome", "bronze", "dark bronze", "jasper",
+    "rainier", "island mist", "coastline", "english walnut", "mahogany", "weathered teak",
+    "castle gate", "brownstone", "slate gray", "biscayne", "carmel", "salt flat"
+}
+
 NOISE_WORDS = {
     "model", "type", "item", "series", "version", "part", "brand", "pack", "display", 
-    "only", "box", "case", "assorted", "unit", "spec", "industrial", "standard", "heavy", "duty"
+    "only", "box", "case", "assorted", "unit", "spec", "industrial", "standard", "heavy", "duty", "pk", "pc"
 }
 
 def clean_fallback_noun_phrase(part_desc: str, mfg_part_num: str) -> str:
     desc = part_desc or ""
     if mfg_part_num:
         desc = re.sub(rf"\b{re.escape(mfg_part_num)}\b", "", desc, flags=re.IGNORECASE)
+        
+    # Strip color words first
+    for c_noise in sorted(KNOWN_COLOR_NOISE, key=len, reverse=True):
+        desc = re.sub(rf"\b{re.escape(c_noise)}\b", "", desc, flags=re.IGNORECASE)
         
     clean = re.sub(r'\b\d+(?:[-/.]\d+)?\s*(?:in|ft|v|w|a|rpm|dba|gal|gallon|hp|amp|volt|watt|pc|pk)\b', '', desc, flags=re.IGNORECASE)
     clean = re.sub(r'[\"\'#\-/\(\)]', ' ', clean)

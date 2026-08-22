@@ -1,45 +1,87 @@
 """
 UniEnrich Multi-Channel Copywriting Synthesizer
-Generates 5 distinct description formats dynamically from extracted and verified attributes:
-1. INVOICE_DESC (≤ 40 chars, UPPERCASE, generalized token abbreviations)
-2. MOBILE_DESC (Strict target length 60–80 chars with dynamic padding/trimming)
-3. SHORT_DESC / Product Title (Formula: Brand + Series + MPN + Item Type + Modifiers + Attributes)
-4. LONG_DESC1 (Grammatically coherent descriptive technical narrative)
+Generates 5 standard description tiers strictly from grounded facts:
+1. INVOICE_DESC (≤ 40 chars, UPPERCASE, Universal Algorithmic B2B Abbreviator)
+2. MOBILE_DESC (Concise, strictly ≤ 80 chars, ZERO synthetic filler)
+3. SHORT_DESC / Product Title (Unilog Standard Formula)
+4. LONG_DESC1 (Grammatically complete technical sentence)
 5. RETAIL_DESC & MARKETING_DESCRIPTION
 """
 import re
 
-GENERIC_ABBREVIATIONS = {
-    "DISHWASHER": "DISHWASHER", "COUPLING": "CPLG", "RECEPTACLE": "RECEPT", "CIRCUIT BREAKER": "CIR BRKR",
-    "SANDING BELT": "SAND BELT", "SANDING DISC": "SAND DISC", "CUT-OFF DISC": "CUT OFF DISC",
-    "CIRCULAR SAW": "CIRC SAW", "MITER SAW": "MITER SAW", "TABLE SAW": "TABLE SAW",
-    "LASER LEVEL": "LASER LEVEL", "CROSS LINE LASER": "LINE LASER", "SPINDLE SANDER": "SPINDLE SAND",
-    "HEATER KIT": "HEATER KIT", "LED LIGHT BULB": "LED BULB", "DECK BOARD": "DECK BRD",
-    "FASCIA BOARD": "FASCIA BRD", "RAILING KIT": "RAIL KIT", "POST WRAP": "POST WRAP",
-    "MASON LINE": "MASON LINE", "CHALK REEL": "CHALK REEL", "WET/DRY SHOP VACUUM": "SHOP VAC",
-    "AIR COMPRESSOR": "AIR COMP", "DRYWALL GYPSUM BOARD": "DRYWALL BRD", "SMOKE & CO ALARM": "SMOKE/CO ALM",
-    "FIRE EXTINGUISHER": "FIRE EXT", "SAFETY GLASSES": "SAFETY GLASS", "STAINLESS STEEL": "SST"
+COMMON_INDUSTRIAL_ABBRS = {
+    "STAINLESS STEEL": "SST",
+    "ALUMINUM": "ALUM",
+    "GALVANIZED": "GALV",
+    "POLYVINYL CHLORIDE": "PVC",
+    "POLYETHYLENE": "POLY",
+    "RECEPTACLE": "RCPT",
+    "CIRCUIT BREAKER": "CIR BRKR",
+    "COUPLING": "CPLG",
+    "DISCONNECT": "DISC",
+    "TRANSFORMER": "XFMR",
+    "COMPRESSION": "COMP",
+    "EXTENSION": "EXT",
+    "ENCLOSURE": "ENCL",
+    "JUNCTION": "JCT",
+    "PORTABLE": "PORT",
+    "COMMERCIAL": "COMM",
+    "RESIDENTIAL": "RES",
+    "ASSEMBLY": "ASSY",
+    "CARBIDE": "CRB",
+    "RECIPROCATING": "RECIP",
+    "OSCILLATING": "OSC",
+    "LUBRICANT": "LUB",
+    "FASTENER": "FSTNR",
+    "MORTAR": "MRTR"
 }
+
+def abbreviate_token(word: str) -> str:
+    """
+    Universal algorithmic consonant-extractor for B2B catalog invoice lines.
+    Preserves leading vowel, drops internal vowels and duplicate consonants.
+    """
+    if len(word) <= 4:
+        return word
+    
+    # Check known roots
+    w_up = word.upper()
+    if w_up in COMMON_INDUSTRIAL_ABBRS:
+        return COMMON_INDUSTRIAL_ABBRS[w_up]
+
+    first_char = w_up[0]
+    rest = w_up[1:]
+    # Remove vowels from rest
+    consonants = re.sub(r'[AEIOU]', '', rest)
+    # Remove consecutive duplicate consonants
+    dedup = re.sub(r'([A-Z])\1+', r'\1', consonants)
+    
+    res = first_char + dedup
+    return res[:4] if len(res) > 4 else res
+
+def universal_abbreviate_phrase(phrase: str, max_len: int = 40) -> str:
+    """
+    Universally shortens any arbitrary product noun phrase to <= max_len.
+    """
+    phrase_upper = (phrase or "").strip().upper()
+    for full_term, abbr in COMMON_INDUSTRIAL_ABBRS.items():
+        phrase_upper = phrase_upper.replace(full_term, abbr)
+        
+    tokens = phrase_upper.split()
+    abbr_tokens = [abbreviate_token(t) if len(t) > 4 else t for t in tokens]
+    res = " ".join(abbr_tokens)
+    return res[:max_len].strip()
 
 def build_invoice_desc(product_name: str, mpn: str, attrs: dict) -> str:
     """
     Constructs Invoice Description: strictly <= 40 chars, UPPERCASE.
+    Zero product-specific hardcodes; uses universal algorithmic abbreviation.
     """
-    p_upper = (product_name or "ITEM").upper()
-    
-    # Check generic abbreviations
-    base_name = p_upper
-    for term, abbr in GENERIC_ABBREVIATIONS.items():
-        if term in p_upper:
-            base_name = abbr
-            break
-    if len(base_name) > 16:
-        base_name = base_name[:16].strip()
-
-    tokens = [base_name]
+    base_abbr = universal_abbreviate_phrase(product_name, max_len=18)
+    tokens = [base_abbr]
 
     if attrs.get('mounting'):
-        m_abbr = "LEG" if "leg" in attrs['mounting'].lower() else "BLTLN" if "built" in attrs['mounting'].lower() else attrs['mounting'][:5].upper()
+        m_abbr = "LEG" if "leg" in attrs['mounting'].lower() else "BLT" if "built" in attrs['mounting'].lower() else attrs['mounting'][:4].upper()
         tokens.append(m_abbr)
 
     if attrs.get('teeth'):
@@ -48,9 +90,8 @@ def build_invoice_desc(product_name: str, mpn: str, attrs: dict) -> str:
         tokens.append(attrs['grit'].upper())
 
     if attrs.get('material'):
-        mat_abbr = "SST" if "stainless" in attrs['material'].lower() else "ALM" if "alum" in attrs['material'].lower() else "PVC" if "pvc" in attrs['material'].lower() else ""
-        if mat_abbr:
-            tokens.append(mat_abbr)
+        mat_token = universal_abbreviate_phrase(attrs['material'], max_len=4)
+        tokens.append(mat_token)
 
     if attrs.get('voltage', ('', ''))[0]:
         tokens.append(f"{attrs['voltage'][0]}V")
@@ -59,7 +100,7 @@ def build_invoice_desc(product_name: str, mpn: str, attrs: dict) -> str:
         tokens.append(f"{attrs['amperage'][0]}A")
 
     if attrs.get('pack_qty'):
-        tokens.append(f"{attrs['pack_qty']}PC")
+        tokens.append(f"{attrs['pack_qty']}PK")
 
     result = " ".join(tokens).upper()
     if len(result) > 40:
@@ -68,89 +109,76 @@ def build_invoice_desc(product_name: str, mpn: str, attrs: dict) -> str:
 
 def build_mobile_desc(mfg_name: str, brand_name: str, product_name: str, series: str, mpn: str, attrs: dict) -> str:
     """
-    Constructs Mobile Description: strictly guaranteed to fall within 60–80 characters.
+    Constructs Mobile Description: strictly grounded in real product attributes.
+    Zero synthetic marketing filler ("Commercial Grade", "Standard Duty").
+    Strictly constrained to <= 80 characters.
     """
     clean_brand = brand_name.replace('®', '').replace('™', '').strip()
     clean_mfg = mfg_name.replace('®', '').replace('™', '').strip()
     
-    brand_prefix = f"{clean_mfg} {clean_brand}".strip() if clean_mfg and clean_mfg != clean_brand and len(clean_mfg) < 30 else clean_brand
+    # Determine brand header
+    if clean_mfg and clean_brand and clean_mfg.lower() != clean_brand.lower() and len(clean_mfg) < 25:
+        brand_hdr = f"{clean_mfg} {clean_brand}"
+    else:
+        brand_hdr = clean_brand or clean_mfg
+        
     p_type = product_name or "Product"
     
-    # Base candidates
-    core_parts = [brand_prefix, p_type]
+    # Priority ordered grounded attributes
+    elements = []
+    if brand_hdr:
+        elements.append(brand_hdr)
     if series:
-        core_parts.append(series)
+        elements.append(series)
     if mpn:
-        core_parts.append(mpn)
-        
-    cand = ", ".join([p for p in core_parts if p])
-    
-    # Candidate pool of real attributes to hit the 60-80 window
-    extra_specs = []
-    if attrs.get('mounting'):
-        extra_specs.append(f"{attrs['mounting']} Mounting")
+        elements.append(mpn)
+    elements.append(p_type)
+
     if attrs.get('dimensions'):
-        extra_specs.append(attrs['dimensions'])
+        elements.append(attrs['dimensions'])
     if attrs.get('teeth'):
-        extra_specs.append(f"{attrs['teeth']} Tooth")
+        elements.append(f"{attrs['teeth']}T")
     elif attrs.get('grit'):
-        extra_specs.append(f"{attrs['grit']} Grit")
-    if attrs.get('material'):
-        extra_specs.append(attrs['material'])
-    elif attrs.get('color'):
-        extra_specs.append(attrs['color'])
+        elements.append(attrs['grit'])
     if attrs.get('voltage', ('', ''))[0]:
-        extra_specs.append(f"{attrs['voltage'][0]} {attrs['voltage'][1]}")
+        elements.append(f"{attrs['voltage'][0]} {attrs['voltage'][1]}")
+    if attrs.get('color'):
+        elements.append(attrs['color'])
+    elif attrs.get('material'):
+        elements.append(attrs['material'])
     if attrs.get('pack_qty'):
-        extra_specs.append(f"{attrs['pack_qty']} Pack")
+        elements.append(f"{attrs['pack_qty']} Pack")
 
-    for spec in extra_specs:
-        if len(cand) >= 60:
+    # Build description while strictly respecting the 80 character ceiling
+    assembled = []
+    curr_len = 0
+    for el in elements:
+        addition_len = len(el) + (2 if assembled else 0)
+        if curr_len + addition_len <= 80:
+            assembled.append(el)
+            curr_len += addition_len
+        else:
             break
-        cand_plus = f"{cand}, {spec}"
-        if len(cand_plus) <= 80:
-            cand = cand_plus
 
-    # If still below 60 chars, add full corporate prefix or descriptive filler
-    if len(cand) < 60 and clean_mfg and clean_mfg not in cand:
-        cand_plus = f"{clean_mfg}, {cand}"
-        if len(cand_plus) <= 80:
-            cand = cand_plus
-
-    if len(cand) < 60:
-        fillers = ["Commercial Grade", "Standard Duty", "Professional Tool", "Distributor Pack"]
-        for f in fillers:
-            cand_plus = f"{cand}, {f}"
-            if 60 <= len(cand_plus) <= 80:
-                cand = cand_plus
-                break
-            elif len(cand_plus) < 60:
-                cand = cand_plus
-
-    # Truncate at word boundary if > 80 chars
-    if len(cand) > 80:
-        cand = cand[:80].rsplit(',', 1)[0]
-        if len(cand) > 80:
-            cand = cand[:80].rsplit(' ', 1)[0]
-        if len(cand) > 80:
-            cand = cand[:80].strip()
-
-    return cand
+    return ", ".join(assembled)
 
 def build_short_desc(brand_name: str, series: str, mpn: str, product_name: str, with_modifier: str, attrs: dict) -> str:
     """
     Constructs Product Title: [Brand®] [Series] [MPN] [Item Type] [With Modifier], [Key Attributes]
     """
-    title_parts = [brand_name]
+    title_parts = []
+    if brand_name:
+        title_parts.append(brand_name)
     if series:
         title_parts.append(series)
     if mpn:
         title_parts.append(mpn)
-    title_parts.append(product_name)
+    if product_name:
+        title_parts.append(product_name)
     if with_modifier:
         title_parts.append(with_modifier)
         
-    title_main = " ".join([p for p in title_parts if p]).strip()
+    title_main = " ".join(title_parts).strip()
     
     spec_parts = []
     if attrs.get('mounting'):
@@ -176,8 +204,8 @@ def build_long_desc(brand_name: str, product_name: str, with_modifier: str, seri
     """
     Synthesizes a grammatically complete and structured technical sentence.
     """
-    subject = f"The {brand_name} {product_name}".strip()
-    if series:
+    subject = f"The {brand_name} {product_name}".strip() if brand_name else f"The {product_name}".strip()
+    if series and brand_name:
         subject = f"The {brand_name} {series} {product_name}".strip()
         
     specs = []
@@ -190,7 +218,7 @@ def build_long_desc(brand_name: str, product_name: str, with_modifier: str, seri
     if attrs.get('wattage', ('', ''))[0]:
         specs.append(f"operating at {attrs['wattage'][0]} {attrs['wattage'][1]}")
     if attrs.get('material'):
-        specs.append(f"constructed from durable {attrs['material']}")
+        specs.append(f"constructed from {attrs['material']}")
     elif attrs.get('color'):
         specs.append(f"finished in {attrs['color']}")
     if attrs.get('mounting'):

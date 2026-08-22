@@ -8,14 +8,18 @@ from .uom_normalizer import normalize_uom, format_measurement, parse_dimension_s
 
 # Canonical series terms
 KNOWN_SERIES = [
-    "Professional Series", "Eco Series", "Gallery Series", "Transcend Lineage", "Enhance Naturals",
-    "Enhance Basics", "Select 2.0", "Vintage Azek", "Landmark Azek", "Harvest Azek",
-    "Steel Demon", "Speed Demon", "Cubitron II", "Hiolit", "Abranet", "Iridium",
-    "Fuel", "Packout", "Surge", "Atomic 20V", "Flexvolt", "Max XR", "Starfish", "Quik-Lock"
+    "M18 FUEL", "M12 FUEL", "M18", "M12", "Packout", "Surge",
+    "Atomic 20V", "Flexvolt", "Max XR",
+    "Professional Series", "Eco Series", "Gallery Series", "Transcend Lineage",
+    "Enhance Naturals", "Enhance Basics", "Select 2.0", "Vintage Azek",
+    "Landmark Azek", "Harvest Azek", "Steel Demon", "Speed Demon",
+    "Cubitron II", "Hiolit", "Abranet", "Iridium", "Starfish", "Quik-Lock"
 ]
 
 # Canonical color/finish values
 KNOWN_COLORS = {
+    "dark chocolate": "Dark Chocolate",
+    "chocolate": "Chocolate",
     "ss": "Stainless Steel", "sst": "Stainless Steel", "stainless steel": "Stainless Steel",
     "wh": "White", "white": "White",
     "bk": "Black", "black": "Black", "blk": "Black",
@@ -60,8 +64,8 @@ def extract_attributes(part_desc: str, mfg_part_num: str, tax_res: dict) -> dict
         'standards': ''
     }
 
-    # 1. Series Extraction
-    for s in KNOWN_SERIES:
+    # 1. Series Extraction (Longest match first to avoid "Fuel" matching inside "M18 FUEL")
+    for s in sorted(KNOWN_SERIES, key=len, reverse=True):
         if re.search(rf"\b{re.escape(s)}\b", text, re.IGNORECASE):
             res['series'] = s
             break
@@ -86,9 +90,10 @@ def extract_attributes(part_desc: str, mfg_part_num: str, tax_res: dict) -> dict
     if sound_match:
         res['sound_level'] = (sound_match.group(1), 'dBA')
 
-    # 6. Color & Material
-    for k_col, canon_col in KNOWN_COLORS.items():
+    # 6. Color & Material (Longest match first e.g. "Dark Chocolate" before "Chocolate")
+    for k_col in sorted(KNOWN_COLORS.keys(), key=len, reverse=True):
         if re.search(rf"\b{re.escape(k_col)}\b", text, re.IGNORECASE):
+            canon_col = KNOWN_COLORS[k_col]
             res['color'] = canon_col
             if "stainless steel" in canon_col.lower():
                 res['material'] = "Stainless Steel"
@@ -132,9 +137,7 @@ def extract_attributes(part_desc: str, mfg_part_num: str, tax_res: dict) -> dict
     if with_match:
         res['with_modifier'] = f"With {with_match.group(1).strip()}"
 
-    # Features
-    if res['series']:
-        res['features'].append(f"{res['series']} line")
+    # Features (Strictly grounded factual features, zero "Fuel line" nonsense)
     if res['dimensions']:
         res['features'].append(f"Size: {res['dimensions']}")
     if res['voltage'][0]:
