@@ -1,14 +1,19 @@
 """
 UniEnrich Generative AI & Semantic NLP Reasoning Engine
-Implements a Hybrid Neuro-Symbolic Architecture combining:
-1. Generative LLM Structured Extraction & Spec Reasoning (Google Gemini / OpenAI)
-2. Local Scikit-Learn TF-IDF N-Gram Vector Classifier (Zero-shot ML fallback)
+Implements a Hybrid Architecture combining:
+1. Google Gemini 1.5 Flash (google.generativeai) & OpenAI GPT-4o-mini (openai)
+2. Local Scikit-Learn TF-IDF N-Gram Vector Classifier (Zero-shot offline ML fallback)
 3. Deterministic Guardrails & Explainability Provenance
 """
 import os
 import json
 import re
 import numpy as np
+from dotenv import load_dotenv
+
+# Load .env file automatically
+load_dotenv()
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from pydantic import BaseModel, Field
@@ -64,9 +69,13 @@ CORPUS_TAXONOMY = [
     ("Grinding Wheel", "grinding wheel depressed center wheel type 27 metal grinding", "Abrasives", "Cutting & Grinding Wheels", "Grinding Wheels", "Abrasives>Cutting & Grinding Wheels>Grinding Wheels", "31191600"),
 
     # Measurement & Layout
+    ("Mason Line & Chalk Reel", "mason line chalk line reel nylon braided twisted twine string layout", "Tools & Hardware", "Hand & Measuring Tools", "Marking & Layout Tools", "Tools & Hardware>Measuring & Layout Tools>Chalk & Mason Lines", "27111800"),
     ("Cross Line Laser", "laser level green red beam cross line self leveling spot laser level", "Tools & Hardware", "Hand & Measuring Tools", "Lasers & Levels", "Tools & Hardware>Measuring & Layout Tools>Laser Levels", "27111802"),
     ("Rafter Square", "rafter square t-square framing speed square layout ruler", "Tools & Hardware", "Hand & Measuring Tools", "Squares", "Tools & Hardware>Measuring & Layout Tools>Squares", "27111800"),
-    ("Digital Tire Inflator", "tire inflator gauge digital pressure gauge air chuck fleet maintenance", "Automotive & Fleet", "Tire & Wheel Tools", "Pressure Gauges", "Automotive>Tire Maintenance>Pressure Gauges", "25172500"),
+
+    # Vacuums & Janitorial
+    ("Wet/Dry Shop Vacuum", "wet dry vacuum shop vac dust extractor 14 gallon 16 gallon ridgid vac", "Tools & Hardware", "Cleaning & Janitorial Tools", "Shop Vacuums", "Tools & Hardware>Cleaning Equipment>Wet Dry Vacuums", "47121602"),
+    ("Air Compressor", "air compressor portable pancake quiet compressor pneumatic tank 6 gallon", "Tools & Hardware", "Pneumatic Tools", "Air Compressors", "Tools & Hardware>Pneumatic Tools>Air Compressors", "40151601"),
 
     # Lighting & Electrical
     ("LED BR Reflector Bulb", "br40 br30 br20 reflector flood led dimmable light bulb lamp", "Electrical", "Lamps & Bulbs", "LED Bulbs", "Electrical>Lamps & Bulbs>LED Bulbs>Directional & Reflector Bulbs", "39101628"),
@@ -76,28 +85,20 @@ CORPUS_TAXONOMY = [
     ("LED Linear Tube", "t8 t5 t12 linear tube fluorescent replacement bypass ballast led", "Electrical", "Lamps & Bulbs", "Linear Tubes", "Electrical>Lamps & Bulbs>Linear Tubes", "39101605"),
     ("Wall Light Fixture", "wall light sconce vanity bath vanity bracket mount indoor outdoor fixture", "Electrical", "Lighting Fixtures", "Wall Sconces", "Electrical>Lighting Fixtures>Wall Lights", "39111500"),
     ("Ceiling Light Fixture", "ceiling light flush mount semi flush pendant chandelier fixture", "Electrical", "Lighting Fixtures", "Flush Mounts", "Electrical>Lighting Fixtures>Ceiling Lights", "39111500"),
-    ("Recessed Downlight", "downlight recessed can retrofit baffle trim led", "Electrical", "Lighting Fixtures", "Downlights", "Electrical>Lighting Fixtures>Recessed Downlights", "39111500"),
-    ("Commercial / Shop Light", "highbay lowbay shop light strip wrap fixture led commercial", "Electrical", "Lighting Fixtures", "Commercial", "Electrical>Lighting Fixtures>Commercial Lighting", "39111500"),
+    ("Commercial / Shop Light Fixture", "highbay lowbay shop light strip wrap fixture led commercial", "Electrical", "Lighting Fixtures", "Commercial", "Electrical>Lighting Fixtures>Commercial Lighting", "39111500"),
     ("Work Flashlight", "flashlight headlamp work light magnetic clip rechargeable lantern", "Electrical", "Portable Lighting", "Flashlights", "Electrical>Portable Lighting>Work Lights", "39111610"),
     ("Circuit Breaker", "circuit breaker tandem standard 1-pole 2-pole 15a 20a 30a 50a homeline qo", "Electrical", "Power Distribution", "Circuit Breakers", "Electrical>Power Distribution>Circuit Breakers", "39121601"),
     ("Portable SOOW Cord", "so cord soow sjoow 600v 300v rubber jacket flexible portable power cord", "Electrical", "Wire & Cable", "Portable Cord", "Electrical>Wire & Cable>Portable Cords", "26121629"),
-    ("Building Wire & Cable", "romex nm-b thhn uf-b building copper wire electrical cable", "Electrical", "Wire & Cable", "Building Wire", "Electrical>Wire & Cable>Building Wire", "26121600"),
     ("Receptacle Outlet", "outlet receptacle duplex tamper resistant gfci decorator wall tap", "Electrical", "Wiring Devices", "Outlets & Receptacles", "Electrical>Wiring Devices>Receptacles", "39121406"),
-    ("Dimmer Switch", "dimmer switch single pole 3-way slide rotary smart switch", "Electrical", "Wiring Devices", "Dimmers", "Electrical>Wiring Devices>Dimmers", "39122200"),
-    ("Electrical Junction Box", "junction box outlet box octagonal square 4-inch metal pvc box", "Electrical", "Enclosures & Boxes", "Junction Boxes", "Electrical>Enclosures & Boxes>Outlet Boxes", "39121300"),
-
-    # Plumbing & Pipe Fittings
-    ("Pipe Coupling", "cplg coupling metallic threaded brass copper pvc conduit fitting", "Plumbing & Pumps", "Pipe, Tube & Hose Fittings", "Fittings", "Plumbing & Pumps>Pipe, Tube & Hose Fittings>Couplings", "40142315"),
-    ("Pipe Elbow", "elbow 90 deg 45 deg street elbow metallic threaded fitting", "Plumbing & Pumps", "Pipe, Tube & Hose Fittings", "Fittings", "Plumbing & Pumps>Pipe, Tube & Hose Fittings>Elbows", "40142315"),
 
     # Building Materials & Decking
-    ("Composite Deck Board", "decking composite deck board vintage azek pvc square edge grooved decking", "Building Materials", "Decking & Railing", "Deck Boards", "Building Materials>Decking & Railing>Deck Boards", "30103600"),
+    ("Composite Deck Board", "decking composite deck board vintage azek pvc square edge grooved decking lineage", "Building Materials", "Decking & Railing", "Deck Boards", "Building Materials>Decking & Railing>Deck Boards", "30103600"),
+    ("Fascia Board", "fascia board trim composite azek trex 1x8 1x12 fascia", "Building Materials", "Decking & Railing", "Fascia", "Building Materials>Decking & Railing>Fascia Boards", "30103600"),
     ("Railing Kit", "rail kit railing panel composite aluminum horizontal baluster", "Building Materials", "Decking & Railing", "Railing Kits", "Building Materials>Decking & Railing>Railing Kits", "30103601"),
     ("Post Wrap", "post wrap column sleeve trim pvc composite decking accessory", "Building Materials", "Decking & Railing", "Post Wraps", "Building Materials>Decking & Railing>Post Wraps", "30103601"),
     ("Deck Joist Flashing Tape", "joist tape deck flashing waterproofing butyl tape", "Building Materials", "Waterproofing", "Joist Tape", "Building Materials>Waterproofing>Flashing Tapes", "30151600"),
     ("Drywall Gypsum Board", "gypsum board drywall sheetrock lightweight easi-lite fire resistant panel", "Building Materials", "Drywall & Plaster", "Drywall Panels", "Building Materials>Drywall & Gypsum>Panels", "30161500"),
-    ("Siding Plank / Panel", "siding smart lap hardieplank hardiepanel engineered composite siding", "Building Materials", "Siding & Trim", "Planks", "Building Materials>Siding>Engineered Siding", "30151800"),
-    ("Roof Skylight", "skylight roof window curb mount deck mount velux flashing", "Building Materials", "Doors & Windows", "Skylights", "Building Materials>Windows & Doors>Skylights", "30171600"),
+    ("Masonry Mortar Mix", "mortar mix masonry mortar type n type s portland cement dark chocolate", "Building Materials", "Masonry & Concrete", "Mortar", "Building Materials>Masonry>Mortar Mixes", "30111500"),
 
     # Safety & PPE
     ("Smoke & CO Alarm", "smoke co alarm carbon monoxide fire detector battery hardwired 10-year", "Safety & Security", "Alarms & Detectors", "Smoke Alarms", "Safety & Security>Alarms & Warnings>Smoke Detectors", "46191500"),
@@ -108,8 +109,7 @@ CORPUS_TAXONOMY = [
     ("Dryer Heater Kit", "dryer heater kit heating element electric commercial residential laundry part", "Appliances", "Laundry Accessories", "Dryer Heating Elements", "Appliances & Consumer Electronics>Laundry Appliances>Dryer Replacement Parts", "52141602"),
     ("Dishwasher", "dishwasher built-in tall tub stainless steel wash cycles cleanboost quiet", "Appliances", "Large Appliances", "Dishwashers", "Appliances & Consumer Electronics>Kitchen Appliances>Built-In Dishwashers", "52141505"),
     ("Clothes Dryer", "clothes dryer electric gas commercial residential front load laundry", "Appliances", "Laundry", "Clothes Dryers", "Appliances & Consumer Electronics>Laundry Appliances>Clothes Dryers", "52141602"),
-    ("Washing Machine", "washing machine top load front load washer laundry center", "Appliances", "Laundry", "Washing Machines", "Appliances & Consumer Electronics>Laundry Appliances>Washing Machines", "52141601"),
-    ("Refrigerator", "refrigerator french door top freezer bottom freezer side by side beverage center", "Appliances", "Large Appliances", "Refrigerators", "Appliances & Consumer Electronics>Kitchen Appliances>Refrigerators", "24131501")
+    ("Washing Machine", "washing machine top load front load washer laundry center", "Appliances", "Laundry", "Washing Machines", "Appliances & Consumer Electronics>Laundry Appliances>Washing Machines", "52141601")
 ]
 
 # Initialize TF-IDF Vectorizer & Feature Matrix
@@ -154,8 +154,8 @@ def run_generative_enrichment(raw_desc: str, mpn: str, supplier_manuf: str, raw_
     """
     Calls Google Gemini or OpenAI with structured schema to reason over sparse industrial rows.
     """
-    gemini_key = os.environ.get("GEMINI_API_KEY")
-    openai_key = os.environ.get("OPENAI_API_KEY")
+    gemini_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    openai_key = os.environ.get("OPENAI_API_KEY", "").strip()
 
     prompt = f"""You are a master industrial catalog content specialist for Unilog.
 Analyze the following sparse/messy distributor product row and extract standard commerce-ready intelligence:
@@ -166,12 +166,21 @@ Input Data:
 - Supplier / Manufacturer: "{supplier_manuf}"
 - Raw Brand: "{raw_brand}"
 
-Rules:
-1. Product Type: Canonical standard product noun (e.g. 'Belt & Spindle Sander', 'Cross Line Laser', 'Drywall Gypsum Board').
-2. Legal Brand: Correct canonical brand with legal trademark symbol (®, ™) if applicable.
-3. Classpath: Full hierarchical category path matching industrial distributor taxonomy.
-4. Technical Specs: Dimensional, electrical, physical, and mounting specs (with valid UOMs e.g. 'in', 'V', 'A', 'W', 'RPM', 'dBA').
-5. Zero Hallucination: Do not invent ungrounded serial numbers.
+Return a valid JSON object matching these exact keys:
+{{
+  "product_type": "Canonical standard product noun (e.g. 'Belt & Spindle Sander', 'Cross Line Laser', 'Drywall Gypsum Board')",
+  "brand_name": "Correct canonical brand with legal trademark symbol (®, ™) if applicable",
+  "manufacturer_name": "Full legal corporate entity name",
+  "dept": "Primary commercial department",
+  "class_name": "Category class",
+  "fine_name": "Category fine classification",
+  "classpath": "Full hierarchical leaf category path matching industrial distributor taxonomy delimited by >",
+  "unspsc": "8-digit UNSPSC commodity code",
+  "technical_specs": {{"Key Spec": "Value with UOM"}},
+  "feature_highlights": ["Feature bullet 1", "Feature bullet 2"],
+  "confidence_score": 0.95,
+  "reasoning_summary": "Domain explanation justifying the classification"
+}}
 """
 
     # 1. Try Google Gemini if key available
@@ -182,9 +191,9 @@ Rules:
             model = genai.GenerativeModel("gemini-1.5-flash", generation_config={"response_mime_type": "application/json"})
             resp = model.generate_content(prompt)
             data = json.loads(resp.text)
-            data["provenance"] = "GEMINI_GENAI_STRUCTURED_REASONING"
+            data["provenance"] = "GEMINI_GENAI_1.5_FLASH"
             return data
-        except Exception:
+        except Exception as e:
             pass
 
     # 2. Try OpenAI if key available
@@ -198,9 +207,9 @@ Rules:
                 response_format={"type": "json_object"}
             )
             data = json.loads(resp.choices[0].message.content)
-            data["provenance"] = "OPENAI_GENAI_STRUCTURED_REASONING"
+            data["provenance"] = "OPENAI_GPT4O_MINI"
             return data
-        except Exception:
+        except Exception as e:
             pass
 
     # 3. Graceful ML Neural / Vector Fallback
@@ -208,16 +217,25 @@ Rules:
     if ml_res:
         return {
             "product_type": ml_res["Product Name"],
+            "brand_name": raw_brand or supplier_manuf,
+            "manufacturer_name": supplier_manuf,
             "dept": ml_res["Dept"],
             "class_name": ml_res["Class"],
             "fine_name": ml_res["Fine"],
             "classpath": ml_res["Classpath"],
             "unspsc": ml_res["UNSPSC"],
             "technical_specs": {},
-            "feature_highlights": [f"Commercial grade {ml_res['Product Name']}"],
+            "feature_highlights": [f"Standard {ml_res['Product Name']}"],
             "confidence_score": ml_res["confidence"],
             "reasoning_summary": f"Classified via local Scikit-Learn TF-IDF vector embeddings with cosine similarity confidence {ml_res['confidence']}.",
             "provenance": ml_res["provenance"]
         }
 
     return None
+
+if __name__ == '__main__':
+    import sys
+    test_desc = sys.argv[1] if len(sys.argv) > 1 else "D519127 Heater Kit"
+    print(f"Testing UniEnrich AI Reasoner on: '{test_desc}'...")
+    res = run_generative_enrichment(test_desc, "D519127", "Alliance Laundry Systems", "Speed Queen")
+    print(json.dumps(res, indent=2, ensure_ascii=False))
