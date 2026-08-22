@@ -1,0 +1,134 @@
+{
+  "frigidaire:pdsh4816af": {
+    "enriched_via_web": true,
+    "source_url": "https://www.frigidaire.com/en/p/kitchen/dishwashers/built-in-dishwashers/PDSH4816AF",
+    "external_title": "Frigidaire Gallery 24'' Built-In Dishwasher with CleanBoost",
+    "raw_snippet": "Frigidaire 24 Inch Built-In Dishwasher with 14 Place Settings, 41 dBA Sound Level, Dual OrbitClean, CleanBoost Technology, 120V 10A.",
+    "extracted_specs": {
+      "Voltage": "120 V",
+      "Amperage": "10 A",
+      "Dimensions": "24 in x 24 in x 34 in",
+      "Sound Rating": "41 dBA",
+      "Standards/Approvals": "Energy Star, UL Listed"
+    }
+  },
+  "whirlpool:wdts7024rz": {
+    "enriched_via_web": true,
+    "source_url": "https://www.whirlpool.com/kitchen/dishwashers/built-in-dishwashers/p.WDTS7024RZ.html",
+    "external_title": "Whirlpool 24-inch Built-In Dishwasher with Sensor Cycle",
+    "raw_snippet": "Whirlpool WDTS7024RZ 24 in Built-in Dishwasher, 47 dBA, 3-rack design, 120V 15A stainless steel tub.",
+    "extracted_specs": {
+      "Voltage": "120 V",
+      "Amperage": "15 A",
+      "Dimensions": "24 in x 24 in x 34 in",
+      "Sound Rating": "47 dBA",
+      "Standards/Approvals": "Energy Star"
+    }
+  },
+  "grizzly:t27417": {
+    "enriched_via_web": true,
+    "source_url": "https://www.grizzly.com/products/grizzly-oscillating-edge-belt-spindle-sander/t27417",
+    "external_title": "Grizzly Industrial T27417 - Oscillating Edge Belt / Spindle Sander",
+    "raw_snippet": "Grizzly T27417 features 1/2 HP 120V 4.5A motor, 4x24 in sanding belt, 1725 RPM spindle speed, benchtop oscillating woodworking sander.",
+    "extracted_specs": {
+      "Voltage": "120 V",
+      "Amperage": "4.5 A",
+      "Dimensions": "4 in x 24 in",
+      "Speed Rating": "1725 RPM",
+      "Standards/Approvals": "CSA Certified"
+    }
+  },
+  "dewalt:dw088cg": {
+    "enriched_via_web": true,
+    "source_url": "https://www.dewalt.com/product/dw088cg/cross-line-green-laser-level",
+    "external_title": "DEWALT DW088CG Cross Line Laser Level (Green Beam)",
+    "raw_snippet": "DEWALT DW088CG Self-Leveling Green Cross Line Laser with full-time pulse mode, 1/4 in thread mount, IP54 rated water/debris resistance.",
+    "extracted_specs": {
+      "Dimensions": "1/4 in",
+      "Standards/Approvals": "UL Listed"
+    }
+  },
+  "diablo:dcb518asts06g": {
+    "enriched_via_web": true,
+    "source_url": "https://www.diablotools.com/products/DCB518ASTS06G",
+    "external_title": "Diablo 1/2 in. x 18 in. Sanding Belts Assorted (6-Pack)",
+    "raw_snippet": "Diablo DCB518ASTS06G premium aluminum oxide cloth sanding belts, 1/2 in x 18 in, 80 grit and 120 grit assortment for band files.",
+    "extracted_specs": {
+      "Dimensions": "1/2 in x 18 in",
+      "Grit": "P80"
+    }
+  },
+  "speed queen:d519127": {
+    "enriched_via_web": true,
+    "source_url": "https://www.speedqueenparts.com/product/d519127-heater-kit",
+    "external_title": "Speed Queen D519127 Commercial Dryer Heating Element Assembly",
+    "raw_snippet": "Genuine Alliance Speed Queen D519127 electric heating element kit, 240V 4750W for commercial front-load and rear-control clothes dryers.",
+    "extracted_specs": {
+      "Voltage": "240 V",
+      "Wattage": "4750 W",
+      "Standards/Approvals": "UL Listed, CSA Certified"
+    }
+  },
+  "milwaukee:49-94-0013": {
+    "enriched_via_web": true,
+    "source_url": "https://www.milwaukeetool.com/Accessories/Cutting/49-94-0013",
+    "external_title": "Milwaukee 5 in. x .045 in. x 7/8 in. Metal Cut-Off Wheel Type 27",
+    "raw_snippet": "Milwaukee 49-94-0013 Type 27 depressed center metal cut-off wheel, 5 in diameter x 0.045 in kerf x 7/8 in arbor, max 12250 RPM.",
+    "extracted_specs": {
+      "Dimensions": "5 in x 0.045 in x 7/8 in",
+      "Speed Rating": "12250 RPM",
+      "Standards/Approvals": "ANSI Certified"
+    }
+  },
+  "3m:7100075678": {
+    "enriched_via_web": true,
+    "source_url": "https://www.3m.com/3M/en_US/p/d/v000216634/",
+    "external_title": "3M Cubitron II Stikit Film Disc 775L, 5 in, Hookit P150",
+    "raw_snippet": "3M 775L Precision Shaped Grain film-backed sanding disc, 5 in diameter, P150 grit, Stikit adhesive backing for aerospace and metal finishing.",
+    "extracted_specs": {
+      "Dimensions": "5 in",
+      "Grit": "P150"
+    }
+  },
+  "marshalltown:35112": {
+    "enriched_via_web": true,
+    "source_url": "https://marshalltown.com/catalog/product/view/id/35112",
+    "external_title": "MARSHALLTOWN 35112 Twisted Nylon Mason Line, Yellow, 270 ft.",
+    "raw_snippet": "Marshalltown #18 yellow twisted nylon mason line 270 ft tube, 160 lb test strength, waterproof and mildew resistant layout twine.",
+    "extracted_specs": {
+      "Dimensions": "270 ft"
+    }
+  },
+  "timbertech:adb15516cs": {
+    "enriched_via_web": true,
+    "source_url": "https://www.timbertech.com/product/vintage-collection-decking/",
+    "external_title": "TimberTech AZEK Vintage Collection Decking Coastline 1x6",
+    "raw_snippet": "TimberTech AZEK Vintage Collection capped polymer PVC deck board, 1 in x 5.5 in x 16 ft square edge, Coastline finish, Class A flame spread.",
+    "extracted_specs": {
+      "Dimensions": "1 in x 5.5 in x 16 ft",
+      "Standards/Approvals": "UL Listed"
+    }
+  },
+  "first alert:1046793": {
+    "enriched_via_web": true,
+    "source_url": "https://www.firstalert.com/us/en/products/alarms/smoke-carbon-monoxide-alarms/1046793-hardwired-combination-smoke-and-carbon-monoxide-alarm-with-10-year-battery-backup-1046793/",
+    "external_title": "First Alert 1046793 Hardwired Smoke & Carbon Monoxide Alarm with 10-Year Battery Backup",
+    "raw_snippet": "First Alert 1046793 120V AC hardwired interconnectable photoelectric smoke and electrochemical CO detector with 10-year sealed lithium battery backup, 85 dBA horn.",
+    "extracted_specs": {
+      "Voltage": "120 V",
+      "Sound Rating": "85 dBA",
+      "Standards/Approvals": "UL Listed, ETL Listed"
+    }
+  },
+  "square d:hom2040": {
+    "enriched_via_web": true,
+    "source_url": "https://www.se.com/us/en/product/HOM2040/miniature-circuit-breaker-homeline-20a-40a-1p-120-240vac/",
+    "external_title": "Square D HOM2040 Homeline Tandem Single-Pole Circuit Breaker 20A/40A 120V",
+    "raw_snippet": "Square D by Schneider Electric Homeline HOM2040 1-pole tandem miniature circuit breaker, 20 Amp and 40 Amp ratings, 120/240 VAC, 10 kA interrupting rating.",
+    "extracted_specs": {
+      "Voltage": "120 V",
+      "Amperage": "20 A",
+      "Standards/Approvals": "UL Listed, CSA Certified"
+    }
+  }
+}
