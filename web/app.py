@@ -94,12 +94,13 @@ async def api_process_full_batch():
         df_enriched, audits = enrich_dataset(df_sample)
         ENRICHED_CACHE = df_enriched
     
-    # Return first 50 rows for snappy UI preview
-    preview_data = ENRICHED_CACHE.head(50).fillna("").to_dict(orient="records")
+    # Return all 1,000 items for instant full-catalog search and filtering
+    display_cols = [c for c in ['Mfg_Part_Num', 'PART_NUMBER', 'Product Name', 'BRAND_NAME', 'Classpath', 'INVOICE_DESC', 'MOBILE_DESC', 'SHORT_DESC'] if c in ENRICHED_CACHE.columns]
+    catalog_data = ENRICHED_CACHE[display_cols].fillna("").to_dict(orient="records")
     return JSONResponse(content={
         "total_processed": len(ENRICHED_CACHE),
         "columns_count": len(ENRICHED_CACHE.columns),
-        "preview": preview_data
+        "items": catalog_data
     })
 
 @app.get("/api/download-export")

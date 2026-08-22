@@ -68,7 +68,7 @@
     <div class="max-w-7xl mx-auto px-6 flex space-x-6 border-t border-slate-800 mt-2">
       <button onclick="switchTab('sandbox')" id="tab-btn-sandbox" class="py-3 font-semibold text-sm border-b-2 border-cyan-400 text-cyan-400 flex items-center space-x-2">
         <i data-lucide="sparkles" class="w-4 h-4"></i>
-        <span>Live Enrichment Sandbox</span>
+        <span>Single Record Enrichment</span>
       </button>
       <button onclick="switchTab('batch')" id="tab-btn-batch" class="py-3 font-medium text-sm text-slate-400 hover:text-slate-200 border-b-2 border-transparent flex items-center space-x-2">
         <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
@@ -619,17 +619,17 @@
       const btn = document.getElementById('btn-run-batch');
       const tbody = document.getElementById('batch-tbody');
       
-      btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Loading Catalog...</span>';
-      tbody.innerHTML = '<tr><td colspan="7" class="py-12 text-center text-cyan-400"><div class="flex flex-col items-center justify-center space-y-2"><div class="w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div><span class="text-xs">Loading 252-Column Enriched Catalog Data...</span></div></td></tr>';
+      btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Loading 1,000 Items...</span>';
+      tbody.innerHTML = '<tr><td colspan="7" class="py-12 text-center text-cyan-400"><div class="flex flex-col items-center justify-center space-y-2"><div class="w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div><span class="text-xs font-semibold">Loading 252-Column Enriched Catalog Data (1,000 items)...</span></div></td></tr>';
       lucide.createIcons();
 
       try {
         const resp = await fetch('/api/process-full-batch');
         if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
         const data = await resp.json();
-        cachedBatchData = data.preview || [];
-        renderBatchTable(cachedBatchData);
-        document.getElementById('batch-count-label').innerText = `Showing ${cachedBatchData.length} of ${data.total_processed || 1000} processed items (${data.columns_count || 252} columns)`;
+        cachedBatchData = data.items || data.preview || [];
+        renderBatchTable(cachedBatchData.slice(0, 50));
+        document.getElementById('batch-count-label').innerText = `Showing 50 of ${cachedBatchData.length} processed items (${data.columns_count || 252} columns)`;
         btn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>Processing Complete!</span>';
       } catch (err) {
         console.error('Batch load error:', err);
@@ -644,7 +644,7 @@
       const tbody = document.getElementById('batch-tbody');
       tbody.innerHTML = '';
       if (!items || items.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-slate-500">No matching records found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-slate-500">No matching records found. Try a different search term.</td></tr>';
         return;
       }
       items.forEach(row => {
@@ -664,16 +664,25 @@
     }
 
     function filterBatchTable(query) {
-      if (!cachedBatchData.length) return;
-      const q = query.toLowerCase();
+      if (!cachedBatchData || !cachedBatchData.length) return;
+      const q = query.trim().toLowerCase();
+      if (!q) {
+        renderBatchTable(cachedBatchData.slice(0, 50));
+        document.getElementById('batch-count-label').innerText = `Showing 50 of ${cachedBatchData.length} processed items`;
+        return;
+      }
       const filtered = cachedBatchData.filter(r => 
         (r.Mfg_Part_Num || '').toLowerCase().includes(q) ||
+        (r.PART_NUMBER || '').toLowerCase().includes(q) ||
         (r['Product Name'] || '').toLowerCase().includes(q) ||
         (r.BRAND_NAME || '').toLowerCase().includes(q) ||
         (r.SHORT_DESC || '').toLowerCase().includes(q) ||
-        (r.Classpath || '').toLowerCase().includes(q)
+        (r.Classpath || '').toLowerCase().includes(q) ||
+        (r.INVOICE_DESC || '').toLowerCase().includes(q) ||
+        (r.MOBILE_DESC || '').toLowerCase().includes(q)
       );
-      renderBatchTable(filtered);
+      renderBatchTable(filtered.slice(0, 100));
+      document.getElementById('batch-count-label').innerText = `Found ${filtered.length} matching records across ${cachedBatchData.length} items (showing top ${Math.min(filtered.length, 100)})`;
     }
 
     // --- API Key Management ---
