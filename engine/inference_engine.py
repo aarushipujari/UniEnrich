@@ -1,22 +1,18 @@
 """
 UniEnrich Deep Technical Inference & Domain Imputation Engine
-Solves the core "sparse input -> rich intelligence" problem by combining:
-1. Live Manufacturer Technical Retrieval (Web & Spec Snippets)
-2. Industrial Physical & Engineering Dependency Networks (Arbor, Kerf, Teeth, Voltage, Motor, Material)
-3. Constrained Category Prior Imputation
+Synthesizes unstated engineering and mechanical properties using physical laws
+without hallucinating unauthorized trademark names on generic tools.
 """
 import re
-from .uom_normalizer import decimal_to_fraction, format_measurement
 
-# Industrial Domain Dependency Knowledge Graph
 DOMAIN_DEPENDENCY_GRAPHS = {
     "saw_blades": {
         "rules": [
             {
-                "condition": lambda text, dia: dia in ["10", "10 in", "10-1/4", "12", "12 in", "7-1/4", "7-1/4 in", "6-1/2", "8-1/4"],
-                "inferences": lambda text, dia, teeth: {
+                "condition": lambda text, dia: True,
+                "inferences": lambda text, dia, teeth, brand: {
                     "Arbor Size": "5/8 in" if dia in ["7-1/4", "7-1/4 in", "8-1/4", "10", "10 in"] else "1 in" if dia in ["12", "12 in", "14"] else "5/8 in (20mm)",
-                    "Blade Material": "TiCo™ High-Density Carbide",
+                    "Blade Material": "High-Density Tungsten Carbide" if "diablo" not in brand.lower() else "TiCo™ High-Density Carbide",
                     "Tooth Grind": "ATB (Alternate Top Bevel)" if int(teeth or 40) >= 40 else "ATBR / Flat Top",
                     "Kerf": "0.098 in" if dia in ["10", "10 in"] else "0.059 in" if dia in ["6-1/2", "7-1/4"] else "0.118 in",
                     "Hook Angle": "+15 deg" if int(teeth or 40) <= 50 else "+10 deg",
@@ -31,7 +27,7 @@ DOMAIN_DEPENDENCY_GRAPHS = {
         "rules": [
             {
                 "condition": lambda text, dia: True,
-                "inferences": lambda text, dia, teeth: {
+                "inferences": lambda text, dia, teeth, brand: {
                     "Wheel Type": "Type 1 (Flat)" if "type 27" not in text.lower() else "Type 27 (Depressed Center)",
                     "Abrasive Material": "Aluminum Oxide / Ceramic Blend",
                     "Arbor Hole": "7/8 in" if dia in ["4-1/2", "5", "6", "7", "9"] else "1 in" if dia in ["12", "14"] else "5/8 in",
@@ -45,12 +41,11 @@ DOMAIN_DEPENDENCY_GRAPHS = {
     "power_tools": {
         "rules": [
             {
-                "condition": lambda text, v: "18v" in text.lower() or "m18" in text.lower() or "20v" in text.lower(),
-                "inferences": lambda text, v, extra: {
-                    "Motor Type": "Brushless (POWERSTATE™ / XR®)",
+                "condition": lambda text: True,
+                "inferences": lambda text, v, extra, brand: {
+                    "Motor Type": "Brushless High-Torque Motor",
                     "Power Source": "Cordless Lithium-Ion",
-                    "Battery System": "M18™ REDLITHIUM™" if "milw" in text.lower() or "m18" in text.lower() else "20V MAX* XR®" if "dewalt" in text.lower() else "18V LXT® Lithium-Ion",
-                    "Variable Speed": "Yes (0 to 2,000 RPM / 0 to 3,800 IPM)",
+                    "Battery Voltage": f"{v} Nominal",
                     "Housing Material": "Reinforced Glass-Filled Nylon",
                     "Chuck / Drive": "1/4 in Hex Quick Release" if "impact" in text.lower() else "1/2 in Metal Keyless Ratcheting"
                 }
@@ -60,12 +55,11 @@ DOMAIN_DEPENDENCY_GRAPHS = {
     "decking": {
         "rules": [
             {
-                "condition": lambda text, extra: True,
-                "inferences": lambda text, extra, x: {
-                    "Material": "Capped Polymer / PVC with Alloy Armour Technology™",
-                    "Scratch & Stain Resistant": "Yes (30-Year to 50-Year Limited Warranty)",
-                    "Moisture Resistance": "100% Waterproof (Zero Organic Wood Fillers)",
-                    "Fastener Compatibility": "CONCEALoc® / Cortex® Hidden Fasteners, TOPLoc® Color-Matched Screws",
+                "condition": lambda text: True,
+                "inferences": lambda text, extra, x, brand: {
+                    "Material": "Capped Polymer / PVC Composite",
+                    "Scratch & Stain Resistant": "Yes",
+                    "Moisture Resistance": "100% Moisture Impervious",
                     "Span Rating": "16 in on-center (Residential Perpendicular), 12 in on-center (Commercial/Diagonal)"
                 }
             }
@@ -73,19 +67,14 @@ DOMAIN_DEPENDENCY_GRAPHS = {
     }
 }
 
-def infer_deep_specifications(text: str, mpn: str, cat_key: str, basic_attrs: dict, web_data: dict) -> dict:
+def infer_deep_specifications(text: str, mpn: str, cat_key: str, basic_attrs: dict, web_data: dict, brand_name: str = "") -> dict:
     """
-    Synthesizes hidden technical specifications that were unstated in minimal inputs.
-    Returns: {
-        'inferred_triplets': list[dict],
-        'inferred_specs': dict,
-        'provenance': str,
-        'confidence': float
-    }
+    Synthesizes hidden technical specifications unstated in minimal inputs.
+    Never fabricates unauthorized brand trademarks on generic tools.
     """
     inferred_specs = {}
     
-    # 1. Check if external web scraping already retrieved direct specs
+    # 1. Direct Web Extracted Specs (if retrieved)
     if web_data and web_data.get("enriched_via_web") and web_data.get("extracted_specs"):
         for k, v in web_data["extracted_specs"].items():
             inferred_specs[k] = v
@@ -93,14 +82,14 @@ def infer_deep_specifications(text: str, mpn: str, cat_key: str, basic_attrs: di
     text_lower = f"{text} {mpn}".lower()
 
     # 2. Saw Blade Physics & Spec Imputation
-    if "saw_blades" in cat_key or "blade" in text_lower:
+    if "saw_blade" in cat_key or "blade" in text_lower:
         dia_match = re.search(r'(\d+(?:[-/.]\d+)?)\s*(?:in|\"|\'\')?', text_lower)
         dia_val = dia_match.group(1) if dia_match else "10"
         teeth_match = re.search(r'(\d{2,3})\s*(?:T|Teeth|Tooth|TPI)', text_lower, re.IGNORECASE)
         teeth_val = teeth_match.group(1) if teeth_match else basic_attrs.get('teeth', '40')
         
         rule = DOMAIN_DEPENDENCY_GRAPHS["saw_blades"]["rules"][0]
-        specs = rule["inferences"](text_lower, dia_val, teeth_val)
+        specs = rule["inferences"](text_lower, dia_val, teeth_val, brand_name)
         for k, v in specs.items():
             if k not in inferred_specs:
                 inferred_specs[k] = v
@@ -110,32 +99,31 @@ def infer_deep_specifications(text: str, mpn: str, cat_key: str, basic_attrs: di
         dia_match = re.search(r'(\d+(?:[-/.]\d+)?)\s*(?:in|\"|\'\')?', text_lower)
         dia_val = dia_match.group(1) if dia_match else "4-1/2"
         rule = DOMAIN_DEPENDENCY_GRAPHS["abrasives_cut_off"]["rules"][0]
-        specs = rule["inferences"](text_lower, dia_val, None)
+        specs = rule["inferences"](text_lower, dia_val, None, brand_name)
         for k, v in specs.items():
             if k not in inferred_specs:
                 inferred_specs[k] = v
 
     # 4. Power Tools (Drills, Impact Drivers, Saws, Sanders)
-    elif "power_tools" in cat_key or any(w in text_lower for w in ["impact driver", "hammer drill", "circ saw", "miter saw"]):
-        v_match = "18V" if "18v" in text_lower or "m18" in text_lower else "20V" if "20v" in text_lower else "12V"
+    elif "power_tools" in cat_key or any(w in text_lower for w in ["impact driver", "hammer drill", "circ saw", "miter saw", "sander"]):
+        v_match = "18 V" if "18v" in text_lower or "m18" in text_lower else "20 V" if "20v" in text_lower else "12 V"
         rule = DOMAIN_DEPENDENCY_GRAPHS["power_tools"]["rules"][0]
-        specs = rule["inferences"](text_lower, v_match, None)
+        specs = rule["inferences"](text_lower, v_match, None, brand_name)
         for k, v in specs.items():
             if k not in inferred_specs:
                 inferred_specs[k] = v
 
     # 5. Composite Decking & Railing
-    elif "decking" in cat_key or "deck" in text_lower or "vintage azek" in text_lower or "lineage" in text_lower:
+    elif "decking" in cat_key or "deck" in text_lower:
         rule = DOMAIN_DEPENDENCY_GRAPHS["decking"]["rules"][0]
-        specs = rule["inferences"](text_lower, None, None)
+        specs = rule["inferences"](text_lower, None, None, brand_name)
         for k, v in specs.items():
             if k not in inferred_specs:
                 inferred_specs[k] = v
 
-    # Convert inferred dictionary to Attribute Triplets
+    # Convert to Attribute Triplets
     triplets = []
     for label, full_val in inferred_specs.items():
-        # Split unit if present (e.g. '5/8 in', '7000 RPM', '240 V', '0.098 in')
         val_str = str(full_val).strip()
         uom_str = ""
         parts = val_str.rsplit(' ', 1)
@@ -153,5 +141,5 @@ def infer_deep_specifications(text: str, mpn: str, cat_key: str, basic_attrs: di
         "inferred_specs": inferred_specs,
         "inferred_triplets": triplets,
         "provenance": "DOMAIN_DEPENDENCY_INFERENCE" if not web_data.get("enriched_via_web") else "HYBRID_WEB_AND_PHYSICAL_PRIOR",
-        "confidence": 0.93 if web_data.get("enriched_via_web") else 0.88
+        "confidence": 0.90 if web_data.get("enriched_via_web") else 0.85
     }
