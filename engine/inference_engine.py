@@ -62,8 +62,8 @@ def infer_deep_specifications(text: str, mpn: str, cat_key: str, basic_attrs: di
     has_web = bool(web_data and web_data.get("enriched_via_web"))
     
     if has_web:
-        conf = 0.95
-        prov = "VERIFIED_MANUFACTURER_WEB_DOCUMENTATION"
+        conf = 0.90
+        prov = "WEB_SEARCH_SNIPPET"
     elif spec_count >= 2:
         conf = 0.88
         prov = "GROUNDED_TEXT_SPEC_EXTRACTION"

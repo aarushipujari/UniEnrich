@@ -35,10 +35,11 @@ flowchart TD
    - **Zero Hardcoded Brand Family Lists**: Completely purged static brand lists; uses dynamic dictionary lookups and RapidFuzz token-set scoring.
    - Strips distributor trailing codes (e.g. `(APPDE)`, `(3658)`, `(VVAPP)`) and guarantees official legal trademark symbols (`®`, `™`) across 100% of resolved brands.
 
-2. **Hierarchical Taxonomy Classifier (`engine/taxonomy_classifier.py` & `engine/ai_agent.py`)**:
-   - Uses weighted longest-match compound noun ranking and pre-classification color/noise stripping to prevent category collisions.
-   - Incorporates a local **Scikit-Learn TF-IDF N-Gram Vector Classifier** for offline zero-shot semantic matching across 50+ industrial taxonomy nodes.
-   - Supports Cloud LLM inference (`google-generativeai`, `openai`) when API keys are configured in the environment.
+2. **Multi-Tier Rule-Based & ML Taxonomy Classifier (`engine/taxonomy_classifier.py` & `engine/ai_agent.py`)**:
+   - **Tier 1 (Front-line)**: Deterministic regex pattern matching with weighted compound noun priority and pre-classification color/noise stripping.
+   - **Tier 2 (Offline ML Fallback)**: Local **Scikit-Learn TF-IDF N-Gram Vector Classifier** for offline zero-shot cosine similarity matching across 50+ industrial taxonomy nodes.
+   - **Tier 3 (Cloud LLM Reasoning)**: Optional structured schema inference (`google-generativeai`, `openai`) when API keys are configured in `.env`.
+   - **Tier 4 (Graceful Fallback)**: Clean algorithmic noun-phrase extraction with human review routing.
 
 3. **Grounded Spec Extraction & Physical Guardrails (`engine/inference_engine.py`)**:
    - Extracts and normalizes factual dimensional, electrical, and physical specifications directly grounded in input text or official documentation.

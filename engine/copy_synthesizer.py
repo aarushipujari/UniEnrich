@@ -228,8 +228,10 @@ def build_long_desc(brand_name: str, product_name: str, with_modifier: str, seri
 
     if specs:
         narrative = f"{subject} is designed for commercial and industrial applications, {', '.join(specs)}."
+    elif mpn:
+        narrative = f"{subject} (Part Number: {mpn})."
     else:
-        narrative = f"{subject} delivers reliable performance engineered for industrial distribution and commercial use."
+        narrative = f"{subject}."
         
     if with_modifier:
         narrative += f" Equipped {with_modifier}."

@@ -1,7 +1,10 @@
 """
-UniEnrich Universal Industrial Taxonomy & Product Type Classifier
-Employs Longest-Match Compound-Noun Specificity Scoring, Pre-Classification Color/Brand Hygiene,
-Empirical Match Confidence Scoring, and Clean NLP Noun-Phrase Fallbacks.
+UniEnrich Multi-Tier Industrial Taxonomy & Product Type Classifier
+Architecture:
+- Tier 1: Deterministic Weighted Regex Specificity Matcher (PRODUCT_TYPE_EXTRACTORS with compound noun priority)
+- Tier 2: Local Scikit-Learn TF-IDF N-Gram Vectorizer (Zero-shot cosine similarity ML fallback)
+- Tier 3: Cloud Generative AI Structured Reasoner (Google Gemini 1.5 Flash / OpenAI GPT-4o-mini if configured)
+- Tier 4: Clean NLP Noun-Phrase Parsing Fallback (with color/distributor code stripping)
 """
 import os
 import json
