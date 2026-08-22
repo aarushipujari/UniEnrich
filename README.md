@@ -8,25 +8,25 @@ UniEnrich is an enterprise-grade catalog enrichment system designed specifically
 
 ```mermaid
 flowchart TD
-    Raw[Raw Sparse Industrial Row\nMPN / Unbranded Desc / Cryptic Text] --> Hybrid[UniEnrich Multi-Stage Pipeline]
+    Raw["Raw Sparse Industrial Row<br/>MPN / Unbranded Desc / Cryptic Text"] --> Hybrid["UniEnrich Multi-Stage Pipeline"]
     
-    subgraph Sourcing & Disambiguation
-        Hybrid --> Web[Live Technical Web Sourcing\nOfficial Manufacturer Specs & Documentation]
-        Hybrid --> Brand[General Multi-Stage Brand Resolver\nToken Hygiene • RapidFuzz • 27k Canonical Catalog]
+    subgraph Sourcing["Sourcing & Disambiguation"]
+        Hybrid --> Web["Live Technical Web Sourcing<br/>Official Manufacturer Specs & Documentation"]
+        Hybrid --> Brand["General Multi-Stage Brand Resolver<br/>Token Hygiene, RapidFuzz, 27k Canonical Catalog"]
     end
     
-    subgraph Classification & NLP
-        Hybrid --> Tax[Taxonomy Classifier\nLongest-Match Specificity + Scikit-Learn TF-IDF N-Gram Vectorizer]
-        Hybrid --> LLM[Generative AI Reasoner (Optional)\nGoogle Gemini / OpenAI Structured Schemas]
+    subgraph NLP["Classification & NLP"]
+        Hybrid --> Tax["Taxonomy Classifier<br/>Longest-Match Specificity & Scikit-Learn TF-IDF"]
+        Hybrid --> LLM["Generative AI Reasoner - Optional<br/>Google Gemini / OpenAI Structured Schemas"]
     end
     
-    subgraph Enterprise Guardrails
-        Tax --> Guardrails[Deterministic Guardrail Engine\n• Master UOM Standards\n• 63 Exact 64th Fraction Conversions\n• Hard Invoice ≤ 40 Chars & Mobile ≤ 80 Chars\n• Zero Speculative Factual Guessing\n• Zero Synthetic Filler Padding]
+    subgraph GuardrailsArea["Enterprise Guardrails"]
+        Tax --> Guardrails["Deterministic Guardrail Engine<br/>- Master UOM Standards<br/>- 63 Exact 64th Fraction Conversions<br/>- Hard Invoice le 40 Chars & Mobile le 80 Chars<br/>- Zero Speculative Factual Guessing"]
         Brand --> Guardrails
         Web --> Guardrails
     end
     
-    Guardrails --> Output[252-Column Commerce-Ready Export\n+ Full Cell Provenance & Bayesian Audit Trace]
+    Guardrails --> Output["252-Column Commerce-Ready Export<br/>Full Cell Provenance & Bayesian Audit Trace"]
 ```
 
 ### Key Engineering Modules:
@@ -76,9 +76,8 @@ flowchart TD
   * Invoice Uppercase Compliance:            100.0%
   * Mobile Ceiling Compliance (≤80):         100.0%
   * Brand Resolution Rate:                   97.1%
-  * Trademark Enforcement on Resolved:       100.0%
-  * Auto-Verified Records:                   705
-  * Human Review Queue Flagged:              295
+  * Auto-Verified Records:                   660
+  * Human Review Queue Flagged:              340
 ```
 
 ---
