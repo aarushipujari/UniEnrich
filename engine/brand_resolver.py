@@ -1,6 +1,6 @@
 """
 UniEnrich General Brand & Manufacturer Entity Resolver
-Dynamic N-Gram Entity Matcher against the 27,000+ Master Brand Catalog.
+Dynamic N-Gram Entity Matcher against the Curated Master Brand Catalog.
 Zero hardcoded brand family lists or static part-number patterns.
 """
 import os
@@ -53,7 +53,7 @@ def extract_candidate_ngrams(text: str) -> list[str]:
 def resolve_brand(e1_brand: str, unilog_brand: str, dib_brand: str, part_manuf: str, part_desc: str, mfg_part_num: str) -> dict:
     """
     Universally resolves brand & manufacturer entities via dynamic dictionary N-gram extraction.
-    Contains zero hardcoded brand lists; queries the 27,000+ Master Brand index dynamically.
+    Queries the Master Brand index dynamically without hardcoded brand family lists.
     """
     raw_brands = [
         clean_placeholder(unilog_brand),
@@ -90,7 +90,6 @@ def resolve_brand(e1_brand: str, unilog_brand: str, dib_brand: str, part_manuf: 
         if cand_lower in ALIASES:
             canon_key = ALIASES[cand_lower]
             if canon_key in CANONICAL:
-                # Confidence scaled by whether candidate was full word match
                 return format_canonical_result(CANONICAL[canon_key], 'NGRAM_CATALOG_MATCH', 0.95)
 
     # 4. RapidFuzz Token-Set Ratio Match against Master Brand Aliases

@@ -12,7 +12,7 @@ flowchart TD
     
     subgraph Sourcing["Sourcing & Disambiguation"]
         Hybrid --> Web["Live Technical Web Sourcing<br/>Official Manufacturer Specs & Documentation"]
-        Hybrid --> Brand["General Dynamic N-Gram Entity Resolver<br/>Token Hygiene, RapidFuzz, 27k Canonical Catalog"]
+        Hybrid --> Brand["General Dynamic N-Gram Entity Resolver<br/>Token Hygiene, RapidFuzz, Curated Master Brand Catalog"]
     end
     
     subgraph NLP["Classification & NLP"]
@@ -26,13 +26,13 @@ flowchart TD
         Web --> Guardrails
     end
     
-    Guardrails --> Output["252-Column Commerce-Ready Export<br/>Full Cell Provenance & Bayesian Audit Trace"]
+    Guardrails --> Output["252-Column Commerce-Ready Export<br/>Full Cell Provenance & Quality Audit Trace"]
 ```
 
 ### Key Engineering Modules:
 1. **Dynamic N-Gram Entity & Brand Resolver (`engine/brand_resolver.py`)**:
-   - Extracts 1-gram, 2-gram, and 3-gram phrases dynamically across supplier descriptions and manufacturer names, matching them against the 27,000+ Master Brand index.
-   - **Zero Hardcoded Brand Lists**: Completely purged static brand lists; uses dynamic dictionary lookups and RapidFuzz token-set scoring.
+   - Extracts 1-gram, 2-gram, and 3-gram phrases dynamically across supplier descriptions and manufacturer names, matching them against the Master Brand & Manufacturer Catalog (`data/master_brands.json`).
+   - **Zero Hardcoded Brand Family Lists**: Completely purged static brand lists; uses dynamic dictionary lookups and RapidFuzz token-set scoring.
    - Strips distributor trailing codes (e.g. `(APPDE)`, `(3658)`, `(VVAPP)`) and guarantees official legal trademark symbols (`®`, `™`) across 100% of resolved brands.
 
 2. **Hierarchical Taxonomy Classifier (`engine/taxonomy_classifier.py` & `engine/ai_agent.py`)**:
@@ -51,17 +51,17 @@ flowchart TD
    - **`LONG_DESC1`**: Grammatically complete technical narrative.
 
 5. **Explainability & Human-in-the-Loop Governance (`engine/explainability.py` & `web/app.py`)**:
-   - Calibrated Bayesian confidence scoring ($0.0 - 1.0$) with cell-level provenance logging (`EXACT_ALIAS`, `GROUNDED_TEXT_EXTRACTION`, `WEB_SOURCING`, `TFIDF_VECTOR`).
-   - Automatically routes unbranded or low-confidence rows ($\le 0.70$) to a dedicated `NEEDS_HUMAN_REVIEW` queue.
+   - Multi-factor empirical confidence scoring ($0.0 - 1.0$) combining brand certainty, taxonomy specificity, and grounded attribute volume with cell-level provenance logging (`EXACT_ALIAS`, `GROUNDED_TEXT_EXTRACTION`, `WEB_SOURCING`, `TFIDF_VECTOR`).
+   - Automatically routes unbranded, ambiguous, or low-confidence rows ($\le 0.80$) to a dedicated `NEEDS_HUMAN_REVIEW` queue.
 
 ---
 
-## 2. Benchmark Scorecard (100% Disjoint Held-Out Evaluation)
+## 2. Benchmark Scorecard (Held-Out Evaluation)
 
 ```
 === UniEnrich Ground Truth & Quality Benchmark Scorecard ===
 
-[A. GROUND TRUTH ACCURACY (100% Disjoint Held-Out Dataset - 200 Records)]
+[A. GROUND TRUTH ACCURACY (Held-Out Evaluation Dataset - 200 Records)]
   * Records Evaluated:                       200 (0 overlapping MPNs with sample_input.csv)
   * Exact Brand Name Match:                  89.5%
   * Exact Legal Manufacturer Match:          93.5%

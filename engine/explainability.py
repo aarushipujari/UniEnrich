@@ -1,7 +1,7 @@
 """
-UniEnrich Calibrated Explainability, Provenance & Audit Engine
-Calculates true calibrated Bayesian confidence scores based on underlying classifier
-empirical signals, penalizes fallbacks, and strictly enforces human-in-the-loop review triggers.
+UniEnrich Multi-Factor Confidence, Provenance & Audit Engine
+Calculates empirical signal-weighted confidence scores based on underlying classifier
+metrics, penalizes fallbacks, and strictly enforces human-in-the-loop review triggers.
 """
 
 def generate_audit_trace(row_input: dict, resolved_brand: dict, taxonomy: dict, attrs: dict, descriptions: dict) -> dict:
@@ -30,7 +30,7 @@ def generate_audit_trace(row_input: dict, resolved_brand: dict, taxonomy: dict, 
     else:
         attr_conf = 0.40
 
-    # 3. Calibrated Empirical Confidence Calculation
+    # 3. Calibrated Empirical Confidence Calculation: Multi-factor weighted formula
     raw_confidence = (brand_conf * 0.40) + (tax_conf * 0.40) + (attr_conf * 0.20)
     
     # Severe penalties for fallbacks and unbranded items
