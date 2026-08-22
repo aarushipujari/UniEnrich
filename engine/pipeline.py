@@ -96,8 +96,13 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_
     long_desc = build_long_desc(brand_name, tax_res['Product Name'], attrs['with_modifier'], attrs['series'], mfg_part_num, attrs)
     retail_desc = build_retail_desc(attrs['series'], tax_res['Product Name'], attrs)
 
-    # 7. Map Digital Assets
-    assets = map_digital_assets(brand_name, mfg_part_num)
+    # 7. Map Digital Assets (Unilog Naming Standards + Honest Grounded Presence)
+    assets = map_digital_assets(
+        brand_name=brand_name,
+        mpn=mfg_part_num,
+        verified_image_url=web_data.get("image_url", ""),
+        verified_source_url=web_data.get("source_url", "")
+    )
 
     # 8. Calibrated Explainability Trace
     descs = {
@@ -127,7 +132,7 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_
     # 9. Assemble Complete 252-Column Record
     record = {h: "" for h in DELIVERY_HEADERS}
 
-    record["MFR URL"] = web_data.get("source_url") or assets.get("MFR URL", "")
+    record["MFR URL"] = web_data.get("source_url", "")
     if web_data.get("source_url"):
         record["Ref URL 1"] = web_data["source_url"]
     record["PART_NUMBER"] = sku or mfg_part_num
@@ -175,7 +180,7 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_
     record["Specification Sheet"] = assets.get("Specification Sheet", "")
     record["Instruction/Installation Manual"] = assets.get("Instruction/Installation Manual", "")
     record["Owners/User Manual"] = assets.get("Owners/User Manual", "")
-    record["Actual Image (Yes/No)"] = "Yes"
+    record["Actual Image (Yes/No)"] = assets.get("Actual Image (Yes/No)", "No")
 
     return record, audit
 
