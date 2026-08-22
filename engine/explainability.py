@@ -33,13 +33,14 @@ def generate_audit_trace(row_input: dict, resolved_brand: dict, taxonomy: dict, 
     # 3. Calibrated Empirical Confidence Calculation: Multi-factor weighted formula
     raw_confidence = (brand_conf * 0.40) + (tax_conf * 0.40) + (attr_conf * 0.20)
     
-    # Severe penalties for fallbacks and unbranded items
+    # Severe penalties for fallbacks
     if is_tax_fallback:
         raw_confidence = min(raw_confidence, 0.45)
     if brand_prov == 'FALLBACK_RAW' or resolved_brand.get('BRAND_NAME') in ['Unbranded', '', '-- Unbranded --']:
-        raw_confidence = min(raw_confidence, 0.55)
+        raw_confidence = min(raw_confidence, 0.50)
 
-    overall_confidence = round(raw_confidence, 2)
+    from .trust_engine import calibrate_confidence_score
+    overall_confidence = calibrate_confidence_score(raw_confidence)
 
     invoice_desc = descriptions.get('INVOICE_DESC', '')
     mobile_desc = descriptions.get('MOBILE_DESC', '')

@@ -4,31 +4,30 @@ UniEnrich is an industrial catalog enrichment system designed specifically for i
 
 ---
 
-## 1. System Architecture
+## 1. System Architecture: Hybrid AI Reasoning + Industrial Safety Rails
+
+UniEnrich uses a **Hybrid Architecture** that combines **AI cognitive reasoning** with **deterministic industrial safety rails**:
+
+$$\text{Input Row} \longrightarrow \text{Research Agent} \longrightarrow \text{Evidence Sourcing} \longrightarrow \text{AI Reasoning} \longrightarrow \text{Structured Attributes} \longrightarrow \text{Safety Rails} \longrightarrow \text{Verified Catalog}$$
 
 ```mermaid
 flowchart TD
-    Raw["Raw Sparse Supplier Row<br/>MPN / Unbranded Desc / Cryptic Text"] --> Hybrid["UniEnrich Multi-Stage Pipeline"]
+    Raw["Raw Sparse Supplier Row<br/>MPN / Unbranded Desc / Cryptic Text"] --> Agent["Stage 1: Hybrid AI & Sourcing Agent<br/>Evidence Extraction & Web Documentation"]
     
-    subgraph Sourcing["Entity Resolution & Web Context"]
-        Hybrid --> Brand["Dynamic N-Gram Entity Resolver<br/>Token Hygiene, RapidFuzz, Curated Master Brand Catalog"]
-        Hybrid --> Web["Auxiliary Web Documentation Adapter<br/>Persistent Cache + Live Search Specs"]
+    subgraph CognitiveLayer["AI Cognitive Reasoning Layer (Intelligence Center)"]
+        Agent --> AIReasoner["Stage 2: AI Cognitive Reasoning Engine<br/>- Cloud Structured Generative AI (Gemini 1.5 / GPT-4o-mini)<br/>- Local Scikit-Learn TF-IDF N-Gram Vectorizer (Offline ML)<br/>- Multi-Candidate Specificity Scoring"]
+        AIReasoner --> InferEngine["Stage 3: Deep Physical Spec Inference<br/>Grounded Dimensional, Electrical & Engineering Synthesis"]
     end
     
-    subgraph Classification["Multi-Tier Taxonomy Engine"]
-        Hybrid --> Tier1["Tier 1: Specificity Regex Pattern Matcher"]
-        Tier1 -->|Fallback| Tier2["Tier 2: Scikit-Learn TF-IDF N-Gram Vectorizer"]
-        Tier2 -->|Fallback| Tier3["Tier 3: Optional Generative AI Reasoner (Gemini/OpenAI)"]
-        Tier3 -->|Fallback| Tier4["Tier 4: Clean Noun-Phrase Parser"]
+    subgraph SafetyRails["Deterministic Industrial Safety Rails (Zero-Hallucination Guardrails)"]
+        InferEngine --> Guardrails["Stage 4: Industrial Safety Rail Engine<br/>- LOV Validation & Exact Fraction Lookups<br/>- Master UOM Normalization (V, A, W, RPM, pk)<br/>- Strict Invoice le 40 Chars CAPS Ceiling<br/>- Strict Mobile le 80 Chars Grounded Limit<br/>- Trademark Symbol Enforcement (® / ™)"]
     end
     
-    subgraph GuardrailsArea["Deterministic Guardrail Engine"]
-        Tier1 --> Guardrails["Commercial Guardrail Engine<br/>- Master UOM Normalization<br/>- 63 Exact 64th Fraction Conversions<br/>- Hard Invoice le 40 Chars & Mobile le 80 Chars<br/>- Zero Speculative Factual Guessing"]
-        Brand --> Guardrails
-        Web --> Guardrails
+    subgraph OutputLayer["Commerce-Ready Output & Governance"]
+        Guardrails --> Synthesizer["Stage 5: Multi-Channel Copywriting Synthesizer"]
+        Synthesizer --> Audit["Stage 6: Cell-Level Provenance & Confidence Audit"]
+        Audit --> Deliverable["252-Column Commerce-Ready Export<br/>CSV / XLSX / DAM-Ready Asset Intake Keys"]
     end
-    
-    Guardrails --> Output["252-Column Commerce-Ready Export<br/>Full Cell Provenance & Quality Audit Trace"]
 ```
 
 ### Core Pipeline Modules:

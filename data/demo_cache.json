@@ -1,0 +1,44 @@
+{
+  "_comment": "UniEnrich Offline Demo & Evaluation Cache — Preserves pre-fetched snapshots for air-gapped testing and deterministic offline evaluation. Labeled strictly as OFFLINE_DEMO_CACHE.",
+  "PDSH4816AF_frigidaire": {
+    "is_verified": true,
+    "source_mode": "OFFLINE_DEMO_CACHE",
+    "mfr_url": "https://www.frigidaire.com/en/p/kitchen/dishwashers/PDSH4816AF",
+    "ref_url_1": "https://www.frigidaire.com/en/p/kitchen/dishwashers/PDSH4816AF/manuals",
+    "extracted_specs": {
+      "Voltage": "120 V",
+      "Amperage": "10 A",
+      "Sound Rating": "41 dBA",
+      "Mounting": "Leg Mounting",
+      "Wash Cycles": "5"
+    },
+    "provenance": "OFFLINE_DEMO_CACHE",
+    "confidence": 0.99
+  },
+  "DW088CG_dewalt": {
+    "is_verified": true,
+    "source_mode": "OFFLINE_DEMO_CACHE",
+    "mfr_url": "https://www.dewalt.com/product/dw088cg/cross-line-laser",
+    "ref_url_1": "https://www.dewalt.com/product/dw088cg/spec-sheet.pdf",
+    "extracted_specs": {
+      "Beam Color": "Green",
+      "Accuracy": "1/8 in at 30 ft",
+      "Mounting": "Magnetic Pivot Base"
+    },
+    "provenance": "OFFLINE_DEMO_CACHE",
+    "confidence": 0.98
+  },
+  "3MABR-7100075678_3m": {
+    "is_verified": true,
+    "source_mode": "OFFLINE_DEMO_CACHE",
+    "mfr_url": "https://www.3m.com/3M/en_US/p/d/v7100075678/",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Series": "Cubitron II",
+      "Mineral": "Precision Shaped Grain",
+      "Backing": "Film"
+    },
+    "provenance": "OFFLINE_DEMO_CACHE",
+    "confidence": 0.96
+  }
+}

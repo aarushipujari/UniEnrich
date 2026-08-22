@@ -187,6 +187,114 @@ def test_amperage_and_with_modifier_guardrails():
     assert len(rec_with["MOBILE_DESC"]) <= 80
 
 
+def test_agentic_research_loop_and_conflict_resolution():
+    """Asserts that the research agent performs multi-turn verification and grounds specs."""
+    from engine.research_agent import query_agentic_research
+    
+    # 1. Turn 1 Manufacturer verification
+    res_mfr = query_agentic_research("PDSH4816AF", "Dishwasher SS", "Frigidaire")
+    assert res_mfr["is_verified"] is True
+    assert "120 V" in res_mfr["extracted_specs"].values()
+    assert "10 A" in res_mfr["extracted_specs"].values()
+    assert "https://www.frigidaire.com" in res_mfr["mfr_url"]
+
+    # 2. Secondary datasheet fallback
+    res_sec = query_agentic_research("NONEXISTENT-999", "Specialist 240V 15A 3450RPM Motor", "UnknownBrand")
+    assert res_sec["extracted_specs"].get("Voltage") == "240 V"
+    assert res_sec["extracted_specs"].get("Speed Rating") == "3450 RPM"
+
+
+def test_parallel_batch_scale_engine_throughput_and_recovery():
+    """Asserts that ParallelBatchScaleEngine processes concurrently and passes 100% schema checks."""
+    from engine.batch_scale_engine import ParallelBatchScaleEngine
+    sample_path = os.path.join(DATA_DIR, "sample_input.csv")
+    if os.path.exists(sample_path):
+        df_sample = pd.read_csv(sample_path).head(50)
+        engine = ParallelBatchScaleEngine(max_workers=4)
+        df_res, audits, metrics = engine.process_catalog_parallel(df_sample)
+        
+        assert len(df_res) == len(df_sample)
+        assert len(df_res.columns) == 252
+        assert metrics["parallel_workers"] == 4
+        assert metrics["throughput_records_per_sec"] > 0
+        assert metrics["fault_tolerance_pass_rate"] == "100.0%"
+
+
+def test_adversarial_stress_suite():
+    """Asserts that adversarial ambiguous, conflicting, and sparse tests all pass."""
+    from evaluation.adversarial_tests import (
+        test_adversarial_ambiguous_mpn_refuses_overconfidence,
+        test_adversarial_conflicting_source_resolution,
+        test_adversarial_sparse_input_zero_hallucination,
+        test_adversarial_source_hierarchy_tier_weights
+    )
+    test_adversarial_ambiguous_mpn_refuses_overconfidence()
+    test_adversarial_conflicting_source_resolution()
+    test_adversarial_sparse_input_zero_hallucination()
+    test_adversarial_source_hierarchy_tier_weights()
+
+
+def test_held_out_unseen_split_evaluation():
+    """Asserts that the 50-item Held-Out Unseen Test Set achieves high accuracy and 100% hard constraint compliance."""
+    from evaluation.split_evaluator import run_split_evaluation
+    rep = run_split_evaluation()
+    assert rep["total_test_products"] == 50
+    assert rep["metrics"]["invoice_caps_ceiling_compliance"] == "100.0%"
+    assert rep["metrics"]["mobile_char_limit_compliance"] == "100.0%"
+    assert rep["metrics"]["schema_columns_verified"] == "252 / 252"
+    assert rep["metrics"]["unseen_brand_accuracy"] == "100.0%"
+
+
+def test_evidence_graph_and_conflict_intelligence():
+    """Asserts that the evidence graph builder produces valid nodes, edges, and conflict structures."""
+    item = {
+        "Mfg_Part_Num": "PDSH4816AF",
+        "Part_Desc": "Built-In Dishwasher 120V 10A Stainless Steel 41 dBA",
+        "Part_Manuf": "Frigidaire",
+        "E1_Brand": "Frigidaire"
+    }
+    rec, audit = enrich_single_record(item)
+    ev_graph = audit.get("evidence_graph", {})
+
+    assert ev_graph.get("concept_identity") == "Evidence-First Product Intelligence (Machine-Verifiable Graph)"
+    assert ev_graph.get("total_nodes") >= 4
+    assert ev_graph.get("total_edges") >= 3
+    assert any(n["type"] == "PRODUCT_ROOT" for n in ev_graph.get("nodes", []))
+    assert any(n["type"] == "GROUNDED_ATTRIBUTE" for n in ev_graph.get("nodes", []))
+    assert "graph TD" in ev_graph.get("mermaid_diagram", "")
+
+
+def test_business_impact_roi_quantification():
+    """Asserts that the Business Impact Calculator accurately computes financial and labor savings."""
+    from engine.business_impact import get_business_impact_metrics
+    metrics = get_business_impact_metrics(
+        total_items=1000,
+        direct_publish_count=780,
+        assisted_count=150,
+        review_count=70,
+        processing_time_sec=85.0
+    )
+    assert metrics["measured_runtime_metrics"]["catalog_items_processed"] == 1000
+    assert metrics["measured_runtime_metrics"]["fields_standardized"] == 252000
+    assert "94.6%" in metrics["projected_enterprise_savings"]["projected_labor_reduction"]
+    assert "1,262 Hours" in metrics["scale_10k_sku_projection"]["projected_hours_saved"]
+    assert "$63,100" in metrics["scale_10k_sku_projection"]["projected_cost_saved"]
+
+
+def test_multi_scale_scaling_stress_test():
+    """Asserts that the Multi-Scale Scale Engine executes benchmarks across 100, 500, and 1000 items."""
+    from engine.batch_scale_engine import ParallelBatchScaleEngine
+    sample_path = os.path.join(DATA_DIR, "sample_input.csv")
+    if os.path.exists(sample_path):
+        df_sample = pd.read_csv(sample_path).head(100)
+        engine = ParallelBatchScaleEngine(max_workers=4)
+        bench = engine.run_multi_scale_benchmark(df_sample)
+        assert len(bench["benchmark_results"]) == 4
+        assert bench["benchmark_results"][0]["products_count"] == 100
+        assert "100.0%" in bench["benchmark_results"][0]["success_rate"]
+        assert "Projected" in bench["benchmark_results"][3]["success_rate"]
+
+
 if __name__ == "__main__":
     print("Running UniEnrich Pipeline Test Suite with Hard Assertions...\n")
     test_schema_column_invariance()
@@ -203,4 +311,19 @@ if __name__ == "__main__":
     print("[PASS] test_batch_enrichment_regression_100_rows")
     test_amperage_and_with_modifier_guardrails()
     print("[PASS] test_amperage_and_with_modifier_guardrails")
-    print("\nALL 7 HARD REGRESSION TEST SUITES PASSED SUCCESSFULLY.")
+    test_agentic_research_loop_and_conflict_resolution()
+    print("[PASS] test_agentic_research_loop_and_conflict_resolution")
+    test_parallel_batch_scale_engine_throughput_and_recovery()
+    print("[PASS] test_parallel_batch_scale_engine_throughput_and_recovery")
+    test_adversarial_stress_suite()
+    print("[PASS] test_adversarial_stress_suite")
+    test_held_out_unseen_split_evaluation()
+    print("[PASS] test_held_out_unseen_split_evaluation")
+    test_evidence_graph_and_conflict_intelligence()
+    print("[PASS] test_evidence_graph_and_conflict_intelligence")
+    test_business_impact_roi_quantification()
+    print("[PASS] test_business_impact_roi_quantification")
+    test_multi_scale_scaling_stress_test()
+    print("[PASS] test_multi_scale_scaling_stress_test")
+    print("\nALL 14 HARD REGRESSION TEST SUITES PASSED SUCCESSFULLY.")
+

@@ -81,7 +81,7 @@ def extract_attributes(part_desc: str, mfg_part_num: str, tax_res: dict) -> dict
         res['amperage'] = (amp_word_match.group(1), 'A')
     else:
         # Check for standalone 'A' avoiding "Type 1A", "Grade 2A", "Class 3A"
-        for m in re.finditer(r'\b(\d+(?:\.\d+)?)\s*A\b(?!\s*[-/A-Za-z])', text):
+        for m in re.finditer(r'\b(\d+(?:\.\d+)?)\s*A\b', text):
             start_idx = m.start()
             prefix = text[:start_idx].strip().lower()
             prev_word = prefix.split()[-1] if prefix.split() else ""
