@@ -1,7 +1,7 @@
 """
 UniEnrich Universal Industrial Taxonomy & Product Type Classifier
 Employs Longest-Match Compound-Noun Specificity Scoring, Pre-Classification Color/Brand Hygiene,
-and Clean NLP Noun-Phrase Fallbacks.
+Empirical Match Confidence Scoring, and Clean NLP Noun-Phrase Fallbacks.
 """
 import os
 import json
@@ -328,7 +328,6 @@ def clean_fallback_noun_phrase(part_desc: str, mfg_part_num: str) -> str:
     if mfg_part_num:
         desc = re.sub(rf"\b{re.escape(mfg_part_num)}\b", "", desc, flags=re.IGNORECASE)
         
-    # Strip color words first
     for c_noise in sorted(KNOWN_COLOR_NOISE, key=len, reverse=True):
         desc = re.sub(rf"\b{re.escape(c_noise)}\b", "", desc, flags=re.IGNORECASE)
         
@@ -350,7 +349,7 @@ def clean_fallback_noun_phrase(part_desc: str, mfg_part_num: str) -> str:
 def classify_product(part_desc: str, mfg_part_num: str = "", raw_dept: str = "", raw_class: str = "", raw_fine: str = "") -> dict:
     text = f"{part_desc} {mfg_part_num}".strip()
     
-    # 1. Multi-Candidate Match with Specificity Ranking
+    # 1. Multi-Candidate Match with Specificity Ranking & Dynamic Empirical Confidence
     best_type = None
     best_priority = -1
     best_match_len = 0
@@ -367,6 +366,12 @@ def classify_product(part_desc: str, mfg_part_num: str = "", raw_dept: str = "",
 
     if best_type and best_type in TAXONOMY_MAP:
         dept, cls, fine, classpath, unspsc = TAXONOMY_MAP[best_type]
+        
+        # Calculate dynamic empirical confidence based on coverage and specificity
+        coverage = min(1.0, best_match_len / max(1, len(part_desc.strip())))
+        priority_weight = best_priority / 100.0
+        calculated_conf = round(min(0.98, 0.70 + (0.24 * priority_weight) + (0.04 * coverage)), 2)
+
         return {
             "cat_key": best_type.lower().replace(' ', '_'),
             "Dept": raw_dept or dept,
@@ -376,10 +381,11 @@ def classify_product(part_desc: str, mfg_part_num: str = "", raw_dept: str = "",
             "UNSPSC": unspsc,
             "Product Name": best_type,
             "is_fallback": False,
-            "provenance": "REGEX_LONG_MATCH_PRIORITY"
+            "confidence": calculated_conf,
+            "provenance": f"REGEX_SPECIFICITY_MATCH (Priority: {best_priority}, Score: {calculated_conf})"
         }
 
-    # 2. Local Scikit-Learn TF-IDF N-Gram Vector Classifier
+    # 2. Local Scikit-Learn TF-IDF N-Gram Vector Classifier (Carries its own empirical cosine similarity score)
     ml_res = predict_ml_taxonomy(part_desc, mfg_part_num)
     if ml_res:
         return ml_res
@@ -396,5 +402,6 @@ def classify_product(part_desc: str, mfg_part_num: str = "", raw_dept: str = "",
         "UNSPSC": "",
         "Product Name": clean_pname,
         "is_fallback": True,
+        "confidence": 0.35,
         "provenance": "FALLBACK_UNCATEGORIZED"
     }
