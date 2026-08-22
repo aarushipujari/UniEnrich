@@ -1,0 +1,389 @@
+{
+  "dishwashers": {
+    "dept": "Appliances",
+    "class": "Large Appliances",
+    "fine": "Dishwashers",
+    "classpath": "Appliances & Consumer Electronics>Kitchen Appliances>Built-In Dishwashers",
+    "unspsc": "52141505",
+    "product_type": "Dishwasher",
+    "attributes": [
+      "Series",
+      "Model",
+      "Number of Wash Cycles",
+      "Voltage Rating",
+      "Amperage Rating",
+      "Mounting Type",
+      "Plug Type",
+      "Size",
+      "Depth With Door Open",
+      "Minimum Height",
+      "Maximum Height",
+      "Sound Level",
+      "Material",
+      "Color",
+      "Additional Information"
+    ]
+  },
+  "refrigerators": {
+    "dept": "Appliances",
+    "class": "Large Appliances",
+    "fine": "Refrigerators",
+    "classpath": "Appliances & Consumer Electronics>Kitchen Appliances>Refrigerators",
+    "unspsc": "24131501",
+    "product_type": "Refrigerator",
+    "attributes": [
+      "Series",
+      "Capacity",
+      "Total Capacity",
+      "Color",
+      "Installation Type",
+      "Voltage Rating"
+    ]
+  },
+  "freezers": {
+    "dept": "Appliances",
+    "class": "Large Appliances",
+    "fine": "Freezers",
+    "classpath": "Appliances & Consumer Electronics>Kitchen Appliances>Freezers",
+    "unspsc": "24131502",
+    "product_type": "Freezer",
+    "attributes": [
+      "Series",
+      "Capacity",
+      "Configuration",
+      "Color",
+      "Defrost Type",
+      "Voltage Rating"
+    ]
+  },
+  "ranges": {
+    "dept": "Appliances",
+    "class": "Cooking Appliances",
+    "fine": "Ranges",
+    "classpath": "Appliances & Consumer Electronics>Kitchen Appliances>Ranges",
+    "unspsc": "52141514",
+    "product_type": "Range",
+    "attributes": [
+      "Series",
+      "Fuel Type",
+      "Size",
+      "Number of Burners",
+      "Color",
+      "Voltage Rating"
+    ]
+  },
+  "microwaves": {
+    "dept": "Appliances",
+    "class": "Cooking Appliances",
+    "fine": "Microwave Ovens",
+    "classpath": "Appliances & Consumer Electronics>Kitchen Appliances>Microwave Ovens",
+    "unspsc": "52141511",
+    "product_type": "Microwave Oven",
+    "attributes": [
+      "Series",
+      "Capacity",
+      "Wattage",
+      "Type",
+      "Color",
+      "Mounting Type"
+    ]
+  },
+  "washers": {
+    "dept": "Appliances",
+    "class": "Laundry",
+    "fine": "Washing Machines",
+    "classpath": "Appliances & Consumer Electronics>Laundry Appliances>Washing Machines",
+    "unspsc": "52141601",
+    "product_type": "Washing Machine",
+    "attributes": [
+      "Series",
+      "Capacity",
+      "Load Type",
+      "Color",
+      "Voltage Rating"
+    ]
+  },
+  "dryers": {
+    "dept": "Appliances",
+    "class": "Laundry",
+    "fine": "Dryers",
+    "classpath": "Appliances & Consumer Electronics>Laundry Appliances>Clothes Dryers",
+    "unspsc": "52141602",
+    "product_type": "Clothes Dryer",
+    "attributes": [
+      "Series",
+      "Fuel Type",
+      "Capacity",
+      "Color",
+      "Voltage Rating"
+    ]
+  },
+  "coffee_makers": {
+    "dept": "Appliances",
+    "class": "Small Appliances",
+    "fine": "Coffee & Espresso",
+    "classpath": "Appliances & Consumer Electronics>Small Appliances>Coffee & Espresso Makers",
+    "unspsc": "52141526",
+    "product_type": "Coffee Maker",
+    "attributes": [
+      "Series",
+      "Type",
+      "Capacity",
+      "Color",
+      "Material",
+      "Voltage Rating"
+    ]
+  },
+  "toasters": {
+    "dept": "Appliances",
+    "class": "Small Appliances",
+    "fine": "Toasters",
+    "classpath": "Appliances & Consumer Electronics>Small Appliances>Toasters & Ovens",
+    "unspsc": "52141527",
+    "product_type": "Toaster",
+    "attributes": [
+      "Series",
+      "Slice Capacity",
+      "Color",
+      "Material",
+      "Wattage"
+    ]
+  },
+  "abrasives_cut_off": {
+    "dept": "Abrasives",
+    "class": "Cutting & Grinding Wheels",
+    "fine": "Cut-Off Wheels",
+    "classpath": "Abrasives>Cutting & Grinding Wheels>Cut-Off Wheels",
+    "unspsc": "31191600",
+    "product_type": "Cut-Off Wheel",
+    "attributes": [
+      "Diameter",
+      "Thickness",
+      "Arbor/Shank Size",
+      "Abrasive Material",
+      "Applicable Materials",
+      "Max RPM"
+    ]
+  },
+  "abrasives_sanding": {
+    "dept": "Abrasives",
+    "class": "Sanding Discs & Belts",
+    "fine": "Sanding Belts & Discs",
+    "classpath": "Abrasives>Sanding & Finishing>Sanding Belts & Discs",
+    "unspsc": "31191500",
+    "product_type": "Sanding Disc",
+    "attributes": [
+      "Size",
+      "Grit",
+      "Backing Material",
+      "Attachment Type",
+      "Quantity"
+    ]
+  },
+  "saw_blades": {
+    "dept": "Tools & Hardware",
+    "class": "Power Tool Accessories",
+    "fine": "Saw Blades",
+    "classpath": "Tools & Hardware>Power Tool Accessories>Saw Blades>Circular Saw Blades",
+    "unspsc": "27112802",
+    "product_type": "Saw Blade",
+    "attributes": [
+      "Blade Diameter",
+      "Number of Teeth",
+      "Arbor Size",
+      "Kerf",
+      "Applicable Materials",
+      "Hook Angle"
+    ]
+  },
+  "fastener_bits": {
+    "dept": "Tools & Hardware",
+    "class": "Power Tool Accessories",
+    "fine": "Screwdriver Bits",
+    "classpath": "Tools & Hardware>Power Tool Accessories>Driver Bits & Fastener Holders",
+    "unspsc": "27112814",
+    "product_type": "Driver Bit",
+    "attributes": [
+      "Drive Type",
+      "Drive Size",
+      "Length",
+      "Shank Size",
+      "Quantity",
+      "Impact Rated"
+    ]
+  },
+  "power_tools_saws": {
+    "dept": "Tools & Hardware",
+    "class": "Power Tools",
+    "fine": "Saws",
+    "classpath": "Tools & Hardware>Power Tools>Saws>Circular Saws",
+    "unspsc": "27112700",
+    "product_type": "Circular Saw",
+    "attributes": [
+      "Series",
+      "Voltage Rating",
+      "Blade Diameter",
+      "Motor Type",
+      "Power Source",
+      "Bevel Capacity"
+    ]
+  },
+  "power_tools_drills": {
+    "dept": "Tools & Hardware",
+    "class": "Power Tools",
+    "fine": "Drills & Drivers",
+    "classpath": "Tools & Hardware>Power Tools>Drills & Drivers>Impact Drivers",
+    "unspsc": "27112703",
+    "product_type": "Impact Driver",
+    "attributes": [
+      "Series",
+      "Voltage Rating",
+      "Chuck Size",
+      "Torque",
+      "Drive Size",
+      "Power Source"
+    ]
+  },
+  "power_tools_sanders": {
+    "dept": "Tools & Hardware",
+    "class": "Power Tools",
+    "fine": "Sanders & Polishers",
+    "classpath": "Tools & Hardware>Power Tools>Sanders & Polishers>Random Orbital Sanders",
+    "unspsc": "27112708",
+    "product_type": "Orbital Sander",
+    "attributes": [
+      "Series",
+      "Pad Size",
+      "Orbit Diameter",
+      "Voltage Rating",
+      "Speed Rating",
+      "Dust Collection"
+    ]
+  },
+  "power_tools_nailers": {
+    "dept": "Tools & Hardware",
+    "class": "Power Tools",
+    "fine": "Nailers & Staplers",
+    "classpath": "Tools & Hardware>Power Tools>Nailers & Staplers>Framing Nailers",
+    "unspsc": "27112709",
+    "product_type": "Nailer",
+    "attributes": [
+      "Series",
+      "Fastener Gauge",
+      "Magazine Angle",
+      "Collation Type",
+      "Power Source"
+    ]
+  },
+  "batteries_chargers": {
+    "dept": "Tools & Hardware",
+    "class": "Power Tool Accessories",
+    "fine": "Batteries & Chargers",
+    "classpath": "Tools & Hardware>Power Tool Accessories>Batteries & Chargers>Power Tool Batteries",
+    "unspsc": "26111700",
+    "product_type": "Battery Pack",
+    "attributes": [
+      "Series",
+      "Voltage Rating",
+      "Battery Capacity",
+      "Battery Chemistry",
+      "Package Quantity"
+    ]
+  },
+  "decking": {
+    "dept": "Building Materials",
+    "class": "Decking & Railing",
+    "fine": "Composite Decking",
+    "classpath": "Building Materials>Decking & Railing>Deck Boards",
+    "unspsc": "30103600",
+    "product_type": "Deck Board",
+    "attributes": [
+      "Series",
+      "Profile",
+      "Color",
+      "Length",
+      "Nominal Size",
+      "Material"
+    ]
+  },
+  "deck_railing": {
+    "dept": "Building Materials",
+    "class": "Decking & Railing",
+    "fine": "Railing Systems",
+    "classpath": "Building Materials>Decking & Railing>Railing Kits",
+    "unspsc": "30103601",
+    "product_type": "Railing Kit",
+    "attributes": [
+      "Series",
+      "Color",
+      "Length",
+      "Height",
+      "Baluster Type",
+      "Material"
+    ]
+  },
+  "lighting_bulbs": {
+    "dept": "Electrical",
+    "class": "Lamps & Bulbs",
+    "fine": "LED Bulbs",
+    "classpath": "Electrical>Lamps & Bulbs>LED Bulbs",
+    "unspsc": "39101628",
+    "product_type": "LED Light Bulb",
+    "attributes": [
+      "Bulb Shape",
+      "Base Type",
+      "Wattage Equivalent",
+      "Color Temperature",
+      "Lumens",
+      "Voltage Rating",
+      "Package Quantity"
+    ]
+  },
+  "lighting_fixtures": {
+    "dept": "Electrical",
+    "class": "Lighting Fixtures",
+    "fine": "Indoor & Outdoor Fixtures",
+    "classpath": "Electrical>Lighting Fixtures>Wall & Ceiling Fixtures",
+    "unspsc": "39111500",
+    "product_type": "Light Fixture",
+    "attributes": [
+      "Series",
+      "Mounting Type",
+      "Finish",
+      "Number of Lights",
+      "Dimensions",
+      "Voltage Rating"
+    ]
+  },
+  "electrical_devices": {
+    "dept": "Electrical",
+    "class": "Wiring Devices",
+    "fine": "Receptacles & Outlets",
+    "classpath": "Electrical>Wiring Devices>Outlets & Receptacles",
+    "unspsc": "39121406",
+    "product_type": "Receptacle Outlet",
+    "attributes": [
+      "Amperage Rating",
+      "Voltage Rating",
+      "NEMA Configuration",
+      "Color",
+      "Grade",
+      "Features"
+    ]
+  },
+  "safety_gear": {
+    "dept": "Safety & Security",
+    "class": "Personal Protective Equipment",
+    "fine": "Eye Protection & Heated Gear",
+    "classpath": "Safety & Security>Personal Protective Equipment>Safety Glasses",
+    "unspsc": "46181802",
+    "product_type": "Safety Glasses",
+    "attributes": [
+      "Series",
+      "Frame Color",
+      "Lens Color",
+      "Lens Coating",
+      "Size"
+    ]
+  }
+}
