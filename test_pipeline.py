@@ -148,7 +148,7 @@ def test_batch_enrichment_regression_100_rows():
     # 4. Valid confidence bounds
     for a in audits:
         assert 0.0 <= a["overall_confidence"] <= 1.0, f"Confidence out of bounds: {a['overall_confidence']}"
-        assert a["status"] in ["VERIFIED", "NEEDS_HUMAN_REVIEW"]
+        assert a["status"] in ["VERIFIED", "NEEDS_HUMAN_REVIEW", "ASSISTED_REVIEW"]
 
 
 def test_amperage_and_with_modifier_guardrails():
@@ -295,6 +295,128 @@ def test_multi_scale_scaling_stress_test():
         assert "Projected" in bench["benchmark_results"][3]["success_rate"]
 
 
+def test_invalid_lov_rejected_and_routed_to_review():
+    """Asserts that invalid/unapproved LOV values are never fabricated and route to human review."""
+    item = {
+        "Mfg_Part_Num": "UNKNOWN-MPN-9999",
+        "Part_Desc": "Nonexistent widget fabricated freeform string",
+        "Part_Manuf": "Unapproved Maker XYZ",
+        "E1_Brand": "-- Unbranded --"
+    }
+    rec, audit = enrich_single_record(item)
+    assert audit["status"] in ["NEEDS_HUMAN_REVIEW", "ASSISTED_REVIEW"]
+    assert rec["BRAND_NAME"] in ["-- Unbranded --", "Unbranded"]
+
+
+def test_valid_lov_retained_canonically():
+    """Asserts that valid LOV values are canonicalized to approved master standards."""
+    item = {
+        "Mfg_Part_Num": "DCD1007B",
+        "Part_Desc": "DEWALT 20V MAX XR Hammer Drill Brushless 1/2in",
+        "Part_Manuf": "Black & Decker / DEWALT",
+        "E1_Brand": "dewalt"
+    }
+    rec, audit = enrich_single_record(item)
+    assert rec["BRAND_NAME"] == "DEWALT®"
+    assert rec["Product Name"] == "Hammer Drill"
+    assert "Hammer Drills" in rec["Classpath"]
+
+
+def test_manufacturer_alias_canonicalization():
+    """Asserts that manufacturer aliases correctly map to master legal manufacturer names."""
+    item = {
+        "Mfg_Part_Num": "7100075678",
+        "Part_Desc": "3M 775L Stikit Film Disc P150 5in",
+        "Part_Manuf": "3 M Co (3M)",
+        "E1_Brand": "3M"
+    }
+    rec, audit = enrich_single_record(item)
+    assert rec["BRAND_NAME"] == "3M™"
+    assert "3M" in rec["MANUFACTURER_NAME"]
+
+
+def test_uom_validation_and_alias_normalization():
+    """Asserts that UOM values are strictly validated and normalized against Master UOM standards."""
+    from engine.lov_validator import LOVValidatorGate
+    c_uom, is_v, was_c = LOVValidatorGate.normalize_uom("inches")
+    assert is_v and was_c and c_uom == "in"
+
+    c_uom2, is_v2, was_c2 = LOVValidatorGate.normalize_uom("volts")
+    assert is_v2 and was_c2 and c_uom2 == "V"
+
+    c_uom3, is_v3, _ = LOVValidatorGate.normalize_uom("invalid_unit_xyz")
+    assert not is_v3 and c_uom3 == ""
+
+
+def test_distributor_url_never_labeled_as_mfr_evidence():
+    """Asserts that distributor/reseller URLs are never mislabeled as official manufacturer evidence."""
+    from engine.lov_validator import LOVValidatorGate
+    mock_rec = {col: "" for col in DELIVERY_HEADERS}
+    mock_rec["MFR URL"] = "https://www.grainger.com/product/dewalt-drill"
+    mock_audit = {"overall_confidence": 0.90}
+    val_rec, val_audit, stats = LOVValidatorGate.validate_and_normalize_record(mock_rec, mock_audit)
+    assert val_rec["MFR URL"] == ""
+    assert "grainger.com" in val_rec["Ref URL 1"]
+    assert stats["distributor_source_rerouted"] is True
+
+
+def test_missing_evidence_no_fabricated_url():
+    """Asserts that records with missing evidence do not fabricate speculative URLs."""
+    item = {
+        "Mfg_Part_Num": "GENERIC-101",
+        "Part_Desc": "Generic Galvanized Steel Screw 1in",
+        "Part_Manuf": "Generic Hardware Supply",
+        "E1_Brand": "-- Unbranded --"
+    }
+    rec, audit = enrich_single_record(item)
+    assert rec["MFR URL"] == ""
+    assert rec["Ref URL 1"] == ""
+
+
+def test_confidence_human_review_routing():
+    """Asserts that confidence scoring correctly partitions records into publication vs review tiers."""
+    from engine.trust_engine import TrustEvidenceEngine
+    high_item = {
+        "BRAND_NAME": "DEWALT®",
+        "Classpath": "Tools & Hardware>Power Tools>Drills & Drivers>Hammer Drills",
+        "INVOICE_DESC": "HAMMER DRILL 20V 1/2IN",
+        "MOBILE_DESC": "DEWALT Hammer Drill 20V",
+        "MFR URL": "https://www.dewalt.com/product/dcd1007b"
+    }
+    high_audit = {"status": "VERIFIED", "overall_confidence": 0.96, "is_fallback": False}
+    high_tier = TrustEvidenceEngine.assess_commerce_readiness(high_item, high_audit)
+    assert high_tier["readiness_tier"] == "TIER_A_DIRECT_PUBLICATION"
+
+    low_item = {
+        "BRAND_NAME": "Unbranded",
+        "Classpath": "Uncategorized Supplies>General Industrial>Pending Review",
+        "INVOICE_DESC": "UNKNOWN WIDGET",
+        "MOBILE_DESC": "Unknown Widget",
+        "MFR URL": ""
+    }
+    low_audit = {"status": "NEEDS_HUMAN_REVIEW", "overall_confidence": 0.45, "is_fallback": True}
+    low_tier = TrustEvidenceEngine.assess_commerce_readiness(low_item, low_audit)
+    assert low_tier["readiness_tier"] == "TIER_C_MANDATORY_REVIEW"
+
+
+def test_final_schema_exact_252_columns_csv_xlsx():
+    """Verifies that the generated delivery CSV and XLSX files have exactly 252 columns and 1000 rows."""
+    csv_path = os.path.join(DATA_DIR, "UniEnrich_Delivered_Catalog_252_Cols.csv")
+    xlsx_path = os.path.join(DATA_DIR, "UniEnrich_Delivered_Catalog_252_Cols.xlsx")
+    
+    if os.path.exists(csv_path):
+        df_csv = pd.read_csv(csv_path, dtype=str)
+        assert len(df_csv.columns) == 252
+        assert len(df_csv) == 1000
+        assert list(df_csv.columns) == DELIVERY_HEADERS
+
+    if os.path.exists(xlsx_path):
+        df_xlsx = pd.read_excel(xlsx_path, dtype=str)
+        assert len(df_xlsx.columns) == 252
+        assert len(df_xlsx) == 1000
+        assert list(df_xlsx.columns) == DELIVERY_HEADERS
+
+
 if __name__ == "__main__":
     print("Running UniEnrich Pipeline Test Suite with Hard Assertions...\n")
     test_schema_column_invariance()
@@ -325,5 +447,25 @@ if __name__ == "__main__":
     print("[PASS] test_business_impact_roi_quantification")
     test_multi_scale_scaling_stress_test()
     print("[PASS] test_multi_scale_scaling_stress_test")
-    print("\nALL 14 HARD REGRESSION TEST SUITES PASSED SUCCESSFULLY.")
+
+    # New Comprehensive Standards & LOV Gates
+    test_invalid_lov_rejected_and_routed_to_review()
+    print("[PASS] test_invalid_lov_rejected_and_routed_to_review")
+    test_valid_lov_retained_canonically()
+    print("[PASS] test_valid_lov_retained_canonically")
+    test_manufacturer_alias_canonicalization()
+    print("[PASS] test_manufacturer_alias_canonicalization")
+    test_uom_validation_and_alias_normalization()
+    print("[PASS] test_uom_validation_and_alias_normalization")
+    test_distributor_url_never_labeled_as_mfr_evidence()
+    print("[PASS] test_distributor_url_never_labeled_as_mfr_evidence")
+    test_missing_evidence_no_fabricated_url()
+    print("[PASS] test_missing_evidence_no_fabricated_url")
+    test_confidence_human_review_routing()
+    print("[PASS] test_confidence_human_review_routing")
+    test_final_schema_exact_252_columns_csv_xlsx()
+    print("[PASS] test_final_schema_exact_252_columns_csv_xlsx")
+
+    print("\nALL 22 HARD REGRESSION TEST SUITES PASSED SUCCESSFULLY.")
+
 

@@ -44,11 +44,12 @@ if os.path.exists(HEADERS_FILE):
 else:
     DELIVERY_HEADERS = []
 
-def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_reasoning: bool = True) -> tuple[dict, dict]:
+def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_reasoning: bool = True, use_cache: bool = True) -> tuple[dict, dict]:
     """
-    Transforms a single messy input row into a 252-column delivery format record + audit trace
+    Enriches a single sparse supplier record into a 252-column standardized catalog row
     via the 7-stage Neuro-Symbolic Cognitive Architecture:
     AI Discovery & Reasoning -> Evidence Verification -> Deterministic Industrial Safety Rails.
+    use_cache: When True (Demo/Production), utilizes persistent cache. When False (Evaluation), runs purely live/isolated.
     """
     mfg_part_num = sanitize_text(str(raw.get('Mfg_Part_Num', raw.get('MANUFACTURER_PART_NUMBER', ''))))
     part_desc = sanitize_text(str(raw.get('Part_Desc', '')))
@@ -68,9 +69,9 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_
     brand_name = brand_res.get('BRAND_NAME', '')
 
     # Stage 2: Autonomous Agentic Research Loop (Manufacturer Sourcing & Evidence Retrieval)
-    research_data = {"is_verified": False, "mfr_url": "", "ref_url_1": "", "extracted_specs": {}, "provenance": "LOCAL_GROUNDING"}
+    research_data = {"is_verified": False, "mfr_url": "", "ref_url_1": "", "extracted_specs": {}, "provenance": "SUPPLIER_INPUT_GROUNDED"}
     if enable_web_sourcing:
-        research_data = query_agentic_research(mfg_part_num, part_desc, brand_name)
+        research_data = query_agentic_research(mfg_part_num, part_desc, brand_name, use_cache=use_cache)
 
     # Legacy adapter compatibility
     web_data = {
@@ -192,17 +193,19 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_
         record[f"ATTRIBUTE_VALUE {idx}"] = trip.get('value', '')
         record[f"ATTRIBUTE_UOM {idx}"] = trip.get('uom', '')
 
-    record["Product Image"] = assets.get("Product Image", "")
-    record["Alternate Image 1"] = assets.get("Alternate Image 1", "")
-    record["Alternate Image 2"] = assets.get("Alternate Image 2", "")
-    record["Alternate Image 3"] = assets.get("Alternate Image 3", "")
-    record["Alternate Image 4"] = assets.get("Alternate Image 4", "")
-    record["Specification Sheet"] = assets.get("Specification Sheet", "")
-    record["Instruction/Installation Manual"] = assets.get("Instruction/Installation Manual", "")
-    record["Owners/User Manual"] = assets.get("Owners/User Manual", "")
-    record["Actual Image (Yes/No)"] = assets.get("Actual Image (Yes/No)", "No")
+    # Sourcing Evidence URLs
+    record["MFR URL"] = research_data.get("mfr_url", "")
+    record["Ref URL 1"] = research_data.get("ref_url_1", "")
+    record["Ref URL 2"] = research_data.get("ref_url_2", "")
+    record["Ref URL 3"] = research_data.get("ref_url_3", "")
+    record["Ref URL 4"] = research_data.get("ref_url_4", "")
+    record["Ref URL 5"] = research_data.get("ref_url_5", "")
 
-    return record, audit
+    # Stage 7: Strict LOV Validation & Normalization Gate
+    from .lov_validator import LOVValidatorGate
+    validated_rec, validated_audit, val_stats = LOVValidatorGate.validate_and_normalize_record(record, audit, raw_input=raw)
+
+    return validated_rec, validated_audit
 
 def enrich_dataset(df_input: pd.DataFrame, enable_web_sourcing: bool = True, enable_ai_reasoning: bool = True, parallel_workers: int | None = None) -> tuple[pd.DataFrame, list[dict]]:
     """

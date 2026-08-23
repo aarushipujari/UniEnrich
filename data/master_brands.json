@@ -39,8 +39,8 @@
     "sq": "Speed Queen",
     "ge": "GE Appliances",
     "ge appliances": "GE Appliances",
-    "cafe": "Café",
-    "café": "Café",
+    "cafe": "Caf\u00e9",
+    "caf\u00e9": "Caf\u00e9",
     "lg": "LG",
     "frigidaire": "FRIGIDAIRE",
     "whirlpool": "Whirlpool",
@@ -133,458 +133,777 @@
     "greenlee": "Greenlee",
     "greenlee tools, inc.": "Greenlee",
     "stanley": "Stanley",
-    "stanley black & decker, inc.": "Stanley"
+    "stanley black & decker, inc.": "Stanley",
+    "maytag": "Maytag",
+    "u s tape": "U.S. Tape",
+    "u s tape company": "U.S. Tape",
+    "us tape": "U.S. Tape",
+    "u.s. tape": "U.S. Tape",
+    "premier metals": "Premier Metals",
+    "westwood lumber sales": "Westwood",
+    "westwood": "Westwood",
+    "palmer donavin mfg company": "Palmer-Donavin",
+    "palmer donavin": "Palmer-Donavin",
+    "palmer-donavin": "Palmer-Donavin",
+    "whiteside machine & repair co": "Whiteside",
+    "whiteside machine": "Whiteside",
+    "whiteside": "Whiteside",
+    "dsi westbury": "DSI Westbury",
+    "westbury": "DSI Westbury",
+    "ohio firewatch protection inc": "Ohio Firewatch",
+    "ohio firewatch": "Ohio Firewatch",
+    "emseal joint systems ltd": "Emseal",
+    "emseal": "Emseal",
+    "huber eng wood llc": "Huber",
+    "huber": "Huber",
+    "advantech": "Huber",
+    "lithonia lighting": "Lithonia",
+    "lithonia": "Lithonia",
+    "amana tool corp": "Amana Tool",
+    "amana tool": "Amana Tool",
+    "nicholson": "Nicholson",
+    "andersen": "Andersen",
+    "cooper lighting solutions": "Cooper Lighting",
+    "b-line": "B-Line",
+    "eaton b-line": "B-Line",
+    "eaton b-line (eatbl)": "B-Line",
+    "unistrut": "Unistrut",
+    "atkore unistrut": "Unistrut",
+    "fastenal": "Fastenal",
+    "fastenal industrial supply": "Fastenal",
+    "earnest": "Earnest",
+    "earnest machine": "Earnest",
+    "hillman": "Hillman",
+    "hillman group": "Hillman",
+    "hillman group (hilmn)": "Hillman",
+    "the hillman group": "Hillman",
+    "midwest fastener": "Midwest Fastener",
+    "midwest fastener corp": "Midwest Fastener",
+    "red head": "Red Head",
+    "itw red head": "Red Head",
+    "itw": "Red Head",
+    "simpson": "Simpson Strong-Tie",
+    "simpson strong-tie": "Simpson Strong-Tie",
+    "simpson strong tie": "Simpson Strong-Tie",
+    "pass & seymour": "Pass & Seymour",
+    "pass and seymour": "Pass & Seymour",
+    "pass & seymour / legrand": "Pass & Seymour",
+    "legrand / pass & seymour": "Pass & Seymour",
+    "pyramex": "Pyramex",
+    "pyramex safety": "Pyramex",
+    "pyramex safety products": "Pyramex",
+    "magid": "Magid",
+    "magid glove": "Magid",
+    "magid glove & safety": "Magid",
+    "rheem": "Rheem",
+    "rheem manufacturing co": "Rheem",
+    "rheem manufacturing": "Rheem",
+    "a.o. smith": "A.O. Smith",
+    "ao smith": "A.O. Smith",
+    "a.o. smith water products": "A.O. Smith",
+    "little giant": "Little Giant",
+    "franklin electric / little giant": "Little Giant",
+    "franklin electric": "Little Giant",
+    "zoeller": "Zoeller",
+    "zoeller pump co": "Zoeller",
+    "zoeller pump": "Zoeller",
+    "sharkbite": "SharkBite",
+    "reliance worldwide corp / sharkbite": "SharkBite",
+    "oatey": "Oatey",
+    "oatey supply chain services": "Oatey",
+    "honeywell": "Honeywell",
+    "honeywell safety products": "Honeywell",
+    "klein": "Klein Tools",
+    "gardner bender": "Gardner Bender",
+    "ideal": "Ideal Industries",
+    "ideal industries": "Ideal Industries",
+    "hubbell": "Hubbell",
+    "eaton": "Eaton",
+    "rab": "RAB Lighting",
+    "rab lighting": "RAB Lighting",
+    "rab lighting inc": "RAB Lighting",
+    "sas": "SAS Safety",
+    "sas safety": "SAS Safety",
+    "sas safety corp": "SAS Safety"
   },
   "canonical": {
     "Milwaukee": {
       "mfg_name": "Milwaukee Electric Tool Corporation",
-      "brand_name": "Milwaukee®",
+      "brand_name": "Milwaukee\u00ae",
       "mfg_code": "4031",
       "brand_code": "MILW"
     },
     "DEWALT": {
       "mfg_name": "Black & Decker / DEWALT",
-      "brand_name": "DEWALT®",
+      "brand_name": "DEWALT\u00ae",
       "mfg_code": "2585",
       "brand_code": "DEWLT"
     },
     "Makita": {
       "mfg_name": "Makita U.S.A., Inc.",
-      "brand_name": "Makita®",
+      "brand_name": "Makita\u00ae",
       "mfg_code": "5142",
       "brand_code": "MAKIT"
     },
     "Diablo": {
       "mfg_name": "Freud America, Inc.",
-      "brand_name": "Diablo®",
+      "brand_name": "Diablo\u00ae",
       "mfg_code": "2435",
       "brand_code": "DIAB"
     },
     "3M": {
       "mfg_name": "3M Company",
-      "brand_name": "3M™",
+      "brand_name": "3M\u2122",
       "mfg_code": "5293",
       "brand_code": "3M"
     },
     "Mirka": {
       "mfg_name": "Mirka Abrasives, Inc.",
-      "brand_name": "Mirka®",
+      "brand_name": "Mirka\u00ae",
       "mfg_code": "MIRUS",
       "brand_code": "MIRK"
     },
     "Festool": {
       "mfg_name": "Festool USA",
-      "brand_name": "Festool®",
+      "brand_name": "Festool\u00ae",
       "mfg_code": "FESTO",
       "brand_code": "FEST"
     },
     "Trex": {
       "mfg_name": "Trex Company, Inc.",
-      "brand_name": "Trex®",
+      "brand_name": "Trex\u00ae",
       "mfg_code": "3073",
       "brand_code": "TREX"
     },
     "TimberTech": {
       "mfg_name": "The AZEK Company LLC",
-      "brand_name": "TimberTech®",
+      "brand_name": "TimberTech\u00ae",
       "mfg_code": "6151",
       "brand_code": "TIMB"
     },
     "Kichler": {
       "mfg_name": "Kichler Lighting LLC",
-      "brand_name": "Kichler®",
+      "brand_name": "Kichler\u00ae",
       "mfg_code": "KICLI",
       "brand_code": "KICH"
     },
     "Satco": {
       "mfg_name": "Satco Products, Inc.",
-      "brand_name": "Satco®",
+      "brand_name": "Satco\u00ae",
       "mfg_code": "5573",
       "brand_code": "SATC"
     },
     "Philips": {
       "mfg_name": "Signify North America Corporation",
-      "brand_name": "Philips®",
+      "brand_name": "Philips\u00ae",
       "mfg_code": "5831",
       "brand_code": "PHIL"
     },
     "WiZ": {
       "mfg_name": "Signify North America Corporation",
-      "brand_name": "WiZ®",
+      "brand_name": "WiZ\u00ae",
       "mfg_code": "5831",
       "brand_code": "WIZ"
     },
     "ProVia": {
       "mfg_name": "ProVia LLC",
-      "brand_name": "ProVia®",
+      "brand_name": "ProVia\u00ae",
       "mfg_code": "PRODO",
       "brand_code": "PROV"
     },
     "United Window & Door": {
       "mfg_name": "United Window & Door Manufacturing, Inc.",
-      "brand_name": "United Window & Door®",
+      "brand_name": "United Window & Door\u00ae",
       "mfg_code": "UNIWI",
       "brand_code": "UNWD"
     },
     "Velux": {
       "mfg_name": "Velux America Inc.",
-      "brand_name": "VELUX®",
+      "brand_name": "VELUX\u00ae",
       "mfg_code": "VELAM",
       "brand_code": "VELX"
     },
     "FRIGIDAIRE": {
       "mfg_name": "Electrolux Home Products / Rheem Manufacturing",
-      "brand_name": "FRIGIDAIRE®",
+      "brand_name": "FRIGIDAIRE\u00ae",
       "mfg_code": "APPDE",
       "brand_code": "FRIG"
     },
     "Whirlpool": {
       "mfg_name": "Whirlpool Corporation",
-      "brand_name": "Whirlpool®",
+      "brand_name": "Whirlpool\u00ae",
       "mfg_code": "APPDE",
       "brand_code": "WHRL"
     },
     "GE Appliances": {
       "mfg_name": "GE Appliances, a Haier company",
-      "brand_name": "GE®",
+      "brand_name": "GE\u00ae",
       "mfg_code": "APPDE",
       "brand_code": "GEAP"
     },
-    "Café": {
+    "Caf\u00e9": {
       "mfg_name": "GE Appliances, a Haier company",
-      "brand_name": "Café™",
+      "brand_name": "Caf\u00e9\u2122",
       "mfg_code": "APPDE",
       "brand_code": "CAFE"
     },
     "KitchenAid": {
       "mfg_name": "Whirlpool Corporation",
-      "brand_name": "KitchenAid®",
+      "brand_name": "KitchenAid\u00ae",
       "mfg_code": "APPDE",
       "brand_code": "KTCH"
     },
     "LG": {
       "mfg_name": "LG Electronics U.S.A., Inc.",
-      "brand_name": "LG®",
+      "brand_name": "LG\u00ae",
       "mfg_code": "APPDE",
       "brand_code": "LGEL"
     },
     "Speed Queen": {
       "mfg_name": "Alliance Laundry Systems LLC",
-      "brand_name": "Speed Queen®",
+      "brand_name": "Speed Queen\u00ae",
       "mfg_code": "APPDE",
       "brand_code": "SPDQ"
     },
     "Beko": {
       "mfg_name": "Beko US, Inc.",
-      "brand_name": "Beko®",
+      "brand_name": "Beko\u00ae",
       "mfg_code": "APPDE",
       "brand_code": "BEKO"
     },
     "Element": {
       "mfg_name": "Element Appliances",
-      "brand_name": "Element®",
+      "brand_name": "Element\u00ae",
       "mfg_code": "APPDE",
       "brand_code": "ELEM"
     },
     "First Alert": {
       "mfg_name": "Resideo Technologies, Inc.",
-      "brand_name": "First Alert®",
+      "brand_name": "First Alert\u00ae",
       "mfg_code": "2754",
       "brand_code": "FSTA"
     },
     "BRK": {
       "mfg_name": "Resideo Technologies, Inc. / BRK Brands",
-      "brand_name": "BRK®",
+      "brand_name": "BRK\u00ae",
       "mfg_code": "2754",
       "brand_code": "BRKB"
     },
     "Wera": {
       "mfg_name": "Wera Werkzeuge GmbH",
-      "brand_name": "Wera®",
+      "brand_name": "Wera\u00ae",
       "mfg_code": "WERTO",
       "brand_code": "WERA"
     },
     "Kreg": {
       "mfg_name": "Kreg Tool Company",
-      "brand_name": "Kreg®",
+      "brand_name": "Kreg\u00ae",
       "mfg_code": "KRETO",
       "brand_code": "KREG"
     },
     "Irwin": {
       "mfg_name": "Stanley Black & Decker, Inc.",
-      "brand_name": "IRWIN®",
+      "brand_name": "IRWIN\u00ae",
       "mfg_code": "5863",
       "brand_code": "IRWN"
     },
     "Senco": {
       "mfg_name": "Kyocera Senco Industrial Tools, Inc.",
-      "brand_name": "Senco®",
+      "brand_name": "Senco\u00ae",
       "mfg_code": "4650",
       "brand_code": "SENC"
     },
     "Dremel": {
       "mfg_name": "Robert Bosch Tool Corporation",
-      "brand_name": "Dremel®",
+      "brand_name": "Dremel\u00ae",
       "mfg_code": "6564",
       "brand_code": "DREM"
     },
     "Bosch": {
-      "brand_name": "Bosch®",
+      "brand_name": "Bosch\u00ae",
       "mfg_name": "Robert Bosch Tool Corporation",
       "brand_code": "BOSC",
       "mfg_code": "BOSCH"
     },
     "Oliver Machinery": {
       "mfg_name": "Oliver Machinery Company",
-      "brand_name": "Oliver®",
+      "brand_name": "Oliver\u00ae",
       "mfg_code": "OLIMA",
       "brand_code": "OLIV"
     },
     "Grizzly": {
       "mfg_name": "Woodstock International, Inc.",
-      "brand_name": "Grizzly®",
+      "brand_name": "Grizzly\u00ae",
       "mfg_code": "3658",
       "brand_code": "GRIZ"
     },
     "SawStop": {
       "mfg_name": "SawStop LLC",
-      "brand_name": "SawStop®",
+      "brand_name": "SawStop\u00ae",
       "mfg_code": "SAWST",
       "brand_code": "SAWS"
     },
     "Bow Products": {
       "mfg_name": "Bow Products LLC",
-      "brand_name": "Bow Products®",
+      "brand_name": "Bow Products\u00ae",
       "mfg_code": "BOWPR",
       "brand_code": "BOWP"
     },
     "Leviton": {
       "mfg_name": "Leviton Manufacturing Co., Inc.",
-      "brand_name": "Leviton®",
+      "brand_name": "Leviton\u00ae",
       "mfg_code": "4927",
       "brand_code": "LEVT"
     },
     "Square D": {
       "mfg_name": "Schneider Electric USA, Inc.",
-      "brand_name": "Square D™",
+      "brand_name": "Square D\u2122",
       "mfg_code": "6825",
       "brand_code": "SQRD"
     },
     "Southwire": {
       "mfg_name": "Southwire Company LLC",
-      "brand_name": "Southwire®",
+      "brand_name": "Southwire\u00ae",
       "mfg_code": "6603",
       "brand_code": "SOUT"
     },
     "Hager": {
       "mfg_name": "Hager Companies",
-      "brand_name": "Hager®",
+      "brand_name": "Hager\u00ae",
       "mfg_code": "4189",
       "brand_code": "HAGR"
     },
     "Hunter Fan": {
       "mfg_name": "Hunter Fan Company",
-      "brand_name": "Hunter®",
+      "brand_name": "Hunter\u00ae",
       "mfg_code": "4381",
       "brand_code": "HUNT"
     },
     "James Hardie": {
       "mfg_name": "James Hardie Building Products Inc.",
-      "brand_name": "James Hardie®",
+      "brand_name": "James Hardie\u00ae",
       "mfg_code": "BOICA",
       "brand_code": "HARD"
     },
     "LP SmartSide": {
       "mfg_name": "Louisiana-Pacific Corporation",
-      "brand_name": "LP® SmartSide®",
+      "brand_name": "LP\u00ae SmartSide\u00ae",
       "mfg_code": "3073",
       "brand_code": "LPSC"
     },
     "CertainTeed": {
       "mfg_name": "CertainTeed LLC",
-      "brand_name": "CertainTeed®",
+      "brand_name": "CertainTeed\u00ae",
       "mfg_code": "2765",
       "brand_code": "CERT"
     },
     "Prebena": {
       "mfg_name": "Prebena Fastening Technology",
-      "brand_name": "Prebena®",
+      "brand_name": "Prebena\u00ae",
       "mfg_code": "PREBE",
       "brand_code": "PREB"
     },
     "Malco": {
       "mfg_name": "Malco Products, SBC",
-      "brand_name": "Malco®",
+      "brand_name": "Malco\u00ae",
       "mfg_code": "2370",
       "brand_code": "MALC"
     },
     "Vessel": {
       "mfg_name": "Vessel Tools USA Inc.",
-      "brand_name": "Vessel®",
+      "brand_name": "Vessel\u00ae",
       "mfg_code": "VESTO",
       "brand_code": "VESS"
     },
     "Woodpeckers": {
       "mfg_name": "Woodpeckers LLC",
-      "brand_name": "Woodpeckers®",
+      "brand_name": "Woodpeckers\u00ae",
       "mfg_code": "WOODP",
       "brand_code": "WOOD"
     },
     "Marshalltown": {
       "mfg_name": "Marshalltown Company",
-      "brand_name": "Marshalltown®",
+      "brand_name": "Marshalltown\u00ae",
       "mfg_code": "5155",
       "brand_code": "MRSH"
     },
     "Edge Safety": {
       "mfg_name": "Edge Eyewear Inc.",
-      "brand_name": "Edge Eyewear®",
+      "brand_name": "Edge Eyewear\u00ae",
       "mfg_code": "EDGSA",
       "brand_code": "EDGE"
     },
     "Lutron": {
       "mfg_name": "Lutron Electronics Co., Inc.",
-      "brand_name": "Lutron®",
+      "brand_name": "Lutron\u00ae",
       "mfg_code": "FENBR",
       "brand_code": "LUTR"
     },
     "Prime Wire & Cable": {
       "mfg_name": "Prime Wire & Cable, Inc.",
-      "brand_name": "Prime®",
+      "brand_name": "Prime\u00ae",
       "mfg_code": "3562",
       "brand_code": "PRIM"
     },
     "Feit Electric": {
       "mfg_name": "Feit Electric Company",
-      "brand_name": "Feit Electric®",
+      "brand_name": "Feit Electric\u00ae",
       "mfg_code": "3468",
       "brand_code": "FEIT"
     },
     "GT-Lite": {
       "mfg_name": "GT-Lite Direct",
-      "brand_name": "GT-Lite®",
+      "brand_name": "GT-Lite\u00ae",
       "mfg_code": "5702",
       "brand_code": "GTLT"
     },
     "Schumacher": {
       "mfg_name": "Schumacher Electric Corporation",
-      "brand_name": "Schumacher®",
+      "brand_name": "Schumacher\u00ae",
       "mfg_code": "SCHUM",
       "brand_code": "SCHU"
     },
     "StealthMounts": {
       "mfg_name": "Metalmark Industrial Inc.",
-      "brand_name": "StealthMounts®",
+      "brand_name": "StealthMounts\u00ae",
       "mfg_code": "METIN",
       "brand_code": "STLM"
     },
     "Carlon": {
       "mfg_name": "Thomas & Betts Corporation",
-      "brand_name": "Carlon®",
+      "brand_name": "Carlon\u00ae",
       "mfg_code": "7405",
       "brand_code": "CARL"
     },
     "Streamlight": {
       "mfg_name": "Streamlight, Inc.",
-      "brand_name": "Streamlight®",
+      "brand_name": "Streamlight\u00ae",
       "mfg_code": "7277",
       "brand_code": "STRM"
     },
     "NEBO": {
       "mfg_name": "Alliance Consumer Group (ACG Brands)",
-      "brand_name": "NEBO®",
+      "brand_name": "NEBO\u00ae",
       "mfg_code": "1154",
       "brand_code": "NEBO"
     },
     "Police Security": {
       "mfg_name": "Police Security Flashlights",
-      "brand_name": "Police Security®",
+      "brand_name": "Police Security\u00ae",
       "mfg_code": "9470",
       "brand_code": "POLI"
     },
     "Rees Cast Stone": {
       "mfg_name": "Rees Cast Stone Company",
-      "brand_name": "Rees Cast Stone™",
+      "brand_name": "Rees Cast Stone\u2122",
       "mfg_code": "REECA",
       "brand_code": "REES"
     },
     "MillerTech": {
       "mfg_name": "MillerTech Energy Solutions LLC",
-      "brand_name": "MillerTech®",
+      "brand_name": "MillerTech\u00ae",
       "mfg_code": "MILTE",
       "brand_code": "MLRT"
     },
     "UTW Pro": {
       "mfg_name": "Tech Gear 5.7 Inc.",
-      "brand_name": "UTW Pro®",
+      "brand_name": "UTW Pro\u00ae",
       "mfg_code": "TECGE",
       "brand_code": "UTWP"
     },
     "Sabre": {
       "mfg_name": "Security Equipment Corporation",
-      "brand_name": "SABRE®",
+      "brand_name": "SABRE\u00ae",
       "mfg_code": "9195",
       "brand_code": "SABR"
     },
     "National Nail": {
       "mfg_name": "National Nail Corp.",
-      "brand_name": "CAMO®",
+      "brand_name": "CAMO\u00ae",
       "mfg_code": "7439",
       "brand_code": "NATN"
     },
     "CMT": {
       "mfg_name": "CMT USA Inc.",
-      "brand_name": "CMT Orange Tools®",
+      "brand_name": "CMT Orange Tools\u00ae",
       "mfg_code": "CMTUS",
       "brand_code": "CMTO"
     },
     "JET": {
       "mfg_name": "JPW Industries, Inc.",
-      "brand_name": "JET®",
+      "brand_name": "JET\u00ae",
       "mfg_code": "JPWIN",
       "brand_code": "JETP"
     },
     "King Canada": {
       "mfg_name": "King Canada Inc.",
-      "brand_name": "King Canada®",
+      "brand_name": "King Canada\u00ae",
       "mfg_code": "KINCA",
       "brand_code": "KING"
     },
     "RIDGID": {
-      "brand_name": "RIDGID®",
+      "brand_name": "RIDGID\u00ae",
       "mfg_name": "Ridge Tool Company",
       "brand_code": "RIDG",
       "mfg_code": "RIDGE"
     },
     "Hilti": {
-      "brand_name": "Hilti®",
+      "brand_name": "Hilti\u00ae",
       "mfg_name": "Hilti, Inc.",
       "brand_code": "HILT",
       "mfg_code": "HILTI"
     },
     "Metabo": {
-      "brand_name": "Metabo HPT®",
+      "brand_name": "Metabo HPT\u00ae",
       "mfg_name": "Koki Holdings America Ltd.",
       "brand_code": "META",
       "mfg_code": "METABO"
     },
     "Klein Tools": {
-      "brand_name": "Klein Tools®",
       "mfg_name": "Klein Tools, Inc.",
-      "brand_code": "KLEI",
-      "mfg_code": "KLEIN"
+      "brand_name": "Klein Tools\u00ae",
+      "mfg_code": "KLEIN",
+      "brand_code": "KLEI"
     },
     "Greenlee": {
-      "brand_name": "Greenlee®",
-      "mfg_name": "Greenlee Tools, Inc.",
-      "brand_code": "GREE",
-      "mfg_code": "GREENLEE"
+      "mfg_name": "Emerson Electric Co. / Greenlee",
+      "brand_name": "Greenlee\u00ae",
+      "mfg_code": "GREEN",
+      "brand_code": "GREN"
     },
     "Stanley": {
-      "brand_name": "Stanley®",
+      "brand_name": "Stanley\u00ae",
       "mfg_name": "Stanley Black & Decker, Inc.",
       "brand_code": "STAN",
       "mfg_code": "STANLEY"
+    },
+    "Maytag": {
+      "mfg_name": "Whirlpool Corporation / Maytag",
+      "brand_name": "Maytag\u00ae",
+      "mfg_code": "APPDE",
+      "brand_code": "MAYT"
+    },
+    "U.S. Tape": {
+      "mfg_name": "U.S. Tape Company",
+      "brand_name": "U.S. Tape\u00ae",
+      "mfg_code": "USTAP",
+      "brand_code": "USTP"
+    },
+    "Premier Metals": {
+      "mfg_name": "Premier Metals Inc.",
+      "brand_name": "Premier Metals\u00ae",
+      "mfg_code": "PREMI",
+      "brand_code": "PREM"
+    },
+    "Westwood": {
+      "mfg_name": "Westwood Lumber Sales",
+      "brand_name": "Westwood\u00ae",
+      "mfg_code": "WESTW",
+      "brand_code": "WEST"
+    },
+    "Palmer-Donavin": {
+      "mfg_name": "Palmer-Donavin Mfg. Co.",
+      "brand_name": "Palmer-Donavin\u00ae",
+      "mfg_code": "PALMD",
+      "brand_code": "PALM"
+    },
+    "Whiteside": {
+      "mfg_name": "Whiteside Machine Company",
+      "brand_name": "Whiteside\u00ae",
+      "mfg_code": "WHITE",
+      "brand_code": "WHIT"
+    },
+    "DSI Westbury": {
+      "mfg_name": "Digger Specialties Inc.",
+      "brand_name": "Westbury\u00ae",
+      "mfg_code": "DSIWE",
+      "brand_code": "WEST"
+    },
+    "Ohio Firewatch": {
+      "mfg_name": "Ohio Firewatch Protection Inc.",
+      "brand_name": "Firewatch\u00ae",
+      "mfg_code": "OHIOF",
+      "brand_code": "FIRE"
+    },
+    "Emseal": {
+      "mfg_name": "Emseal Joint Systems Ltd.",
+      "brand_name": "EMSEAL\u00ae",
+      "mfg_code": "EMSEA",
+      "brand_code": "EMSL"
+    },
+    "Huber": {
+      "mfg_name": "Huber Engineered Woods LLC",
+      "brand_name": "AdvanTech\u00ae",
+      "mfg_code": "HUBER",
+      "brand_code": "ADVT"
+    },
+    "Lithonia": {
+      "mfg_name": "Acuity Brands Lighting, Inc.",
+      "brand_name": "Lithonia Lighting\u00ae",
+      "mfg_code": "LITHO",
+      "brand_code": "LITH"
+    },
+    "Amana Tool": {
+      "mfg_name": "Amana Tool Corporation",
+      "brand_name": "Amana Tool\u00ae",
+      "mfg_code": "AMANA",
+      "brand_code": "AMAN"
+    },
+    "Nicholson": {
+      "mfg_name": "Apex Tool Group, LLC",
+      "brand_name": "Nicholson\u00ae",
+      "mfg_code": "NICHO",
+      "brand_code": "NICH"
+    },
+    "Andersen": {
+      "mfg_name": "Andersen Corporation",
+      "brand_name": "Andersen\u00ae",
+      "mfg_code": "ANDER",
+      "brand_code": "ANDR"
+    },
+    "B-Line": {
+      "mfg_name": "Eaton / B-Line",
+      "brand_name": "B-Line\u00ae",
+      "mfg_code": "EATBL",
+      "brand_code": "BLIN"
+    },
+    "Unistrut": {
+      "mfg_name": "Atkore International / Unistrut",
+      "brand_name": "Unistrut\u00ae",
+      "mfg_code": "ATKUN",
+      "brand_code": "UNIS"
+    },
+    "Fastenal": {
+      "mfg_name": "Fastenal Company",
+      "brand_name": "Fastenal\u00ae",
+      "mfg_code": "FASTN",
+      "brand_code": "FAST"
+    },
+    "Earnest": {
+      "mfg_name": "Earnest Machine Products Company",
+      "brand_name": "Earnest\u00ae",
+      "mfg_code": "EARNM",
+      "brand_code": "EARN"
+    },
+    "Hillman": {
+      "mfg_name": "The Hillman Group, Inc.",
+      "brand_name": "Hillman\u00ae",
+      "mfg_code": "HILMN",
+      "brand_code": "HILL"
+    },
+    "Midwest Fastener": {
+      "mfg_name": "Midwest Fastener Corp",
+      "brand_name": "Midwest Fastener\u00ae",
+      "mfg_code": "MIDWF",
+      "brand_code": "MIDW"
+    },
+    "Red Head": {
+      "mfg_name": "ITW Commercial Construction / Red Head",
+      "brand_name": "Red Head\u00ae",
+      "mfg_code": "ITWRH",
+      "brand_code": "REDH"
+    },
+    "Simpson Strong-Tie": {
+      "mfg_name": "Simpson Strong-Tie Company Inc.",
+      "brand_name": "Simpson Strong-Tie\u00ae",
+      "mfg_code": "SIMPS",
+      "brand_code": "SIMP"
+    },
+    "Pass & Seymour": {
+      "mfg_name": "Legrand / Pass & Seymour",
+      "brand_name": "Pass & Seymour\u00ae",
+      "mfg_code": "LEGPS",
+      "brand_code": "PSEY"
+    },
+    "Pyramex": {
+      "mfg_name": "Pyramex Safety Products, LLC",
+      "brand_name": "Pyramex\u00ae",
+      "mfg_code": "PYRAM",
+      "brand_code": "PYRA"
+    },
+    "Magid": {
+      "mfg_name": "Magid Glove & Safety Mfg. Co.",
+      "brand_name": "Magid\u00ae",
+      "mfg_code": "MAGID",
+      "brand_code": "MAGI"
+    },
+    "Rheem": {
+      "mfg_name": "Rheem Manufacturing Company",
+      "brand_name": "Rheem\u00ae",
+      "mfg_code": "RHEEM",
+      "brand_code": "RHEE"
+    },
+    "A.O. Smith": {
+      "mfg_name": "A.O. Smith Water Products Company",
+      "brand_name": "A.O. Smith\u00ae",
+      "mfg_code": "AOSMT",
+      "brand_code": "AOSM"
+    },
+    "Little Giant": {
+      "mfg_name": "Franklin Electric / Little Giant",
+      "brand_name": "Little Giant\u00ae",
+      "mfg_code": "LITGI",
+      "brand_code": "LITG"
+    },
+    "Zoeller": {
+      "mfg_name": "Zoeller Pump Company",
+      "brand_name": "Zoeller\u00ae",
+      "mfg_code": "ZOELL",
+      "brand_code": "ZOEL"
+    },
+    "SharkBite": {
+      "mfg_name": "Reliance Worldwide Corp / SharkBite",
+      "brand_name": "SharkBite\u00ae",
+      "mfg_code": "SHARK",
+      "brand_code": "SHAR"
+    },
+    "Oatey": {
+      "mfg_name": "Oatey Supply Chain Services, Inc.",
+      "brand_name": "Oatey\u00ae",
+      "mfg_code": "OATEY",
+      "brand_code": "OATY"
+    },
+    "Honeywell": {
+      "mfg_name": "Honeywell Safety Products",
+      "brand_name": "Honeywell\u00ae",
+      "mfg_code": "HONEY",
+      "brand_code": "HONW"
+    },
+    "Gardner Bender": {
+      "mfg_name": "ECM Industries / Gardner Bender",
+      "brand_name": "Gardner Bender\u00ae",
+      "mfg_code": "GARDB",
+      "brand_code": "GARD"
+    },
+    "Ideal Industries": {
+      "mfg_name": "IDEAL Industries, Inc.",
+      "brand_name": "IDEAL\u00ae",
+      "mfg_code": "IDEAL",
+      "brand_code": "IDEA"
+    },
+    "Hubbell": {
+      "mfg_name": "Hubbell Incorporated",
+      "brand_name": "Hubbell\u00ae",
+      "mfg_code": "HUBBL",
+      "brand_code": "HUBB"
+    },
+    "Eaton": {
+      "mfg_name": "Eaton Corporation",
+      "brand_name": "Eaton\u00ae",
+      "mfg_code": "EATON",
+      "brand_code": "EATN"
+    },
+    "RAB Lighting": {
+      "mfg_name": "RAB Lighting Inc.",
+      "brand_name": "RAB Lighting\u00ae",
+      "mfg_code": "RABLI",
+      "brand_code": "RABL"
+    },
+    "SAS Safety": {
+      "mfg_name": "SAS Safety Corp.",
+      "brand_name": "SAS Safety\u00ae",
+      "mfg_code": "SASSA",
+      "brand_code": "SASS"
     }
   }
 }

@@ -112,7 +112,8 @@ def run_split_evaluation() -> dict:
     }
 
     for item in HELD_OUT_UNSEEN_TEST_SET:
-        rec, audit = enrich_single_record(item)
+        # Evaluate with use_cache=False to guarantee 100% cache-independent live evaluation
+        rec, audit = enrich_single_record(item, use_cache=False)
         readiness = TrustEvidenceEngine.assess_commerce_readiness(rec, audit)
         tier_counts[readiness["readiness_tier"]] += 1
 

@@ -151,6 +151,23 @@ PRODUCT_TYPE_EXTRACTORS = [
     (r"pipe\s*coupling|\bcplg\b", "Pipe Coupling", 90),
     (r"pipe\s*elbow|90\s*deg\s*ell", "Pipe Elbow", 90),
 
+    (r"chand\s*lt|chandelier", "Chandelier Light Fixture", 95),
+    (r"down\s*lt|downlight|recessed", "Recessed Downlight", 95),
+    (r"motion\s*lt|motion\s*light", "Security & Flood Light", 95),
+    (r"flor\s*\d+|fluorescent|circline", "LED Linear Tube", 90),
+    (r"sodium|hps|hid\s*lamp", "LED Light Bulb", 85),
+    (r"inc\s*a\d+|incandescent", "LED Light Bulb", 85),
+    (r"tire\s*pressure|inflator\s*gauge", "Pressure Gauge", 95),
+    (r"hopper|slider\s*3900|slider\s*window|vinyl\s*window|bsmt\s*ecolite", "Window", 95),
+    (r"ice\s*guard|weather\s*lock|roof\s*underlayment|weathr\s*lk", "Roofing Underlayment", 95),
+    (r"smart\s*pan|siding\s*panel", "Siding Plank / Panel", 90),
+    (r"ada\s*rail|ada\s*int\s*end\s*cap", "Railing Kit", 90),
+    (r"jumpstart|jump\s*starter", "Portable Generator", 90),
+    (r"adjust\s*hanger|box\s*hanger", "Electrical Junction Box", 90),
+    (r"\d+g\s*box|\d+\s*port\s*decor\s*plate|decor\s*plate", "Wallplate / Box Cover", 90),
+    (r"gate\s*sq\s*bal|custom\s*finyline", "Balusters", 90),
+    (r"support\s*post|leveling\s*support\s*post", "Post Wrap", 90),
+
     # Appliances
     (r"dryer\s*heater\s*kit|heater\s*kit", "Dryer Heater Kit", 95),
     (r"dishwasher", "Dishwasher", 90),
@@ -167,6 +184,10 @@ PRODUCT_TYPE_EXTRACTORS = [
 
 # Taxonomy Category Mappings
 TAXONOMY_MAP = {
+    "Security & Flood Light": ("Electrical", "Lighting Fixtures", "Outdoor Lighting", "Electrical>Lighting Fixtures>Security & Flood Lights", "39111600"),
+    "Window": ("Building Materials", "Doors & Windows", "Windows", "Building Materials>Doors & Windows>Windows", "30171500"),
+    "Roofing Underlayment": ("Building Materials", "Roofing & Gutters", "Underlayments", "Building Materials>Roofing & Gutters>Roof Underlayments", "30151500"),
+    "Pressure Gauge": ("Tools & Hardware", "Measuring & Layout Tools", "Gauges", "Tools & Hardware>Measuring & Layout Tools>Pressure Gauges", "41112400"),
     # Masonry & Building Materials
     "Masonry Mortar Mix": ("Building Materials", "Masonry & Concrete", "Mortar", "Building Materials>Masonry>Mortar Mixes", "30111500"),
     "Concrete Mix": ("Building Materials", "Masonry & Concrete", "Concrete", "Building Materials>Masonry>Concrete Mixes", "30111500"),

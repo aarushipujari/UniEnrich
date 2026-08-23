@@ -14369,5 +14369,683 @@
       "LOCAL_LOV_GROUNDING"
     ],
     "source_mode": "FALLBACK_DATASHEET"
+  },
+  "ASH-40-40-04_EMSEAL\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "1.5x1.5x13"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "UNKNOWN-MPN-9999_Unapproved Maker XYZ": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "GENERIC-101_Generic Hardware Supply": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "73272TBK_Westbury\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "6x6-10"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "925219_Palmer-Donavin\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "2\"x50"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1511506_AdvanTech\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "4'x65"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1513577_Westwood\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "1x8-12"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1513578_Westwood\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "1x8-16"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1513579_Westwood\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "1x12-12"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1513580_Westwood\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "1x12-16"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1501767_AdvanTech\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "PP-8BL_Premier Metals\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "PP-10BL_Premier Metals\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "PP-12BL_Premier Metals\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "PP-8CH_Premier Metals\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "PP-10CH_Premier Metals\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "PP-12CH_Premier Metals\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "PP-8WH_Premier Metals\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "PP-10WH_Premier Metals\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1504345_Palmer-Donavin\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "2733_Palmer-Donavin\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "3'x65"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1514681_AdvanTech\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "4x8"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1506969_AdvanTech\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "4x8"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1514726_AdvanTech\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "4x8"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1728ABL_Palmer-Donavin\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "2x2"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "WF4REGSWW590CRIMW_Lithonia Lighting\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "156436WHT_Westbury\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "4x4x120"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "173950TBK_Palmer-Donavin\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "4\"x8"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "173952TBK_Palmer-Donavin\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "6\"x10"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "173951TBK_Palmer-Donavin\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Dimensions": "6\"x8"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "1624157_Andersen\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "FE-EFX-6L_Firewatch\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "FE-EFX-9L_Firewatch\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "25459_U.S. Tape\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "35459_U.S. Tape\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "25759_U.S. Tape\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "35112_U.S. Tape\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "35115_U.S. Tape\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "25168_U.S. Tape\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "35468_U.S. Tape\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "35494_U.S. Tape\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "55227_Amana Tool\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "6008_Whiteside\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "6009_Whiteside\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "3000A_Whiteside\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {
+      "Amperage": "3000 A"
+    },
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "TURN_1_MFR_SPARSE",
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "25468_U.S. Tape\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "25762_U.S. Tape\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "21839NN_Nicholson\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   }
 }

@@ -116,20 +116,38 @@ class AgenticResearchLoop:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
         })
 
-    def run_research(self, mpn: str, raw_desc: str, brand_name: str) -> dict:
+    def run_research(self, mpn: str, raw_desc: str, brand_name: str, use_cache: bool = True) -> dict:
         """
         Executes the iterative research process across manufacturer domains and secondary datasheets.
+        use_cache: When True (Demo/Production), utilizes persistent cache. When False (Evaluation), runs purely live/isolated.
         """
-        cache_key = f"{mpn}_{brand_name}".strip()
-        if cache_key in RESEARCH_CACHE:
-            cached = dict(RESEARCH_CACHE[cache_key])
-            # Explicitly separate demo/offline cache from live verification
-            cached["source_mode"] = cached.get("source_mode", "OFFLINE_DEMO_CACHE")
-            cached["provenance"] = cached.get("provenance", "OFFLINE_DEMO_CACHE")
-            return cached
-
         clean_mpn = re.sub(r'[^a-zA-Z0-9\-]', '', mpn or '')
         clean_brand = re.sub(r'[®™]', '', brand_name or '').strip().lower()
+        cache_key = f"{mpn}_{brand_name}".strip()
+
+        candidate_keys = [
+            cache_key,
+            f"{clean_mpn}_{clean_brand}".strip(),
+            f"{clean_brand}:{clean_mpn.lower()}".strip(),
+            f"{clean_brand}_{clean_mpn.lower()}".strip(),
+            f"{clean_mpn}".strip()
+        ]
+
+        if use_cache:
+            for ck in candidate_keys:
+                if ck in RESEARCH_CACHE:
+                    cached = dict(RESEARCH_CACHE[ck])
+                    if "source_url" in cached and not cached.get("mfr_url"):
+                        src = cached["source_url"]
+                        mfr_domain = BRAND_DOMAINS.get(clean_brand, "")
+                        if mfr_domain and mfr_domain in src:
+                            cached["mfr_url"] = src
+                            cached["is_verified"] = True
+                        else:
+                            cached["ref_url_1"] = src
+                    cached["source_mode"] = cached.get("source_mode", "OFFLINE_DEMO_CACHE")
+                    cached["provenance"] = cached.get("provenance", "OFFLINE_DEMO_CACHE")
+                    return cached
 
         # Step 1: Turn 1 - Query Official Manufacturer Domain (Live HTTP Verification)
         mfr_domain = BRAND_DOMAINS.get(clean_brand, "")
@@ -138,20 +156,22 @@ class AgenticResearchLoop:
         if turn1_result and turn1_result.get("is_verified"):
             turn1_result["research_trajectory"] = ["TURN_1_MFR_DOMAIN_SUCCESS"]
             turn1_result["source_mode"] = "LIVE_VERIFIED"
-            RESEARCH_CACHE[cache_key] = turn1_result
-            save_research_cache()
+            if use_cache:
+                RESEARCH_CACHE[cache_key] = turn1_result
+                save_research_cache()
             return turn1_result
 
-        # Step 2: Turn 2 - Fallback to Secondary Technical Datasheets / Local Sourcing
+        # Step 2: Turn 2 - Fallback to Supplier Text / Grounded Sourcing
         turn2_result = self._search_secondary_technical_turn(clean_mpn, clean_brand, raw_desc)
 
         # Step 3: Cross-Verification & Conflict Resolution
         final_result = self._resolve_and_verify(turn1_result, turn2_result, raw_desc)
-        final_result["research_trajectory"] = ["TURN_1_MFR_SPARSE", "TURN_2_TECHNICAL_DATASHEET_SUCCESS"] if turn2_result else ["LOCAL_LOV_GROUNDING"]
-        final_result["source_mode"] = final_result.get("source_mode", "FALLBACK_DATASHEET")
+        final_result["research_trajectory"] = ["TURN_1_MFR_SPARSE", "TURN_2_SUPPLIER_GROUNDING_SUCCESS"] if turn2_result else ["LOCAL_LOV_GROUNDING"]
+        final_result["source_mode"] = final_result.get("source_mode", "SUPPLIER_INPUT_TEXT")
 
-        RESEARCH_CACHE[cache_key] = final_result
-        save_research_cache()
+        if use_cache:
+            RESEARCH_CACHE[cache_key] = final_result
+            save_research_cache()
         return final_result
 
     def _search_manufacturer_turn(self, mpn: str, brand: str, domain: str) -> dict | None:
@@ -193,16 +213,16 @@ class AgenticResearchLoop:
         return None
 
     def _search_secondary_technical_turn(self, mpn: str, brand: str, raw_desc: str) -> dict | None:
-        """Turn 2: Queries secondary technical specs from technical datasheets or input text."""
+        """Turn 2: Queries secondary technical specs from supplier input text."""
         specs = parse_technical_snippet(raw_desc)
         if specs:
             return {
                 "is_verified": False,
-                "source_mode": "FALLBACK_DATASHEET",
+                "source_mode": "SUPPLIER_INPUT_TEXT",
                 "mfr_url": "",
                 "ref_url_1": "",
                 "extracted_specs": specs,
-                "provenance": "SECONDARY_TECHNICAL_DATASHEET",
+                "provenance": "SUPPLIER_INPUT_GROUNDED",
                 "confidence": 0.88
             }
         return None
@@ -213,13 +233,13 @@ class AgenticResearchLoop:
         Resolves conflicts by favoring verified manufacturer data or flagging review.
         """
         combined_specs = {}
-        provenance = "LOCAL_GROUNDING"
+        provenance = "SUPPLIER_INPUT_GROUNDED" if turn2 else "LOCAL_LOV_GROUNDING"
         confidence = 0.85
         has_conflict = False
 
         if turn1 and turn1.get("extracted_specs"):
             combined_specs.update(turn1["extracted_specs"])
-            provenance = turn1.get("provenance", "VERIFIED_MANUFACTURER_DOCS")
+            provenance = turn1.get("provenance", "LIVE_MANUFACTURER_VERIFIED")
             confidence = turn1.get("confidence", 0.95)
 
         if turn2 and turn2.get("extracted_specs"):
@@ -245,6 +265,6 @@ class AgenticResearchLoop:
 # Global singleton instance
 RESEARCH_AGENT = AgenticResearchLoop()
 
-def query_agentic_research(mpn: str, raw_desc: str, brand_name: str) -> dict:
+def query_agentic_research(mpn: str, raw_desc: str, brand_name: str, use_cache: bool = True) -> dict:
     """Entry point for the autonomous research agent."""
-    return RESEARCH_AGENT.run_research(mpn, raw_desc, brand_name)
+    return RESEARCH_AGENT.run_research(mpn, raw_desc, brand_name, use_cache=use_cache)
