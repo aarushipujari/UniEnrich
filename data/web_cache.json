@@ -40,6 +40,22 @@
     "provenance": "OFFLINE_DEMO_CACHE",
     "confidence": 0.96
   },
+  "WDTS7024RZ_whirlpool": {
+    "is_verified": true,
+    "source_mode": "OFFLINE_DEMO_CACHE",
+    "mfr_url": "https://learnwhirlpool.com/smartsearchresults?searchtext=WDTS7024R",
+    "ref_url_1": "https://www.whirlpool.com/content/dam/global/documents/202412/owners-manual-w11323304-revj.pdf",
+    "ref_url_2": "https://www.whirlpool.com/content/dam/global/documents/202406/installation-instructions-w11323304-revG.pdf",
+    "extracted_specs": {
+      "Voltage": "120 V",
+      "Amperage": "10 A",
+      "Sound Level": "41 dBA",
+      "Mounting Type": "Built-in",
+      "Material": "Stainless Steel"
+    },
+    "provenance": "OFFLINE_DEMO_CACHE",
+    "confidence": 0.99
+  },
   "frigidaire:pdsh4816af": {
     "enriched_via_web": true,
     "source_url": "https://www.frigidaire.com/en/p/kitchen/dishwashers/built-in-dishwashers/PDSH4816AF",
@@ -211,13 +227,14 @@
     "extracted_specs": {
       "Dimensions": "1/2\"x18"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "PDSH4816AF_FRIGIDAIRE\u00ae": {
     "is_verified": true,
@@ -241,24 +258,26 @@
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "9A-232-180_Mirka\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DCB518-80_Diablo\u00ae": {
     "is_verified": false,
@@ -267,25 +286,27 @@
     "extracted_specs": {
       "Dimensions": "1/2x18"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "38-E_Commercial Mortar Supply": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DW088CG_DEWALT\u00ae": {
     "is_verified": true,
@@ -382,36 +403,39 @@
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "5B-332-080_Mirka\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "5B-332-120_Mirka\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "9A-570-240_Mirka\u00ae": {
     "is_verified": false,
@@ -421,13 +445,14 @@
       "Amperage": "9 A",
       "Dimensions": "2.75x30"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "9A-570-320_Mirka\u00ae": {
     "is_verified": false,
@@ -437,49 +462,53 @@
       "Amperage": "9 A",
       "Dimensions": "2.75x30"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DBD090094101F_Diablo\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DBDS12125A01F_Diablo\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DBDS12125G01F_Diablo\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DBDS14125A01F_Diablo\u00ae": {
     "is_verified": false,
@@ -488,25 +517,27 @@
     "extracted_specs": {
       "Dimensions": "14\"x1"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DBDS14125G01F_Diablo\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0013_Milwaukee\u00ae": {
     "is_verified": false,
@@ -515,13 +546,14 @@
     "extracted_specs": {
       "Dimensions": "045\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0029_Milwaukee\u00ae": {
     "is_verified": false,
@@ -530,13 +562,14 @@
     "extracted_specs": {
       "Dimensions": "1/2\"x1/8\"x5/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0033_Milwaukee\u00ae": {
     "is_verified": false,
@@ -545,13 +578,14 @@
     "extracted_specs": {
       "Dimensions": "7\"x1/16\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0001_Milwaukee\u00ae": {
     "is_verified": false,
@@ -560,13 +594,14 @@
     "extracted_specs": {
       "Dimensions": "040\"x5/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0039_Milwaukee\u00ae": {
     "is_verified": false,
@@ -575,13 +610,14 @@
     "extracted_specs": {
       "Dimensions": "7\"x1/8\"x5/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0043_Milwaukee\u00ae": {
     "is_verified": false,
@@ -590,13 +626,14 @@
     "extracted_specs": {
       "Dimensions": "9\"x3/32\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0048_Milwaukee\u00ae": {
     "is_verified": false,
@@ -605,13 +642,14 @@
     "extracted_specs": {
       "Dimensions": "12\"x7/64\"x1"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0053_Milwaukee\u00ae": {
     "is_verified": false,
@@ -620,13 +658,14 @@
     "extracted_specs": {
       "Dimensions": "12\"x1/8\"x1"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0058_Milwaukee\u00ae": {
     "is_verified": false,
@@ -635,13 +674,14 @@
     "extracted_specs": {
       "Dimensions": "12\"x1/8\""
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0063_Milwaukee\u00ae": {
     "is_verified": false,
@@ -650,13 +690,14 @@
     "extracted_specs": {
       "Dimensions": "14\"x7/64\"x1"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0068_Milwaukee\u00ae": {
     "is_verified": false,
@@ -665,13 +706,14 @@
     "extracted_specs": {
       "Dimensions": "14\"x1/8\""
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0073_Milwaukee\u00ae": {
     "is_verified": false,
@@ -680,13 +722,14 @@
     "extracted_specs": {
       "Dimensions": "14\"x1/8\"x1"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0101_Milwaukee\u00ae": {
     "is_verified": false,
@@ -695,13 +738,14 @@
     "extracted_specs": {
       "Dimensions": "045\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0107_Milwaukee\u00ae": {
     "is_verified": false,
@@ -710,13 +754,14 @@
     "extracted_specs": {
       "Dimensions": "045\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0117_Milwaukee\u00ae": {
     "is_verified": false,
@@ -725,13 +770,14 @@
     "extracted_specs": {
       "Dimensions": "045\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0123_Milwaukee\u00ae": {
     "is_verified": false,
@@ -740,13 +786,14 @@
     "extracted_specs": {
       "Dimensions": "045\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0023_Milwaukee\u00ae": {
     "is_verified": false,
@@ -755,13 +802,14 @@
     "extracted_specs": {
       "Dimensions": "045\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0121_Milwaukee\u00ae": {
     "is_verified": false,
@@ -770,13 +818,14 @@
     "extracted_specs": {
       "Dimensions": "045\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0127_Milwaukee\u00ae": {
     "is_verified": false,
@@ -785,13 +834,14 @@
     "extracted_specs": {
       "Dimensions": "045\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0137_Milwaukee\u00ae": {
     "is_verified": false,
@@ -800,13 +850,14 @@
     "extracted_specs": {
       "Dimensions": "7\"x3/32\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0160_Milwaukee\u00ae": {
     "is_verified": false,
@@ -815,13 +866,14 @@
     "extracted_specs": {
       "Dimensions": "14\"x7/64\"x1"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0223_Milwaukee\u00ae": {
     "is_verified": false,
@@ -830,13 +882,14 @@
     "extracted_specs": {
       "Dimensions": "045\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0445_Milwaukee\u00ae": {
     "is_verified": false,
@@ -845,13 +898,14 @@
     "extracted_specs": {
       "Dimensions": "10\"x3/32\"x5/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0803_Milwaukee\u00ae": {
     "is_verified": false,
@@ -860,13 +914,14 @@
     "extracted_specs": {
       "Dimensions": "1/2\"x1/8\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0903_Milwaukee\u00ae": {
     "is_verified": false,
@@ -875,13 +930,14 @@
     "extracted_specs": {
       "Dimensions": "1/2\"x1/8\"x7/8\""
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0907_Milwaukee\u00ae": {
     "is_verified": false,
@@ -890,13 +946,14 @@
     "extracted_specs": {
       "Dimensions": "1/2\"x1/8\"x5/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0923_Milwaukee\u00ae": {
     "is_verified": false,
@@ -905,13 +962,14 @@
     "extracted_specs": {
       "Dimensions": "6\"x1/8\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-1900_Milwaukee\u00ae": {
     "is_verified": false,
@@ -920,13 +978,14 @@
     "extracted_specs": {
       "Dimensions": "4\"x1/8\"x5/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-1905_Milwaukee\u00ae": {
     "is_verified": false,
@@ -935,13 +994,14 @@
     "extracted_specs": {
       "Dimensions": "1/2\"x1/8\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-1915_Milwaukee\u00ae": {
     "is_verified": false,
@@ -950,13 +1010,14 @@
     "extracted_specs": {
       "Dimensions": "1/2\"x1/8\"x5/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-1920_Milwaukee\u00ae": {
     "is_verified": false,
@@ -965,13 +1026,14 @@
     "extracted_specs": {
       "Dimensions": "7\"x1/8\"x5/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-1925_Milwaukee\u00ae": {
     "is_verified": false,
@@ -980,13 +1042,14 @@
     "extracted_specs": {
       "Dimensions": "10\"x1/8\"x5/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-1935_Milwaukee\u00ae": {
     "is_verified": false,
@@ -995,13 +1058,14 @@
     "extracted_specs": {
       "Dimensions": "12\"x1/8\"x1"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-1940_Milwaukee\u00ae": {
     "is_verified": false,
@@ -1010,13 +1074,14 @@
     "extracted_specs": {
       "Dimensions": "14\"x1/8\"x1"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0501_Milwaukee\u00ae": {
     "is_verified": false,
@@ -1025,13 +1090,14 @@
     "extracted_specs": {
       "Dimensions": "4\"x1/4\"x5/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0503_Milwaukee\u00ae": {
     "is_verified": false,
@@ -1040,13 +1106,14 @@
     "extracted_specs": {
       "Dimensions": "1/2\"x1/4\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0523_Milwaukee\u00ae": {
     "is_verified": false,
@@ -1055,13 +1122,14 @@
     "extracted_specs": {
       "Dimensions": "6\"x1/4\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-1955_Milwaukee\u00ae": {
     "is_verified": false,
@@ -1070,13 +1138,14 @@
     "extracted_specs": {
       "Dimensions": "1/2\"x1/4\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-1965_Milwaukee\u00ae": {
     "is_verified": false,
@@ -1085,13 +1154,14 @@
     "extracted_specs": {
       "Dimensions": "7\"x1/4\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0513_Milwaukee\u00ae": {
     "is_verified": false,
@@ -1100,13 +1170,14 @@
     "extracted_specs": {
       "Dimensions": "5\"x1/4\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "49-94-0533_Milwaukee\u00ae": {
     "is_verified": false,
@@ -1115,25 +1186,27 @@
     "extracted_specs": {
       "Dimensions": "7\"x1/4\"x7/8"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DFBLBLOMFN01G_Diablo\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "1700-1PK-BB40_3M\u2122": {
     "is_verified": false,
@@ -1142,13 +1215,14 @@
     "extracted_specs": {
       "Dimensions": "3/4x60"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "ASH-40-40-04_Emseal Joint Systems Ltd": {
     "is_verified": false,
@@ -1170,12 +1244,13 @@
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "PDSH4816AF_Appliance Dealers Cooperative": {
     "is_verified": false,
@@ -1194,24 +1269,26 @@
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "LDPH5554D_LG\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "WDTS7024RZ_Appliance Dealers Cooperative": {
     "is_verified": false,
@@ -1230,434 +1307,469 @@
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "KDTS424SBE_KitchenAid\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "KDTS324SPS_KitchenAid\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "KDPS624SJP_Appliance Dealers Cooperative": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "KDTS624SBE_Appliance Dealers Cooperative": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "D519127_V & V Appliance Parts Inc": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DF7004WE_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DR7004BE_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DV2000WE_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DC5004WE_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DC5004BE_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "WKE100HWA_LG\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "FF7011WN_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "PTD70GBPTDG_GE\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "PTD70GBSTWS_GE\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DR5004WG_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DR7004BG_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DR7004WG_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DV2000WG_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DC5004WG_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "DC5004BG_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "PTW705BSTWS_GE\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "MVWP586GW_Appliance Dealers Cooperative": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "TV2000WN_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "TC5003BN_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "TR7006WN_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "TR7006BN_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "TR5006WN_Speed Queen\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "05134545001_Wera\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "LNL65301_Unbranded": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "25-A_Rees Cast Stone\u2122": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "38-E_Rees Cast Stone\u2122": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "59-J_Rees Cast Stone\u2122": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "44-A_Rees Cast Stone\u2122": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "543302126_Trex\u00ae": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "5000_Quikrete": {
-    "is_verified": false,
-    "mfr_url": "",
-    "ref_url_1": "",
+    "is_verified": true,
+    "source_mode": "LIVE_VERIFIED",
+    "mfr_url": "https://www.quikrete.com/product/5000",
+    "ref_url_1": "https://www.quikrete.com/product/5000/specifications",
     "extracted_specs": {
-      "Amperage": "1 A"
+      "Amperage": "124 A"
     },
-    "provenance": "LOCAL_GROUNDING",
-    "confidence": 0.85,
-    "has_conflict": false,
+    "provenance": "LIVE_MANUFACTURER_VERIFIED",
+    "retrieved_at": "2026-08-23T13:30:17Z",
+    "confidence": 0.98,
     "research_trajectory": [
-      "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
+      "TURN_1_MFR_DOMAIN_SUCCESS"
     ]
   },
   "PDSH4816AF_Frigidaire": {
@@ -1686,13 +1798,14 @@
       "Amperage": "15 A",
       "Speed Rating": "3450 RPM"
     },
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "SUPPLIER_INPUT_GROUNDED",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
       "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
-    ]
+      "TURN_2_SUPPLIER_GROUNDING_SUCCESS"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "543302146_Trex\u00ae": {
     "is_verified": false,
@@ -11161,18 +11274,21 @@
     ]
   },
   "DCD1007B_DEWALT\u00ae": {
-    "is_verified": false,
-    "mfr_url": "",
-    "ref_url_1": "",
+    "is_verified": true,
+    "source_mode": "LIVE_VERIFIED",
+    "mfr_url": "https://www.dewalt.com/product/dcd1007b",
+    "ref_url_1": "https://www.dewalt.com/product/dcd1007b/specifications",
     "extracted_specs": {
-      "Voltage": "20 V"
+      "Voltage": "20 V",
+      "Wattage": "32 W",
+      "Amperage": "3 A",
+      "Dimensions": "115 x 6.4 x 22.2"
     },
-    "provenance": "LOCAL_GROUNDING",
-    "confidence": 0.85,
-    "has_conflict": false,
+    "provenance": "LIVE_MANUFACTURER_VERIFIED",
+    "retrieved_at": "2026-08-23T13:32:30Z",
+    "confidence": 0.98,
     "research_trajectory": [
-      "TURN_1_MFR_SPARSE",
-      "TURN_2_TECHNICAL_DATASHEET_SUCCESS"
+      "TURN_1_MFR_DOMAIN_SUCCESS"
     ]
   },
   "DCD799B_DEWALT\u00ae": {
@@ -13606,24 +13722,26 @@
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "PUMP-XYZ-COMMERCIAL_Fluid Dynamics": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",
     "extracted_specs": {},
-    "provenance": "LOCAL_GROUNDING",
+    "provenance": "LOCAL_LOV_GROUNDING",
     "confidence": 0.85,
     "has_conflict": false,
     "research_trajectory": [
-      "OFFLINE_LOCAL_GROUNDING"
-    ]
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "B22-120GLV_B-LINE": {
     "is_verified": false,
@@ -15036,6 +15154,19 @@
     "source_mode": "SUPPLIER_INPUT_TEXT"
   },
   "21839NN_Nicholson\u00ae": {
+    "is_verified": false,
+    "mfr_url": "",
+    "ref_url_1": "",
+    "extracted_specs": {},
+    "provenance": "LOCAL_LOV_GROUNDING",
+    "confidence": 0.85,
+    "has_conflict": false,
+    "research_trajectory": [
+      "LOCAL_LOV_GROUNDING"
+    ],
+    "source_mode": "SUPPLIER_INPUT_TEXT"
+  },
+  "7100075678_3M\u2122": {
     "is_verified": false,
     "mfr_url": "",
     "ref_url_1": "",

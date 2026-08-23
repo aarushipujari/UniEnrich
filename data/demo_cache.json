@@ -40,5 +40,21 @@
     },
     "provenance": "OFFLINE_DEMO_CACHE",
     "confidence": 0.96
+  },
+  "WDTS7024RZ_whirlpool": {
+    "is_verified": true,
+    "source_mode": "OFFLINE_DEMO_CACHE",
+    "mfr_url": "https://learnwhirlpool.com/smartsearchresults?searchtext=WDTS7024R",
+    "ref_url_1": "https://www.whirlpool.com/content/dam/global/documents/202412/owners-manual-w11323304-revj.pdf",
+    "ref_url_2": "https://www.whirlpool.com/content/dam/global/documents/202406/installation-instructions-w11323304-revG.pdf",
+    "extracted_specs": {
+      "Voltage": "120 V",
+      "Amperage": "10 A",
+      "Sound Level": "41 dBA",
+      "Mounting Type": "Built-in",
+      "Material": "Stainless Steel"
+    },
+    "provenance": "OFFLINE_DEMO_CACHE",
+    "confidence": 0.99
   }
 }

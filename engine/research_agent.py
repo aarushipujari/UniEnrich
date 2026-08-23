@@ -137,17 +137,27 @@ class AgenticResearchLoop:
             for ck in candidate_keys:
                 if ck in RESEARCH_CACHE:
                     cached = dict(RESEARCH_CACHE[ck])
-                    if "source_url" in cached and not cached.get("mfr_url"):
-                        src = cached["source_url"]
-                        mfr_domain = BRAND_DOMAINS.get(clean_brand, "")
-                        if mfr_domain and mfr_domain in src:
-                            cached["mfr_url"] = src
-                            cached["is_verified"] = True
-                        else:
-                            cached["ref_url_1"] = src
-                    cached["source_mode"] = cached.get("source_mode", "OFFLINE_DEMO_CACHE")
-                    cached["provenance"] = cached.get("provenance", "OFFLINE_DEMO_CACHE")
-                    return cached
+                    if cached.get("is_verified") or cached.get("mfr_url"):
+                        if "source_url" in cached and not cached.get("mfr_url"):
+                            src = cached["source_url"]
+                            mfr_domain = BRAND_DOMAINS.get(clean_brand, "")
+                            if mfr_domain and mfr_domain in src:
+                                cached["mfr_url"] = src
+                                cached["is_verified"] = True
+                            else:
+                                cached["ref_url_1"] = src
+                        cached["source_mode"] = cached.get("source_mode", "OFFLINE_DEMO_CACHE")
+                        cached["provenance"] = cached.get("provenance", "OFFLINE_DEMO_CACHE")
+                        return cached
+
+            # Prefix search in cache if exact candidate was unverified
+            for rk, rv in RESEARCH_CACHE.items():
+                if rk.startswith(f"{clean_mpn}_") or rk.startswith(f"{mpn}_"):
+                    if rv.get("is_verified") or rv.get("mfr_url"):
+                        cached = dict(rv)
+                        cached["source_mode"] = cached.get("source_mode", "OFFLINE_DEMO_CACHE")
+                        cached["provenance"] = cached.get("provenance", "OFFLINE_DEMO_CACHE")
+                        return cached
 
         # Step 1: Turn 1 - Query Official Manufacturer Domain (Live HTTP Verification)
         mfr_domain = BRAND_DOMAINS.get(clean_brand, "")

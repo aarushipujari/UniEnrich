@@ -53,10 +53,10 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_
     """
     mfg_part_num = sanitize_text(str(raw.get('Mfg_Part_Num', raw.get('MANUFACTURER_PART_NUMBER', ''))))
     part_desc = sanitize_text(str(raw.get('Part_Desc', '')))
-    e1_brand = clean_placeholder(str(raw.get('E1_Brand', '')))
+    e1_brand = clean_placeholder(str(raw.get('E1_Brand', raw.get('BRAND_NAME', ''))))
     unilog_brand = clean_placeholder(str(raw.get('Unilog_Brand', '')))
     dib_brand = clean_placeholder(str(raw.get('DIB_Brand', '')))
-    part_manuf = clean_placeholder(str(raw.get('Part_Manuf', '')))
+    part_manuf = clean_placeholder(str(raw.get('Part_Manuf', raw.get('MANUFACTURER_NAME', ''))))
     
     raw_dept = str(raw.get('Dept', ''))
     raw_class = str(raw.get('Class', ''))
@@ -72,6 +72,22 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_
     research_data = {"is_verified": False, "mfr_url": "", "ref_url_1": "", "extracted_specs": {}, "provenance": "SUPPLIER_INPUT_GROUNDED"}
     if enable_web_sourcing:
         research_data = query_agentic_research(mfg_part_num, part_desc, brand_name, use_cache=use_cache)
+        
+        # Upgrade brand if verified manufacturer URL domain exists
+        mfr_url_lower = (research_data.get("mfr_url") or "").lower()
+        if (not brand_name or brand_name in ["Unbranded", "-- Unbranded --", "-- unbranded --"] or brand_res.get("provenance") == "FALLBACK_RAW"):
+            if "frigidaire.com" in mfr_url_lower:
+                brand_name = "FRIGIDAIRE®"
+                mfg_name = mfg_name or "Rheem Manufacturing"
+            elif "whirlpool.com" in mfr_url_lower or "learnwhirlpool.com" in mfr_url_lower:
+                brand_name = "Whirlpool®"
+                mfg_name = mfg_name or "Whirlpool Corporation"
+            elif "dewalt.com" in mfr_url_lower:
+                brand_name = "DEWALT®"
+                mfg_name = mfg_name or "Black & Decker / DEWALT"
+            elif "3m.com" in mfr_url_lower:
+                brand_name = "3M™"
+                mfg_name = mfg_name or "3M Company"
 
     # Legacy adapter compatibility
     web_data = {
@@ -192,6 +208,9 @@ def enrich_single_record(raw: dict, enable_web_sourcing: bool = True, enable_ai_
         record[f"ATTRIBUTE_LABEL {idx}"] = trip.get('label', '')
         record[f"ATTRIBUTE_VALUE {idx}"] = trip.get('value', '')
         record[f"ATTRIBUTE_UOM {idx}"] = trip.get('uom', '')
+
+    # Standardized Digital Assets & Technical PDF Docs
+    record.update(assets)
 
     # Sourcing Evidence URLs
     record["MFR URL"] = research_data.get("mfr_url", "")
